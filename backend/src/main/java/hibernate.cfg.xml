@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.url">jdbc:mysql://localhost:3306/thesis</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <mapping class="hcmut.thesis.managethesis.models.ChatGroupEntity"/>
+        <mapping class="hcmut.thesis.managethesis.models.CommentTaskEntity"/>
+        <mapping class="hcmut.thesis.managethesis.models.FacultyEntity"/>
+        <mapping class="hcmut.thesis.managethesis.models.JoinPerMeetingEntity"/>
+        <mapping class="hcmut.thesis.managethesis.models.MeetingEntity"/>
+        <mapping class="hcmut.thesis.managethesis.models.ProfessorEntity"/>
+        <mapping class="hcmut.thesis.managethesis.models.SemesterEntity"/>
+        <mapping class="hcmut.thesis.managethesis.models.StandardEntity"/>
+        <mapping class="hcmut.thesis.managethesis.models.StudentEntity"/>
+        <mapping class="hcmut.thesis.managethesis.models.StudentTopicSemEntity"/>
+        <mapping class="hcmut.thesis.managethesis.models.TaskEntity"/>
+        <mapping class="hcmut.thesis.managethesis.models.TopicEntity"/>
+        <mapping class="hcmut.thesis.managethesis.models.TopicPerSemesterEntity"/>
+        <mapping class="hcmut.thesis.managethesis.models.TopicSemStandardEntity"/>
+        <mapping class="hcmut.thesis.managethesis.models.UserEntity"/>
+        <!-- <property name="connection.username"/> -->
+        <!-- <property name="connection.password"/> -->
+
+        <!-- DB schema will be updated if needed -->
+        <!-- <property name="hbm2ddl.auto">update</property> -->
+    </session-factory>
+</hibernate-configuration>

@@ -1,0 +1,313 @@
+CREATE TABLE chat_group
+(
+  time         TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  id_topic_sem INT                                 NOT NULL,
+  id_user      INT                                 NOT NULL,
+  content      VARCHAR(50)                         NOT NULL,
+  PRIMARY KEY (time, id_topic_sem, id_user),
+  CONSTRAINT chat_group_id_topic_sem_uindex
+  UNIQUE (id_topic_sem),
+  CONSTRAINT chat_group_id_user_uindex
+  UNIQUE (id_user)
+)
+  ENGINE = InnoDB;
+
+CREATE TABLE comment_task
+(
+  time    TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  id_task INT                                 NOT NULL,
+  id_user INT                                 NOT NULL,
+  content VARCHAR(150)                        NOT NULL,
+  PRIMARY KEY (time, id_task, id_user)
+)
+  COMMENT 'Comment on each task'
+  ENGINE = InnoDB;
+
+CREATE INDEX comment_task_task_id_task_fk
+  ON comment_task (id_task);
+
+CREATE INDEX comment_task_user_id_user_fk
+  ON comment_task (id_user);
+
+CREATE TABLE faculty
+(
+  id_faculty INT AUTO_INCREMENT
+    PRIMARY KEY,
+  name       VARCHAR(45) NOT NULL,
+  CONSTRAINT faculty_id_faculty_uindex
+  UNIQUE (id_faculty),
+  CONSTRAINT faculty_name_uindex
+  UNIQUE (name)
+)
+  ENGINE = InnoDB;
+
+CREATE TABLE join_per_meeting
+(
+  id_student INT NOT NULL,
+  id_meeting INT NOT NULL,
+  PRIMARY KEY (id_student, id_meeting)
+)
+  ENGINE = InnoDB;
+
+CREATE INDEX join_per_meeting_meeting_id_meeting_fk
+  ON join_per_meeting (id_meeting);
+
+CREATE TABLE meeting
+(
+  id_meeting    INT                                 NOT NULL
+    PRIMARY KEY,
+  note          VARCHAR(150)                        NULL,
+  content       VARCHAR(150)                        NOT NULL,
+  student_count INT                                 NULL,
+  meeting_time  TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  approve       INT DEFAULT '0'                     NOT NULL,
+  location      VARCHAR(50)                         NULL,
+  id_topic_sem  INT                                 NULL
+)
+  ENGINE = InnoDB;
+
+CREATE INDEX meeting_topic_per_semester_id_topic_semester_fk
+  ON meeting (id_topic_sem);
+
+ALTER TABLE join_per_meeting
+  ADD CONSTRAINT join_per_meeting_meeting_id_meeting_fk
+FOREIGN KEY (id_meeting) REFERENCES meeting (id_meeting)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE;
+
+CREATE TABLE professor
+(
+  id_professor INT NOT NULL
+    PRIMARY KEY,
+  id_user      INT NOT NULL,
+  CONSTRAINT professor_id_professor_uindex
+  UNIQUE (id_professor),
+  CONSTRAINT professor_id_user_uindex
+  UNIQUE (id_user)
+)
+  ENGINE = InnoDB;
+
+CREATE TABLE semester
+(
+  id_semester   INT AUTO_INCREMENT
+    PRIMARY KEY,
+  id_topic      INT         NOT NULL,
+  semester_name VARCHAR(50) NULL,
+  year          INT         NOT NULL,
+  CONSTRAINT topic_semester_id_topic_semester_uindex
+  UNIQUE (id_semester),
+  CONSTRAINT topic_semester_topic_id_uindex
+  UNIQUE (id_topic)
+)
+  ENGINE = InnoDB;
+
+CREATE TABLE standard
+(
+  id_standard INT NOT NULL
+    PRIMARY KEY,
+  st_name     INT NULL,
+  id_prof     INT NULL,
+  CONSTRAINT standard_professor_id_professor_fk
+  FOREIGN KEY (id_prof) REFERENCES professor (id_professor)
+    ON UPDATE CASCADE
+    ON DELETE SET NULL
+)
+  COMMENT 'Standard for Professors'
+  ENGINE = InnoDB;
+
+CREATE INDEX standard_professor_id_professor_fk
+  ON standard (id_prof);
+
+CREATE TABLE student
+(
+  id_student INT NOT NULL
+    PRIMARY KEY,
+  id_user    INT NOT NULL,
+  CONSTRAINT id_student_UNIQUE
+  UNIQUE (id_student),
+  CONSTRAINT student_id_user_uindex
+  UNIQUE (id_user)
+)
+  ENGINE = InnoDB;
+
+ALTER TABLE join_per_meeting
+  ADD CONSTRAINT join_per_meeting_student_id_student_fk
+FOREIGN KEY (id_student) REFERENCES student (id_student)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE;
+
+CREATE TABLE student_topic_sem
+(
+  id_student   INT             NOT NULL,
+  id_topic_sem INT             NOT NULL
+    PRIMARY KEY,
+  team_lead    INT DEFAULT '0' NOT NULL
+  COMMENT 'team lead: 1
+		other member 0',
+  CONSTRAINT student_topic_sem_student_id_student_fk
+  FOREIGN KEY (id_student) REFERENCES student (id_student)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+)
+  COMMENT 'List of student belong to each topic per semester'
+  ENGINE = InnoDB;
+
+CREATE INDEX student_topic_sem_student_id_student_fk
+  ON student_topic_sem (id_student);
+
+CREATE TABLE task
+(
+  id_task      INT AUTO_INCREMENT
+    PRIMARY KEY,
+  title        VARCHAR(150)                        NOT NULL,
+  description  VARCHAR(200)                        NULL,
+  deadline     TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  id_topic_sem INT                                 NULL
+)
+  ENGINE = InnoDB;
+
+CREATE INDEX task_topic_per_semester_id_topic_semester_fk
+  ON task (id_topic_sem);
+
+ALTER TABLE comment_task
+  ADD CONSTRAINT comment_task_task_id_task_fk
+FOREIGN KEY (id_task) REFERENCES task (id_task)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE;
+
+CREATE TABLE topic
+(
+  id_top       INT AUTO_INCREMENT
+    PRIMARY KEY,
+  title        VARCHAR(150)    NOT NULL,
+  st_num_limit INT DEFAULT '0' NOT NULL,
+  sumary       VARCHAR(200)    NULL,
+  id_prof      INT             NOT NULL,
+  id_faculty   INT             NOT NULL,
+  CONSTRAINT topic_id_top_uindex
+  UNIQUE (id_top),
+  CONSTRAINT topic_professor_id_professor_fk
+  FOREIGN KEY (id_prof) REFERENCES professor (id_professor)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+)
+  ENGINE = InnoDB;
+
+CREATE INDEX topic_professor_id_professor_fk
+  ON topic (id_prof);
+
+ALTER TABLE semester
+  ADD CONSTRAINT semester_topic_id_top_fk
+FOREIGN KEY (id_topic) REFERENCES topic (id_top);
+
+CREATE TABLE topic_per_semester
+(
+  id_topic_semester INT AUTO_INCREMENT
+    PRIMARY KEY,
+  score             INT DEFAULT '0' NOT NULL,
+  semester_no       VARCHAR(15)     NULL,
+  id_topic          INT             NOT NULL,
+  CONSTRAINT topic_per_semester_id_topic_semester_uindex
+  UNIQUE (id_topic_semester),
+  CONSTRAINT topic_per_semester_id_topic_uindex
+  UNIQUE (id_topic),
+  CONSTRAINT topic_per_semester_topic_id_top_fk
+  FOREIGN KEY (id_topic) REFERENCES topic (id_top)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+)
+  COMMENT 'Topic on each semester'
+  ENGINE = InnoDB;
+
+ALTER TABLE chat_group
+  ADD CONSTRAINT chat_group_topic_per_semester_id_topic_semester_fk
+FOREIGN KEY (id_topic_sem) REFERENCES topic_per_semester (id_topic_semester)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE;
+
+ALTER TABLE meeting
+  ADD CONSTRAINT meeting_topic_per_semester_id_topic_semester_fk
+FOREIGN KEY (id_topic_sem) REFERENCES topic_per_semester (id_topic_semester)
+  ON UPDATE CASCADE
+  ON DELETE SET NULL;
+
+ALTER TABLE student_topic_sem
+  ADD CONSTRAINT student_topic_sem_topic_per_semester_id_topic_semester_fk
+FOREIGN KEY (id_topic_sem) REFERENCES topic_per_semester (id_topic_semester)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE;
+
+ALTER TABLE task
+  ADD CONSTRAINT task_topic_per_semester_id_topic_semester_fk
+FOREIGN KEY (id_topic_sem) REFERENCES topic_per_semester (id_topic_semester)
+  ON UPDATE CASCADE
+  ON DELETE SET NULL;
+
+CREATE TABLE topic_sem_standard
+(
+  id_topic_sem INT             NOT NULL,
+  id_standard  INT             NOT NULL,
+  score        INT DEFAULT '0' NOT NULL,
+  PRIMARY KEY (id_standard, id_topic_sem),
+  CONSTRAINT topic_sem_standard_topic_per_semester_id_topic_semester_fk
+  FOREIGN KEY (id_topic_sem) REFERENCES topic_per_semester (id_topic_semester)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+  CONSTRAINT topic_sem_standard_standard_id_standard_fk
+  FOREIGN KEY (id_standard) REFERENCES standard (id_standard)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+)
+  COMMENT 'Standard foreach topic per semester'
+  ENGINE = InnoDB;
+
+CREATE INDEX topic_sem_standard_topic_per_semester_id_topic_semester_fk
+  ON topic_sem_standard (id_topic_sem);
+
+CREATE TABLE user
+(
+  id_user    INT AUTO_INCREMENT
+    PRIMARY KEY,
+  user_name  VARCHAR(50) NOT NULL,
+  password   VARCHAR(50) NOT NULL,
+  first_name VARCHAR(50) NULL,
+  last_name  VARCHAR(50) NULL,
+  email      VARCHAR(50) NULL,
+  photo      VARCHAR(45) NULL,
+  gender     VARCHAR(45) NOT NULL
+  COMMENT '1: male
+	0: female',
+  CONSTRAINT user_id_user_uindex
+  UNIQUE (id_user),
+  CONSTRAINT user_user_name_uindex
+  UNIQUE (user_name),
+  CONSTRAINT user_password_uindex
+  UNIQUE (password),
+  CONSTRAINT user_email_uindex
+  UNIQUE (email)
+)
+  ENGINE = InnoDB;
+
+ALTER TABLE chat_group
+  ADD CONSTRAINT chat_group_user_id_user_fk
+FOREIGN KEY (id_user) REFERENCES user (id_user)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE;
+
+ALTER TABLE comment_task
+  ADD CONSTRAINT comment_task_user_id_user_fk
+FOREIGN KEY (id_user) REFERENCES user (id_user)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE;
+
+ALTER TABLE professor
+  ADD CONSTRAINT professor_user_id_user_fk
+FOREIGN KEY (id_user) REFERENCES user (id_user);
+
+ALTER TABLE student
+  ADD CONSTRAINT student_user_id_user_fk
+FOREIGN KEY (id_user) REFERENCES user (id_user)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE;
+
+
