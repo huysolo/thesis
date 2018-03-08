@@ -69,12 +69,6 @@ CREATE TABLE meeting
 CREATE INDEX meeting_topic_per_semester_id_topic_semester_fk
   ON meeting (id_topic_sem);
 
-ALTER TABLE join_per_meeting
-  ADD CONSTRAINT join_per_meeting_meeting_id_meeting_fk
-FOREIGN KEY (id_meeting) REFERENCES meeting (id_meeting)
-  ON UPDATE CASCADE
-  ON DELETE CASCADE;
-
 CREATE TABLE professor
 (
   id_professor INT NOT NULL
@@ -106,11 +100,7 @@ CREATE TABLE standard
   id_standard INT NOT NULL
     PRIMARY KEY,
   st_name     INT NULL,
-  id_prof     INT NULL,
-  CONSTRAINT standard_professor_id_professor_fk
-  FOREIGN KEY (id_prof) REFERENCES professor (id_professor)
-    ON UPDATE CASCADE
-    ON DELETE SET NULL
+  id_prof     INT NULL
 )
   COMMENT 'Standard for Professors'
   ENGINE = InnoDB;
@@ -130,12 +120,6 @@ CREATE TABLE student
 )
   ENGINE = InnoDB;
 
-ALTER TABLE join_per_meeting
-  ADD CONSTRAINT join_per_meeting_student_id_student_fk
-FOREIGN KEY (id_student) REFERENCES student (id_student)
-  ON UPDATE CASCADE
-  ON DELETE CASCADE;
-
 CREATE TABLE student_topic_sem
 (
   id_student   INT             NOT NULL,
@@ -143,11 +127,7 @@ CREATE TABLE student_topic_sem
     PRIMARY KEY,
   team_lead    INT DEFAULT '0' NOT NULL
   COMMENT 'team lead: 1
-		other member 0',
-  CONSTRAINT student_topic_sem_student_id_student_fk
-  FOREIGN KEY (id_student) REFERENCES student (id_student)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE
+		other member 0'
 )
   COMMENT 'List of student belong to each topic per semester'
   ENGINE = InnoDB;
@@ -169,12 +149,6 @@ CREATE TABLE task
 CREATE INDEX task_topic_per_semester_id_topic_semester_fk
   ON task (id_topic_sem);
 
-ALTER TABLE comment_task
-  ADD CONSTRAINT comment_task_task_id_task_fk
-FOREIGN KEY (id_task) REFERENCES task (id_task)
-  ON UPDATE CASCADE
-  ON DELETE CASCADE;
-
 CREATE TABLE topic
 (
   id_top       INT AUTO_INCREMENT
@@ -185,20 +159,12 @@ CREATE TABLE topic
   id_prof      INT             NOT NULL,
   id_faculty   INT             NOT NULL,
   CONSTRAINT topic_id_top_uindex
-  UNIQUE (id_top),
-  CONSTRAINT topic_professor_id_professor_fk
-  FOREIGN KEY (id_prof) REFERENCES professor (id_professor)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE
+  UNIQUE (id_top)
 )
   ENGINE = InnoDB;
 
 CREATE INDEX topic_professor_id_professor_fk
   ON topic (id_prof);
-
-ALTER TABLE semester
-  ADD CONSTRAINT semester_topic_id_top_fk
-FOREIGN KEY (id_topic) REFERENCES topic (id_top);
 
 CREATE TABLE topic_per_semester
 (
@@ -210,53 +176,17 @@ CREATE TABLE topic_per_semester
   CONSTRAINT topic_per_semester_id_topic_semester_uindex
   UNIQUE (id_topic_semester),
   CONSTRAINT topic_per_semester_id_topic_uindex
-  UNIQUE (id_topic),
-  CONSTRAINT topic_per_semester_topic_id_top_fk
-  FOREIGN KEY (id_topic) REFERENCES topic (id_top)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE
+  UNIQUE (id_topic)
 )
   COMMENT 'Topic on each semester'
   ENGINE = InnoDB;
-
-ALTER TABLE chat_group
-  ADD CONSTRAINT chat_group_topic_per_semester_id_topic_semester_fk
-FOREIGN KEY (id_topic_sem) REFERENCES topic_per_semester (id_topic_semester)
-  ON UPDATE CASCADE
-  ON DELETE CASCADE;
-
-ALTER TABLE meeting
-  ADD CONSTRAINT meeting_topic_per_semester_id_topic_semester_fk
-FOREIGN KEY (id_topic_sem) REFERENCES topic_per_semester (id_topic_semester)
-  ON UPDATE CASCADE
-  ON DELETE SET NULL;
-
-ALTER TABLE student_topic_sem
-  ADD CONSTRAINT student_topic_sem_topic_per_semester_id_topic_semester_fk
-FOREIGN KEY (id_topic_sem) REFERENCES topic_per_semester (id_topic_semester)
-  ON UPDATE CASCADE
-  ON DELETE CASCADE;
-
-ALTER TABLE task
-  ADD CONSTRAINT task_topic_per_semester_id_topic_semester_fk
-FOREIGN KEY (id_topic_sem) REFERENCES topic_per_semester (id_topic_semester)
-  ON UPDATE CASCADE
-  ON DELETE SET NULL;
 
 CREATE TABLE topic_sem_standard
 (
   id_topic_sem INT             NOT NULL,
   id_standard  INT             NOT NULL,
   score        INT DEFAULT '0' NOT NULL,
-  PRIMARY KEY (id_standard, id_topic_sem),
-  CONSTRAINT topic_sem_standard_topic_per_semester_id_topic_semester_fk
-  FOREIGN KEY (id_topic_sem) REFERENCES topic_per_semester (id_topic_semester)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE,
-  CONSTRAINT topic_sem_standard_standard_id_standard_fk
-  FOREIGN KEY (id_standard) REFERENCES standard (id_standard)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE
+  PRIMARY KEY (id_standard, id_topic_sem)
 )
   COMMENT 'Standard foreach topic per semester'
   ENGINE = InnoDB;
@@ -287,27 +217,5 @@ CREATE TABLE user
   UNIQUE (email)
 )
   ENGINE = InnoDB;
-
-ALTER TABLE chat_group
-  ADD CONSTRAINT chat_group_user_id_user_fk
-FOREIGN KEY (id_user) REFERENCES user (id_user)
-  ON UPDATE CASCADE
-  ON DELETE CASCADE;
-
-ALTER TABLE comment_task
-  ADD CONSTRAINT comment_task_user_id_user_fk
-FOREIGN KEY (id_user) REFERENCES user (id_user)
-  ON UPDATE CASCADE
-  ON DELETE CASCADE;
-
-ALTER TABLE professor
-  ADD CONSTRAINT professor_user_id_user_fk
-FOREIGN KEY (id_user) REFERENCES user (id_user);
-
-ALTER TABLE student
-  ADD CONSTRAINT student_user_id_user_fk
-FOREIGN KEY (id_user) REFERENCES user (id_user)
-  ON UPDATE CASCADE
-  ON DELETE CASCADE;
 
 
