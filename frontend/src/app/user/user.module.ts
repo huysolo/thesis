@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LoginComponent } from './login/login.component';
-import { ManageAccountComponent } from './manage-account/manage-account.component';
+import { LoginComponent } from './pages/login/login.component';
+import { ManageAccountComponent } from './pages/manage-account/manage-account.component';
+
 
 @NgModule({
   imports: [
