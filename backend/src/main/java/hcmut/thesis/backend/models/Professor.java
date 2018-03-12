@@ -10,6 +10,8 @@ import java.util.Objects;
 public class Professor {
     private int idProfessor;
     private int idUser;
+    private String degree;
+    private String skills;
 
     @Id
     @Column(name = "id_professor")
@@ -44,5 +46,25 @@ public class Professor {
     public int hashCode() {
 
         return Objects.hash(idProfessor, idUser);
+    }
+
+    @Basic
+    @Column(name = "degree")
+    public String getDegree() {
+        return degree;
+    }
+
+    public void setDegree(String degree) {
+        this.degree = degree;
+    }
+
+    @Basic
+    @Column(name = "skills")
+    public String getSkills() {
+        return skills;
+    }
+
+    public void setSkills(String skills) {
+        this.skills = skills;
     }
 }

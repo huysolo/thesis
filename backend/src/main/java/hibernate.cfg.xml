@@ -21,6 +21,7 @@
         <mapping class="hcmut.thesis.backend.models.TopicPerSemester"/>
         <mapping class="hcmut.thesis.backend.models.TopicSemStandard"/>
         <mapping class="hcmut.thesis.backend.models.User"/>
+        <mapping class="hcmut.thesis.backend.models.StudentTask"/>
         <!-- <property name="connection.username"/> -->
         <!-- <property name="connection.password"/> -->
 

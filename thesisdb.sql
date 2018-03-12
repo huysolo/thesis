@@ -71,9 +71,11 @@ CREATE INDEX meeting_topic_per_semester_id_topic_semester_fk
 
 CREATE TABLE professor
 (
-  id_professor INT NOT NULL
+  id_professor INT         NOT NULL
     PRIMARY KEY,
-  id_user      INT NOT NULL,
+  id_user      INT         NOT NULL,
+  degree       VARCHAR(45) NULL,
+  skills       VARCHAR(45) NULL,
   CONSTRAINT professor_id_professor_uindex
   UNIQUE (id_professor),
   CONSTRAINT professor_id_user_uindex
@@ -118,6 +120,17 @@ CREATE TABLE student
   CONSTRAINT student_id_user_uindex
   UNIQUE (id_user)
 )
+  ENGINE = InnoDB;
+
+CREATE TABLE student_task
+(
+  id_task     INT                                 NOT NULL,
+  id_student  INT                                 NOT NULL,
+  archive     VARCHAR(100)                        NULL,
+  upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id_student, id_task)
+)
+  COMMENT 'Student On Each Task'
   ENGINE = InnoDB;
 
 CREATE TABLE student_topic_sem
