@@ -6,6 +6,10 @@ const appRoutes: Routes =[
   {
     path: 'topic',
     loadChildren: 'app/topic/topic.module#TopicModule'
+  },
+  {
+    path: 'user',
+    loadChildren: 'app/user/user.module#UserModule'
   }
 ]
 
