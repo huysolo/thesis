@@ -6,6 +6,7 @@
 package hcmut.thesis.backend.controllers;
 
 import hcmut.thesis.backend.models.User;
+import hcmut.thesis.backend.services.LoginService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,10 +25,23 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller
 @CrossOrigin
 public class LoginController {
+    @Autowired
+    LoginService loginService;
+    
     @RequestMapping( value = "/demo", method = RequestMethod.POST)
     @ResponseBody
     public String doEdit(@RequestBody String t){
        System.out.println(t);
         return null;
     }
+    
+    @RequestMapping( value = "/demo1")
+    @ResponseBody
+    public String doEdit1(){
+       String t = TokenAuth.addAuthentication("MinBui123");
+       TokenAuth.getAuthentication(t);
+        return "MinBui";
+    }
 }
+
+
