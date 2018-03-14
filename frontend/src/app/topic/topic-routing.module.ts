@@ -15,7 +15,7 @@ const topicRoutes: Routes = [
     RouterModule.forChild(topicRoutes)
   ],
   declarations: [],
-  exports:[
+  exports: [
     RouterModule
   ]
 })

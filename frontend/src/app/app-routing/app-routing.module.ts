@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { MainPageComponent } from '../main-page/main-page.component';
 
-const appRoutes: Routes =[
+const appRoutes: Routes = [
   {
     path: 'topic',
     loadChildren: 'app/topic/topic.module#TopicModule'

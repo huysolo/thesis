@@ -9,10 +9,6 @@ import java.util.Objects;
 
 @Entity
 public class Semester {
-    private int idSemester;
-    private int idTopic;
-    private String semesterName;
-    private int year;
     private int semesterNo;
     private Timestamp applyOpenDate;
     private Integer applyCloseDate;
@@ -20,64 +16,7 @@ public class Semester {
     private Timestamp startDate;
 
     @Id
-    @Column(name = "id_semester")
-    public int getIdSemester() {
-        return idSemester;
-    }
-
-    public void setIdSemester(int idSemester) {
-        this.idSemester = idSemester;
-    }
-
-    @Basic
-    @Column(name = "id_topic")
-    public int getIdTopic() {
-        return idTopic;
-    }
-
-    public void setIdTopic(int idTopic) {
-        this.idTopic = idTopic;
-    }
-
-    @Basic
-    @Column(name = "semester_name")
-    public String getSemesterName() {
-        return semesterName;
-    }
-
-    public void setSemesterName(String semesterName) {
-        this.semesterName = semesterName;
-    }
-
-    @Basic
-    @Column(name = "year")
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Semester semester = (Semester) o;
-        return idSemester == semester.idSemester &&
-                idTopic == semester.idTopic &&
-                year == semester.year &&
-                Objects.equals(semesterName, semester.semesterName);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(idSemester, idTopic, semesterName, year);
-    }
-
-    @Id
-    @Column(name = " semester_no")
+    @Column(name = "semester_no")
     public int getSemesterNo() {
         return semesterNo;
     }
@@ -124,5 +63,23 @@ public class Semester {
 
     public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Semester semester = (Semester) o;
+        return semesterNo == semester.semesterNo &&
+                Objects.equals(applyOpenDate, semester.applyOpenDate) &&
+                Objects.equals(applyCloseDate, semester.applyCloseDate) &&
+                Objects.equals(endDate, semester.endDate) &&
+                Objects.equals(startDate, semester.startDate);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(semesterNo, applyOpenDate, applyCloseDate, endDate, startDate);
     }
 }
