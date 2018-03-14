@@ -7,9 +7,8 @@ const topicRoutes: Routes = [
   {
     path: '',
     component: ManageTopicComponent
-    
   }
-]
+];
 @NgModule({
   imports: [
     CommonModule,

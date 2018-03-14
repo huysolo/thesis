@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { MainPageComponent } from '../main-page/main-page.component';
 
 const appRoutes: Routes =[
   {
@@ -10,8 +11,12 @@ const appRoutes: Routes =[
   {
     path: 'user',
     loadChildren: 'app/user/user.module#UserModule'
+  },
+  {
+    path: '',
+    component: MainPageComponent
   }
-]
+];
 
 @NgModule({
   imports: [
