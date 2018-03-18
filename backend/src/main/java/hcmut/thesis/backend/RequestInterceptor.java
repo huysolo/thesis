@@ -5,39 +5,47 @@
  */
 package hcmut.thesis.backend;
 
+import hcmut.thesis.backend.services.LoginService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-
 /**
  *
  * @author MinBui
  */
-
 @Component
 public class RequestInterceptor extends HandlerInterceptorAdapter {
- @Override
- public boolean preHandle(HttpServletRequest request, 
-		HttpServletResponse response, Object object) throws Exception {
-	System.out.println("Im am MinBui Interceptor");
-	return true;
- }
 
- @Override
- public void postHandle(HttpServletRequest request, HttpServletResponse response, 
-		Object object, ModelAndView model)
-		throws Exception {
- }
+    @Autowired
+    LoginService loginService;
 
- @Override
- public void afterCompletion(HttpServletRequest request, HttpServletResponse response, 
-		Object object, Exception arg3)
-		throws Exception {
- }
+    @Override
+    public boolean preHandle(HttpServletRequest request,
+            HttpServletResponse response, Object object) throws Exception {
+        String token = request.getHeader("token");
+        if (token != "" && token != null) {
+            System.out.println("isStudent :" + loginService.parseJWT(token).getIssuer());
+            System.out.println("Confirmed username: " + loginService.parseJWT(token).getSubject());
+        }
+        return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response,
+            Object object, ModelAndView model)
+            throws Exception {
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
+            Object object, Exception arg3)
+            throws Exception {
+    }
 }
-

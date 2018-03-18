@@ -8,7 +8,7 @@ import { TopicRoutingModule } from './topic-routing.module';
 @NgModule({
   imports: [
     CommonModule,
-    TopicRoutingModule
+    TopicRoutingModule,
   ],
   declarations: [TopicContentComponent, TopicListComponent, ManageTopicComponent], 
 })

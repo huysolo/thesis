@@ -5,7 +5,8 @@
  */
 package hcmut.thesis.backend.services;
 
-import io.jsonwebtoken.Claims;
+import hcmut.thesis.backend.models.User;
+import hcmut.thesis.subjects.CurrUserInfo;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,7 +14,8 @@ import org.springframework.stereotype.Service;
  * @author MinBui
  */
 @Service
-public interface LoginService {
-    String createJWT(String username, String isStudent);
-    Claims parseJWT(String jwt);
+public interface IUserDAO {
+    User getUser(String username, String Password);
+    Boolean checkUser(int user_id);
+    CurrUserInfo getCurrUserInfo(String username, String password);
 }
