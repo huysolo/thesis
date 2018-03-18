@@ -4,3 +4,6 @@
   Create New Topic
 </button>
 <app-create-topic></app-create-topic>
+<div *ngFor="let topic of topicLst | async">
+  <app-topic-content [topic]="topic"></app-topic-content>
+</div>
