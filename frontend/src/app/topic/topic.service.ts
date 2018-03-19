@@ -14,7 +14,7 @@ export class TopicService {
 
   /**
    * getListTopic
-   * Get List Topic
+   * Get List Topic for Current Semester
    */
   public getListTopic(): Observable<Topic[]> {
     return this.http.get<Topic[]>(this.topicListUrl);
