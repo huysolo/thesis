@@ -6,13 +6,13 @@ import { ManageTopicComponent } from './pages/manage-topic/manage-topic.componen
 const topicRoutes: Routes = [
   {
     path: '',
-    component: ManageTopicComponent
+    component: ManageTopicComponent  
   }
 ];
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(topicRoutes)
+    RouterModule.forChild(topicRoutes),
   ],
   declarations: [],
   exports: [

@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   imports: [
     CommonModule,
+    TopicRoutingModule,
     FormsModule,
     TopicRoutingModule
   ],
