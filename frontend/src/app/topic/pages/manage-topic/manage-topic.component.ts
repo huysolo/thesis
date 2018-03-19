@@ -17,9 +17,9 @@ export class ManageTopicComponent implements OnInit {
   }
 
   topicLstInterval() {
-    setInterval(() => {
+    // setInterval(() => {
       this.topicLst = this.topicSv.getListTopic();
-    }, 3000);
+    // }, 300000);
   }
 
 
