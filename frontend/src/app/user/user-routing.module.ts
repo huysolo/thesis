@@ -15,7 +15,7 @@ const userRotes: Routes = [
     component: ManageAccountComponent,
     canActivate: [CheckloginGuard]
   }
-]
+];
 
 @NgModule({
   imports: [

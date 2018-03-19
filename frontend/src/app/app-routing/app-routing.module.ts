@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { MainPageComponent } from '../main-page/main-page.component';
+import {LoginComponent} from '../user/pages/login/login.component';
 
-const appRoutes: Routes =[
+const appRoutes: Routes = [
   {
     path: 'topic',
     loadChildren: 'app/topic/topic.module#TopicModule'
@@ -10,8 +12,12 @@ const appRoutes: Routes =[
   {
     path: 'user',
     loadChildren: 'app/user/user.module#UserModule'
+  },
+  {
+    path: '',
+    component: MainPageComponent
   }
-]
+];
 
 @NgModule({
   imports: [

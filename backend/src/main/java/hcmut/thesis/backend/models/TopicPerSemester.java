@@ -8,8 +8,9 @@ import java.util.Objects;
 public class TopicPerSemester {
     private int idTopicSemester;
     private int score;
-    private String semesterNo;
+    private Integer semesterNo;
     private int idTopic;
+    private Integer newColumn;
 
     @Id
     @Column(name = "id_topic_semester")
@@ -33,11 +34,11 @@ public class TopicPerSemester {
 
     @Basic
     @Column(name = "semester_no")
-    public String getSemesterNo() {
+    public Integer getSemesterNo() {
         return semesterNo;
     }
 
-    public void setSemesterNo(String semesterNo) {
+    public void setSemesterNo(Integer semesterNo) {
         this.semesterNo = semesterNo;
     }
 
@@ -51,6 +52,16 @@ public class TopicPerSemester {
         this.idTopic = idTopic;
     }
 
+    @Basic
+    @Column(name = "new_column")
+    public Integer getNewColumn() {
+        return newColumn;
+    }
+
+    public void setNewColumn(Integer newColumn) {
+        this.newColumn = newColumn;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,12 +70,13 @@ public class TopicPerSemester {
         return idTopicSemester == that.idTopicSemester &&
                 score == that.score &&
                 idTopic == that.idTopic &&
-                Objects.equals(semesterNo, that.semesterNo);
+                Objects.equals(semesterNo, that.semesterNo) &&
+                Objects.equals(newColumn, that.newColumn);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(idTopicSemester, score, semesterNo, idTopic);
+        return Objects.hash(idTopicSemester, score, semesterNo, idTopic, newColumn);
     }
 }

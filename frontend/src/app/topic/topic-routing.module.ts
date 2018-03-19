@@ -8,14 +8,14 @@ const topicRoutes: Routes = [
     path: '',
     component: ManageTopicComponent  
   }
-]
+];
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(topicRoutes),
   ],
   declarations: [],
-  exports:[
+  exports: [
     RouterModule
   ]
 })

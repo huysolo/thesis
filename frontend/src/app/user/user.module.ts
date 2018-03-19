@@ -30,6 +30,9 @@ import {CheckloginGuard} from './pages/login/checklogin.guard.service';
   declarations: [
     LoginComponent, 
     ManageAccountComponent,
+    LoginComponent,
+    ManageAccountComponent
+
   ]
 })
 export class UserModule { }

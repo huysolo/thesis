@@ -85,15 +85,12 @@ CREATE TABLE professor
 
 CREATE TABLE semester
 (
-  id_semester   INT AUTO_INCREMENT
+  semester_no      INT                                     NOT NULL
     PRIMARY KEY,
-  id_topic      INT         NOT NULL,
-  semester_name VARCHAR(50) NULL,
-  year          INT         NOT NULL,
-  CONSTRAINT topic_semester_id_topic_semester_uindex
-  UNIQUE (id_semester),
-  CONSTRAINT topic_semester_topic_id_uindex
-  UNIQUE (id_topic)
+  apply_open_date  TIMESTAMP DEFAULT CURRENT_TIMESTAMP     NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  apply_close_date INT                                     NULL,
+  end_date         TIMESTAMP DEFAULT '0000-00-00 00:00:00' NOT NULL,
+  start_date       TIMESTAMP DEFAULT '0000-00-00 00:00:00' NOT NULL
 )
   ENGINE = InnoDB;
 
@@ -179,6 +176,17 @@ CREATE TABLE topic
 CREATE INDEX topic_professor_id_professor_fk
   ON topic (id_prof);
 
+CREATE TABLE topic_mission
+(
+  id_mission INT AUTO_INCREMENT
+    PRIMARY KEY,
+  topic_id   INT         NOT NULL,
+  detail     VARCHAR(60) NOT NULL,
+  CONSTRAINT mission_topic_mission_id_uindex
+  UNIQUE (id_mission)
+)
+  ENGINE = InnoDB;
+
 CREATE TABLE topic_per_semester
 (
   id_topic_semester INT AUTO_INCREMENT
@@ -192,6 +200,17 @@ CREATE TABLE topic_per_semester
   UNIQUE (id_topic)
 )
   COMMENT 'Topic on each semester'
+  ENGINE = InnoDB;
+
+CREATE TABLE topic_requirement
+(
+  id_req   INT AUTO_INCREMENT
+    PRIMARY KEY,
+  id_topic INT         NOT NULL,
+  detail   VARCHAR(50) NULL,
+  CONSTRAINT topic_requirement_req_id_uindex
+  UNIQUE (id_req)
+)
   ENGINE = InnoDB;
 
 CREATE TABLE topic_sem_standard

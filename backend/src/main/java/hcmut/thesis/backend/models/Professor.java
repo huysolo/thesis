@@ -33,21 +33,6 @@ public class Professor {
         this.idUser = idUser;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Professor professor = (Professor) o;
-        return idProfessor == professor.idProfessor &&
-                idUser == professor.idUser;
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(idProfessor, idUser);
-    }
-
     @Basic
     @Column(name = "degree")
     public String getDegree() {
@@ -66,5 +51,22 @@ public class Professor {
 
     public void setSkills(String skills) {
         this.skills = skills;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Professor professor = (Professor) o;
+        return idProfessor == professor.idProfessor &&
+                idUser == professor.idUser &&
+                Objects.equals(degree, professor.degree) &&
+                Objects.equals(skills, professor.skills);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(idProfessor, idUser, degree, skills);
     }
 }
