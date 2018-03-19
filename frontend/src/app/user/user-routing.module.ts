@@ -13,7 +13,7 @@ const userRotes: Routes = [
   {
     path: 'manager',
     component: ManageAccountComponent,
-    canActivate: [CheckloginGuard]
+   canActivate: [CheckloginGuard]
   }
 ];
 

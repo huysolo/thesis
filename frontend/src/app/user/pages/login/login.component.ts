@@ -16,7 +16,7 @@ import {AuthService} from '../../../core/auth.service';
 
 })
 export class LoginComponent implements OnInit {
-  islogin: string;
+
   constructor(private loginService: LoginService,private router: Router, private authService: AuthService) { 
   }
   ngOnInit() {
@@ -24,11 +24,10 @@ export class LoginComponent implements OnInit {
 
   LoginReq(form) {
     this.loginService.LoginService(form.value);
-    setTimeout(() => {
-      this.islogin = localStorage.getItem('isLogin');
-      this.router.navigate(['/user/manager']);
-    }, 500);
-    //this.router.navigate(['/user/manager']);
+    // setTimeout(() => {
+    //   this.router.navigate(['/user/manager']);
+    // }, 500);
+    this.router.navigate(['/user/manager']);
   }
 
 }

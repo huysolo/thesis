@@ -60,13 +60,9 @@
                 </div>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <a (click)="Logout()" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
-                Logout
-            </a>
-            <a class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
-                {{username}}
-            </a>
+        <form class="form-inline my-2 my-lg-0">           
+            <button class="btn btn-outline-success my-2 my-sm-0" (click)="Logout()" >Logout</button>
+            <button class="btn btn-outline-success my-2 my-sm-0" >{{authService.getUsername()}}</button>
             <input class="form-control mr-sm-2" type="text" placeholder="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 

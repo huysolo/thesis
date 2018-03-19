@@ -7,11 +7,8 @@ import {AuthService} from '../../../core/auth.service';
 export class AddheaderService implements HttpInterceptor {
   constructor(private authService: AuthService){}
   intercept (req: HttpRequest<any>,next: HttpHandler): Observable<HttpEvent<any>>{
-    if(this.authService.token == null){
-      this.authService.token = "";
-    }
     const authReq = req.clone({
-      headers: req.headers.set('token', this.authService.token)
+      headers: req.headers.set('token', (this.authService.getToken() != null)? this.authService.getToken(): "")
     });
     return next.handle(authReq);
   }

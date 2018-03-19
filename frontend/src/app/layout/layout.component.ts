@@ -8,9 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent implements OnInit {
-  username: String;
-  constructor(private authService: AuthService, private router: Router) {
-    this.username = authService.username;
+  constructor(public authService: AuthService, private router: Router) {
   }
 
   ngOnInit() {
@@ -20,7 +18,6 @@ export class LayoutComponent implements OnInit {
   Logout(){
     localStorage.clear();
     this.router.navigate(['/user/login']);
-    window.location.reload();
   }
 
 }

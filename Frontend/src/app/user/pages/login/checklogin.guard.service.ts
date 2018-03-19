@@ -5,11 +5,10 @@ import { AuthService } from '../../../core/auth.service';
 @Injectable()
 export class CheckloginGuard implements CanActivate  {
 
-  constructor() { }
+  constructor(private authService : AuthService) { }
 
   canActivate(){
-    let isLogin = (localStorage.getItem('isLogin')=='true')? true:false;
-    return isLogin;
+    return this.authService.isLogin();
   }
 
 }

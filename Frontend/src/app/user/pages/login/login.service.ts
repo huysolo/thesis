@@ -6,9 +6,7 @@ import { Router } from '@angular/router';
 @Injectable()
 export class LoginService {
 
-  constructor(private httpClient: HttpClient, private authService: AuthService, 
-  private router: Router
-  ) { }
+  constructor(private httpClient: HttpClient, private router: Router) { }
 
   LoginService(form) {
     let loginUrl = `http://localhost:8080/login`;
@@ -22,6 +20,7 @@ export class LoginService {
           localStorage.setItem("token", res.token);
           localStorage.setItem("username", res.username);
           localStorage.setItem("isStudent", (res.isStudent == true) ? "true" : "false");
+          //this.router.navigate(['/user/manager']);
         }
         else {
           console.log("Wrong account");

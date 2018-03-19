@@ -3,41 +3,20 @@ import { CurrUserInfo } from '../user/pages/login/curr-user-info';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Injectable()
-export class AuthService {
-  constructor() {
-  }
 
-  public isLoggedin(): boolean {
-    return localStorage.getItem('isLogin') === 'true';
+export class AuthService{
+  constructor() {   
   }
-
-  /**
-   * isStudent
-   */
-  public isStudent() {
-    return localStorage.getItem('isStudent') === 'true';
-  }
-
-  /**
-   * isProffessor
-   */
-  public isProffessor() {
-    return  this.isLoggedin() && !this.isStudent();
-  }
-
-  /**
-   * getUsername
-   */
-  public getUsername() {
+  public getUsername():string {
     return localStorage.getItem('username');
   }
-
-  /**
-   * getToken
-   */
-  public getToken() {
+  public getToken():string {
     return localStorage.getItem('token');
   }
-
-
+  public isLogin(): boolean {
+    return (localStorage.getItem('isLogin') == 'true')? true: false ;
+  }
+  public isStudent(): boolean {
+    return (localStorage.getItem('isStudent') == 'true')? true: false ;
+  }
 }
