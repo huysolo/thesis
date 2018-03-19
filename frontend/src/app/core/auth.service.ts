@@ -4,14 +4,40 @@ import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Injectable()
 export class AuthService {
-  isLogin: boolean;
-  username: String;
-  isStudent: Boolean;
-  token: string;
   constructor() {
-    this.isLogin = localStorage.getItem('isLogin') === 'true';
-    this.username = localStorage.getItem('username');
-    this.token = localStorage.getItem('token');
-    this.isStudent = localStorage.getItem('isStudent') === 'true';
   }
+
+  public isLoggedin(): boolean {
+    return localStorage.getItem('isLogin') === 'true';
+  }
+
+  /**
+   * isStudent
+   */
+  public isStudent() {
+    return localStorage.getItem('isStudent') === 'true';
+  }
+
+  /**
+   * isProffessor
+   */
+  public isProffessor() {
+    return  this.isLoggedin() && !this.isStudent();
+  }
+
+  /**
+   * getUsername
+   */
+  public getUsername() {
+    return localStorage.getItem('username');
+  }
+
+  /**
+   * getToken
+   */
+  public getToken() {
+    return localStorage.getItem('token');
+  }
+
+
 }
