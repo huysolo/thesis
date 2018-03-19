@@ -13,10 +13,15 @@ export class ManageTopicComponent implements OnInit {
   constructor(public topicSv: TopicService) { }
 
   ngOnInit() {
-    this.topicLst = this.topicSv.getListTopic();
-    // this.http.get('http://localhost:8080/topic/listTopic').subscribe(data => {
-    //   console.log(data);
-    // });
+    this.topicLstInterval();
   }
+
+  topicLstInterval() {
+    setInterval(() => {
+      this.topicLst = this.topicSv.getListTopic();
+    }, 3000);
+  }
+
+
 
 }

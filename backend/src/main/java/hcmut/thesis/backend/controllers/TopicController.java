@@ -16,11 +16,19 @@ public class TopicController {
     TopicService topicService;
     @RequestMapping(value = "listTopic", method = RequestMethod.GET)
     List<Topic> getListTopic(@RequestParam(value = "semno", required = true) Integer semno){
-        return topicService.getListTopicBySemester(semno);
+        try {
+            return topicService.getListTopicBySemester(semno);
+        }catch (NullPointerException e){
+            return null;
+        }
     }
 
     @RequestMapping(value = "topicDetail",method = RequestMethod.GET)
     TopicDetail getTopicDetail(@RequestParam(value = "topid",required = true) Integer topId){
-        return topicService.getTopicDetailById(topId);
+        try {
+            return topicService.getTopicDetailById(topId);
+        } catch (NullPointerException e){
+            return null;
+        }
     }
 }
