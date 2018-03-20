@@ -11,7 +11,7 @@ package hcmut.thesis.backend.services.impl;
  */
 import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.String;
 import hcmut.thesis.backend.services.LoginService;
-import hcmut.thesis.subjects.CurrUserInfo;
+import hcmut.thesis.backend.modelview.CurrUserInfo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

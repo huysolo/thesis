@@ -3,25 +3,33 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hcmut.thesis.subjects;
+package hcmut.thesis.backend.modelview;
 
 /**
  *
  * @author MinBui
  */
-public class InfoLogin {
+public class CurrUserInfo {
     String username;
-    String password;
+    String token;
+    Boolean isStudent;
     public String getUsername(){
         return this.username;
     }
-    public String getPassword(){
-        return this.password;
+    public String getToken(){
+        return this.token;
     }
-    public void setPassword(String password){
-        this.password = password;
+    public Boolean getIsStudent(){
+        return this.isStudent;
     }
+    
     public void setUsername(String username){
         this.username = username;
+    }
+    public void setToken(String token){
+        this.token = token;
+    }
+    public void setIsStudent(boolean isStd){
+        this.isStudent = isStd;
     }
 }

@@ -5,6 +5,7 @@
  */
 package hcmut.thesis.backend;
 
+import hcmut.thesis.backend.modelview.UserSession;
 import hcmut.thesis.backend.services.LoginService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,14 +26,18 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
     LoginService loginService;
+    
+    @Autowired
+    UserSession userSession;
 
     @Override
     public boolean preHandle(HttpServletRequest request,
             HttpServletResponse response, Object object) throws Exception {
         String token = request.getHeader("token");
         if (token != "" && token != null) {
-            System.out.println("isStudent :" + loginService.parseJWT(token).getIssuer());
-            System.out.println("Confirmed username: " + loginService.parseJWT(token).getSubject());
+            userSession.setUsername(loginService.parseJWT(token).getSubject());
+            userSession.setIsStudent((loginService.parseJWT(token).getIssuer()== "true")? true: false);
+            userSession.setIsProf(!userSession.isStudent());
         }
         return true;
     }

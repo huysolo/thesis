@@ -11,7 +11,7 @@ import hcmut.thesis.backend.models.User;
 import hcmut.thesis.backend.repositories.StudentRepo;
 import hcmut.thesis.backend.repositories.UserRepo;
 import hcmut.thesis.backend.services.LoginService;
-import hcmut.thesis.subjects.CurrUserInfo;
+import hcmut.thesis.backend.modelview.CurrUserInfo;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

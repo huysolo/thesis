@@ -6,7 +6,7 @@
 package hcmut.thesis.backend.services;
 
 import hcmut.thesis.backend.models.User;
-import hcmut.thesis.subjects.CurrUserInfo;
+import hcmut.thesis.backend.modelview.CurrUserInfo;
 import org.springframework.stereotype.Service;
 
 /**
