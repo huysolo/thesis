@@ -6,13 +6,14 @@ import { ManageTopicComponent } from './pages/manage-topic/manage-topic.componen
 import { TopicRoutingModule } from './topic-routing.module';
 import { CreateTopicComponent } from './components/create-topic/create-topic.component';
 import { FormsModule } from '@angular/forms';
+import { MaterialModule } from '../core/material.module';
 
 @NgModule({
   imports: [
     CommonModule,
     TopicRoutingModule,
     FormsModule,
-    TopicRoutingModule
+    MaterialModule,
   ],
   declarations: [
     TopicContentComponent,

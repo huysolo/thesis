@@ -8,6 +8,7 @@ import { Topic } from '../../../models/Topic';
 })
 export class TopicContentComponent implements OnInit {
   @Input('topic') topic: Topic;
+  @Input('topicNo') topicNo: number;
   constructor() { }
 
   ngOnInit() {

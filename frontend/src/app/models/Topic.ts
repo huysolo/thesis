@@ -1,7 +1,7 @@
 export class Topic {
   idTop: Number;
   title: string;
-  stNumLimits: Number;
+  stNumLimit: Number;
   sumary: string;
   idProf: number;
   idFalcuty: number;

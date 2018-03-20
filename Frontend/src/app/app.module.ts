@@ -22,9 +22,9 @@ import { CoreModule } from './core/core.module';
     BrowserModule,
     RouterModule,
     AppRoutingModule,
-    UserModule
+    UserModule,
   ],
-  providers: [AuthService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

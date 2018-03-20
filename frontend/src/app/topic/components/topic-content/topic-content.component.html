@@ -1,21 +1,10 @@
-<!-- <div class="w3-container w3-card w3-white w3-round w3-margin">
-  <br>
-  <h3>
-    {{topic.title}}
-  </h3>
-  <hr class="w3-clear">
-  <h4>Summary</h4>
-  <p>
-    {{topic.sumary}}
-  </p>
-</div> -->
 <br>
 <div class="card w-100">
   <div class="card-body">
-    <h3 class="card-title">{{topic.title}}</h3>
+    <h3 class="card-title">Topic {{topicNo}}: {{topic.title}}</h3>
     <hr class="w3-clear">
-    <p class="card-text">{{topic.sumary}}</p>
-    <a href="#" class="btn btn-primary">Button</a>
+    <p class="card-text"><strong>Summary: </strong> {{topic.sumary}}</p>
+    <p class="card-text"><strong>Student subscription limit: </strong>{{topic.stNumLimit}}</p>
+    <!-- <a href="#" class="btn btn-primary">Button</a> -->
   </div>
 </div>
-

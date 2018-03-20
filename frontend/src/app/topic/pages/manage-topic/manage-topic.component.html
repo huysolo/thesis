@@ -1,9 +1,55 @@
 <br>
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#createTopic">
-  Create New Topic
-</button>
-<app-create-topic></app-create-topic>
-<div *ngFor="let topic of topicLst | async">
-  <app-topic-content [topic]="topic"></app-topic-content>
+<!-- <div>
+  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#createTopic">
+    Create New Topic
+  </button>
+</div> -->
+<div>
+  <form>
+    <div class="form-row" id="filter">
+      <div class="col-md-1">
+        <h3>Filter:</h3>
+      </div>
+      <div class="col-md-3 form-group">
+        <select class="form-control">
+          <option selected>All Semester</option>
+          <option></option>
+        </select>
+      </div>
+      <div class="col-md-3 form-group">
+        <select class="form-control">
+          <option selected>All Proffesor</option>
+          <option></option>
+        </select>
+      </div>
+      <div class="col-md-3 form-group">
+        <select class="form-control">
+          <option selected>All Falcuty</option>
+          <option></option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button type="button" name="search" id="search" class="btn btn-primary btn-md btn-block">Search</button>
+      </div>
+    </div>
+  </form>
 </div>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    </ul>
+  </nav>
+<div *ngFor="let topic of topicLst | async; let i = index">
+  <app-topic-content [topic]="topic" [topicNo]="i"></app-topic-content>
+</div>
+
+<app-create-topic></app-create-topic>

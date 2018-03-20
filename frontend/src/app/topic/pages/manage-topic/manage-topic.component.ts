@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TopicService } from '../../topic.service';
 import { Topic } from '../../../models/Topic';
 import { Observable } from 'rxjs/Observable';
+
 @Component({
   selector: 'app-manage-topic',
   templateUrl: './manage-topic.component.html',
