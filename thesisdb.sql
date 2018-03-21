@@ -87,8 +87,8 @@ CREATE TABLE semester
 (
   semester_no      INT                                     NOT NULL
     PRIMARY KEY,
-  apply_open_date  TIMESTAMP DEFAULT CURRENT_TIMESTAMP     NOT NULL ON UPDATE CURRENT_TIMESTAMP,
-  apply_close_date INT                                     NULL,
+  apply_open_date  TIMESTAMP DEFAULT CURRENT_TIMESTAMP     NULL ON UPDATE CURRENT_TIMESTAMP,
+  apply_close_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP     NULL ON UPDATE CURRENT_TIMESTAMP,
   end_date         TIMESTAMP DEFAULT '0000-00-00 00:00:00' NOT NULL,
   start_date       TIMESTAMP DEFAULT '0000-00-00 00:00:00' NOT NULL
 )
@@ -180,7 +180,7 @@ CREATE TABLE topic_mission
 (
   id_mission INT AUTO_INCREMENT
     PRIMARY KEY,
-  topic_id   INT         NOT NULL,
+  id_topic   INT         NOT NULL,
   detail     VARCHAR(60) NOT NULL,
   CONSTRAINT mission_topic_mission_id_uindex
   UNIQUE (id_mission)
@@ -192,7 +192,7 @@ CREATE TABLE topic_per_semester
   id_topic_semester INT AUTO_INCREMENT
     PRIMARY KEY,
   score             INT DEFAULT '0' NOT NULL,
-  semester_no       VARCHAR(15)     NULL,
+  semester_no       INT             NULL,
   id_topic          INT             NOT NULL,
   CONSTRAINT topic_per_semester_id_topic_semester_uindex
   UNIQUE (id_topic_semester),
