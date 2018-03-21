@@ -25,7 +25,7 @@
 						</div>
 						<div *ngIf="loginform.controls.password?.errors?.required && loginform.controls.password?.touched" class ="alert alert-warning" >Username is required</div>
 						<button type="submit" class="btn btn-defualt">Login</button>
-						<div *ngIf="islogin == 'false'" class="alert alert-danger">Opps...Username or Password is wrong!!!</div>
+						<div *ngIf="!authService.isLogin() && alert" class="alert alert-danger">Opps...Username or Password is wrong!!!</div>
 					</form>
 				</div>
 				<div class="col-md-12 col-sm-12 col-xs-12 last-part">
