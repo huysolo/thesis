@@ -10,9 +10,9 @@ package hcmut.thesis.backend.modelview;
  * @author MinBui
  */
 public class CurrUserInfo {
-    String username;
-    String token;
-    Boolean isStudent;
+    private String username;
+    private String token;
+    private Boolean isStudent;
     public String getUsername(){
         return this.username;
     }

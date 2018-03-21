@@ -14,24 +14,20 @@
       <div class="col-md-3 form-group">
         <select class="form-control">
           <option selected>All Semester</option>
-          <option></option>
+          <option *ngFor="let sem of listSem | async">Semester No: {{sem.semesterNo}}</option>
         </select>
       </div>
       <div class="col-md-3 form-group">
         <select class="form-control">
           <option selected>All Proffesor</option>
-          <option></option>
-        </select>
-      </div>
-      <div class="col-md-3 form-group">
-        <select class="form-control">
-          <option selected>All Falcuty</option>
-          <option></option>
         </select>
       </div>
       <div class="col-md-2">
         <button type="button" name="search" id="search" class="btn btn-primary btn-md btn-block">Search</button>
       </div>
+      <div class="col-md-3 ">
+          <button type="button" name="new" id="new" class="btn btn-success btn-md btn-block"  data-toggle="modal" data-target="#createTopic">New Topic</button>
+        </div>
     </div>
   </form>
 </div>

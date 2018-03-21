@@ -1,5 +1,5 @@
 export class TopicMission {
   private idMission: number;
-  private topicId: number;
+  private idTopic: number;
   private detail: String;
 }

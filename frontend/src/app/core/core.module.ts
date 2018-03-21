@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { TopicService } from '../topic/topic.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
+import { CommonService } from './common.service';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { MaterialModule } from './material.module';
   declarations: [],
   providers: [
     AuthService,
-    TopicService
+    TopicService,
+    CommonService
   ]
 })
 export class CoreModule { }

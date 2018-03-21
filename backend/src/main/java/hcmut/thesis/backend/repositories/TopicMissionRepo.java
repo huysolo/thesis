@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface TopicMissionRepo extends JpaRepository<TopicMission, Integer> {
-    @Query("SELECT t FROM TopicMission t WHERE t.topicId = :topicId")
-    List<TopicMission> findAllByTopicId(@Param("topicId") Integer id);
+    @Query("SELECT t FROM TopicMission t WHERE t.idTopic = :idTopic")
+    List<TopicMission> findAllByTopicId(@Param("idTopic") Integer id);
 
 }

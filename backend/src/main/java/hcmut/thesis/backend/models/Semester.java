@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Semester {
     private int semesterNo;
     private Timestamp applyOpenDate;
-    private Integer applyCloseDate;
+    private Timestamp applyCloseDate;
     private Timestamp endDate;
     private Timestamp startDate;
 
@@ -37,11 +37,11 @@ public class Semester {
 
     @Basic
     @Column(name = "apply_close_date")
-    public Integer getApplyCloseDate() {
+    public Timestamp getApplyCloseDate() {
         return applyCloseDate;
     }
 
-    public void setApplyCloseDate(Integer applyCloseDate) {
+    public void setApplyCloseDate(Timestamp applyCloseDate) {
         this.applyCloseDate = applyCloseDate;
     }
 

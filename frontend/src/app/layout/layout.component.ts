@@ -12,10 +12,10 @@ export class LayoutComponent implements OnInit {
   }
 
   ngOnInit() {
-   
+
   }
 
-  Logout(){
+  Logout() {
     localStorage.clear();
     this.router.navigate(['/user/login']);
   }

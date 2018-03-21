@@ -7,7 +7,7 @@ import java.util.Objects;
 @Table(name = "topic_mission", schema = "thesis", catalog = "")
 public class TopicMission {
     private int idMission;
-    private int topicId;
+    private int idTopic;
     private String detail;
 
     @Id
@@ -21,13 +21,13 @@ public class TopicMission {
     }
 
     @Basic
-    @Column(name = "topic_id")
-    public int getTopicId() {
-        return topicId;
+    @Column(name = "id_topic")
+    public int getIdTopic() {
+        return idTopic;
     }
 
-    public void setTopicId(int topicId) {
-        this.topicId = topicId;
+    public void setIdTopic(int idTopic) {
+        this.idTopic = idTopic;
     }
 
     @Basic
@@ -46,13 +46,13 @@ public class TopicMission {
         if (o == null || getClass() != o.getClass()) return false;
         TopicMission that = (TopicMission) o;
         return idMission == that.idMission &&
-                topicId == that.topicId &&
+                idTopic == that.idTopic &&
                 Objects.equals(detail, that.detail);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(idMission, topicId, detail);
+        return Objects.hash(idMission, idTopic, detail);
     }
 }

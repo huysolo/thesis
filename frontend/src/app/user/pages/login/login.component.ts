@@ -17,17 +17,16 @@ import {AuthService} from '../../../core/auth.service';
 })
 export class LoginComponent implements OnInit {
   alert: Boolean;
-  constructor(private loginService: LoginService, private router: Router, private authService: AuthService) 
-  {
+  constructor(private loginService: LoginService, private router: Router, private authService: AuthService) {
     this.alert = false;
   }
   ngOnInit() {
   }
 
   LoginReq(form) {
-   
+
     this.loginService.login(form.value).subscribe(
-      data => {      
+      data => {
         this.router.navigate(['user/manager']);
       },
       error => {
