@@ -7,14 +7,16 @@ package hcmut.thesis.backend.services.impl;
 
 import hcmut.thesis.backend.services.IUserDAO;
 import hcmut.thesis.backend.models.Student;
+import hcmut.thesis.backend.models.Professor;
 import hcmut.thesis.backend.models.User;
 import hcmut.thesis.backend.repositories.StudentRepo;
 import hcmut.thesis.backend.repositories.UserRepo;
-import hcmut.thesis.backend.services.LoginService;
 import hcmut.thesis.backend.modelview.CurrUserInfo;
+import hcmut.thesis.backend.repositories.ProfessorRepo;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import hcmut.thesis.backend.services.UserService;
 
 /**
  *
@@ -30,7 +32,10 @@ public class UserDAO implements IUserDAO {
     StudentRepo studentRepo;
 
     @Autowired
-    LoginService loginService;
+    UserService loginService;
+    
+    @Autowired
+    ProfessorRepo profRepo;
 
     @Override
     public User getUser(String username, String password) {
@@ -54,6 +59,17 @@ public class UserDAO implements IUserDAO {
         }
         return false;
     }
+    
+    @Override
+    public Professor findProfByUserId(int id){
+        List<Professor> listProf = profRepo.findAll();
+        for(int i = 0; i< listProf.size(); i++){
+            if(listProf.get(i).getIdUser() == id){
+                return listProf.get(i);
+            }
+        }
+        return null;
+    }
 
     @Override
     public CurrUserInfo getCurrUserInfo(String username, String password) {
@@ -61,12 +77,25 @@ public class UserDAO implements IUserDAO {
         User user = this.getUser(username, password);
         if (user != null) {
             Boolean isStudent = this.checkUser((int) user.getIdUser());
+            if(!isStudent){
+                Professor prof = this.findProfByUserId(user.getIdUser());
+                currUserInfo.setProfID(prof.getIdProfessor());
+                currUserInfo.setDegree(prof.getDegree());
+                currUserInfo.setSkills(prof.getSkills());
+                
+            }
 
             String isStd = (isStudent) ? "true" : "false";
 
             String token = loginService.createJWT(user.getUserName(), isStd);
 
             currUserInfo.setUsername(user.getUserName());
+            currUserInfo.setFirstname(user.getFirstName());
+            currUserInfo.setLastname(user.getLastName());
+            currUserInfo.setEmail(user.getEmail());
+            currUserInfo.setGender(user.getGender());
+            currUserInfo.setPhoto(user.getPhoto());
+            
             currUserInfo.setToken(token);
             currUserInfo.setIsStudent(isStudent);
             return currUserInfo;

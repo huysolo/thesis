@@ -18,10 +18,19 @@ export class LoginService {
       })
       .map(res => {
         if (res) {
+          console.log(res);
           localStorage.setItem("isLogin", "true");
           localStorage.setItem("token", res.token);
           localStorage.setItem("username", res.username);
           localStorage.setItem("isStudent", (res.isStudent == true) ? "true" : "false");
+          localStorage.setItem("firstname", res.fistname);
+          localStorage.setItem("lastname", res.lastname);
+          localStorage.setItem("email", res.email);
+          localStorage.setItem("gender", (res.gender == 1) ? "male" : "female");
+          localStorage.setItem("photo", res.photo);
+          localStorage.setItem("degree", res.degree);
+          localStorage.setItem("skills", res.skills);
+          localStorage.setItem("profID", res.profID);
         }
       });
   }

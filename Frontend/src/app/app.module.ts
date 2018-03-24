@@ -9,6 +9,7 @@ import {AuthService} from './core/auth.service';
 import {UserModule} from './user/user.module';
 import { MainPageComponent } from './main-page/main-page.component';
 import { CoreModule } from './core/core.module';
+import { MeetingComponent } from './meeting/meeting.component';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { CoreModule } from './core/core.module';
     AppComponent,
     LayoutComponent,
     MainPageComponent,
+    MeetingComponent,
   ],
   imports: [
     CoreModule,

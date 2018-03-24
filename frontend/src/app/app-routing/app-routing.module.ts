@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { MainPageComponent } from '../main-page/main-page.component';
 import {LoginComponent} from '../user/pages/login/login.component';
+import {MeetingComponent} from '../meeting/meeting.component';
 
 const appRoutes: Routes = [
   {
@@ -13,6 +14,11 @@ const appRoutes: Routes = [
     path: 'user',
     loadChildren: 'app/user/user.module#UserModule'
   },
+  {
+    path: 'meeting',
+    component: MeetingComponent
+  }
+  ,
   {
     path: '',
     component: MainPageComponent

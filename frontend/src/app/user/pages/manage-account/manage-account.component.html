@@ -1,3 +1,38 @@
-<p>
-  manage-account works!
-</p>
+<link href="https://fonts.googleapis.com/css?family=Baloo|Ubuntu" rel="stylesheet">
+<body>
+	<div class="container">
+		<section id="content">
+			<form #loginform="ngForm" (ngSubmit)="click()">
+				<h1>My profile</h1>
+				<div>
+					<input type="text" placeholder="Username" value="{{authService.getUsername()}}"  name="username"/>
+				</div>
+				<div>
+					<input type="text" placeholder="FirstName"  value="{{authService.getFirstname()}}"  name="firstname"/>
+				</div>
+				<div>
+					<input type="text" placeholder="LastName" value="{{authService.getLastname()}}"  name="lastname"/>
+				</div>
+				<div>
+					<input type="text" placeholder="Email" value="{{authService.getEmail()}}"  name="email"/>
+				</div>
+				<div>
+					<input type="text" placeholder="Gender" value="{{authService.getGender()}}" name="gender" />
+				</div>
+				<div>
+					<input type="text" placeholder="Degree" value="{{authService.getDegree()}}"  name="degree"/>
+				</div>
+				<div>
+					<input type="text" placeholder="Skills"  value="{{authService.getSkills()}}" name="skills"/>
+				</div>
+				<div>
+					<input type="text" placeholder="ProfessorID" value="{{authService.getProfID()}}"  name="profID"/>
+				</div>
+				<div>
+					<input type="submit" value="Change" />
+				</div>
+			</form>
+		</section>
+	</div>
+</body>
+{{name}}

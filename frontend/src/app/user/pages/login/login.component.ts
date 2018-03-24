@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
   }
 
   LoginReq(form) {
+    console.log(form.value.username);
 
     this.loginService.login(form.value).subscribe(
       data => {

@@ -6,7 +6,6 @@
 package hcmut.thesis.backend;
 
 import hcmut.thesis.backend.modelview.UserSession;
-import hcmut.thesis.backend.services.LoginService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import hcmut.thesis.backend.services.UserService;
 
 /**
  *
@@ -25,7 +25,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 public class RequestInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
-    LoginService loginService;
+    UserService loginService;
     
     @Autowired
     UserSession userSession;

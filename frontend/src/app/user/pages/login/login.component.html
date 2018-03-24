@@ -1,4 +1,4 @@
-<div class="container main-section">
+<!-- <div class="container main-section">
 	<div class="row">
 		<div class="col-md-12 text-center user-login-header">
 			<h1>Login Form</h1>
@@ -37,4 +37,23 @@
 		</div>
 		<div class="col-md-4"></div>
 	</div>
-</div>
+</div> -->
+
+<body>
+	<div class="container">
+		<section id="content">
+			<form #loginform="ngForm" (ngSubmit)="LoginReq(loginform)">
+				<h1>Login Form</h1>
+				<div>
+					<input type="text" placeholder="Username" required="" ngModel name="username"/>
+				</div>
+				<div>
+					<input type="password" placeholder="Password" required="" ngModel name="password" />
+				</div>
+				<div>
+					<input type="submit" value="Log in" />
+				</div>
+			</form>
+		</section>
+	</div>
+</body>

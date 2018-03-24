@@ -88,3 +88,5 @@ nbdist/
 application.properties
 backend/src/main/resources/application.properties
 backend/src/main/resources/application.properties
+Frontend/package.json
+Frontend/package-lock.json

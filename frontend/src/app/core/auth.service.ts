@@ -10,6 +10,27 @@ export class AuthService {
   public getUsername(): string {
     return localStorage.getItem('username');
   }
+  public getFirstname(): string {
+    return localStorage.getItem('firstname');
+  }
+  public getLastname(): string {
+    return localStorage.getItem('lastname');
+  }
+  public getEmail(): string {
+    return localStorage.getItem('email');
+  }
+  public getGender(): string {
+    return localStorage.getItem('gender');
+  }
+  public getSkills(): string {
+    return localStorage.getItem('skills');
+  }
+  public getDegree(): string {
+    return localStorage.getItem('degree');
+  }
+  public getProfID(): string {
+    return localStorage.getItem('profID');
+  }
   public getToken(): string {
     return localStorage.getItem('token');
   }
