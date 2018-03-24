@@ -16,6 +16,7 @@ public class User {
     private String email;
     private String photo;
     private String gender;
+    private Integer idFalcuty;
 
     @Id
     @Column(name = "id_user")
@@ -97,6 +98,16 @@ public class User {
         this.gender = gender;
     }
 
+    @Basic
+    @Column(name = "id_falcuty")
+    public Integer getIdFalcuty() {
+        return idFalcuty;
+    }
+
+    public void setIdFalcuty(Integer idFalcuty) {
+        this.idFalcuty = idFalcuty;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -109,12 +120,13 @@ public class User {
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(email, user.email) &&
                 Objects.equals(photo, user.photo) &&
-                Objects.equals(gender, user.gender);
+                Objects.equals(gender, user.gender) &&
+                Objects.equals(idFalcuty, user.idFalcuty);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(idUser, userName, password, firstName, lastName, email, photo, gender);
+        return Objects.hash(idUser, userName, password, firstName, lastName, email, photo, gender, idFalcuty);
     }
 }

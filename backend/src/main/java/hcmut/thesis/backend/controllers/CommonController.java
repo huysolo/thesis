@@ -1,12 +1,10 @@
 package hcmut.thesis.backend.controllers;
 
+import hcmut.thesis.backend.models.Professor;
 import hcmut.thesis.backend.models.Semester;
 import hcmut.thesis.backend.services.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +17,11 @@ public class CommonController {
     @RequestMapping(value = "listSemester", method = RequestMethod.GET)
     List<Semester> getListSemster(){
         return commonService.getListSemester();
+    }
+
+    @RequestMapping(value = "listProf", method = RequestMethod.GET)
+    List<Professor> getListProf(@RequestParam(value = "idFal", required = true) Integer idFalcuty ){
+//        return commonService.getListProf(idFalcuty);
+        return null;
     }
 }

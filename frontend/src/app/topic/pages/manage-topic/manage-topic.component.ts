@@ -20,7 +20,7 @@ export class ManageTopicComponent implements OnInit {
     this.listSem = this.commonSv.getListSemester();
   }
 
-  topicLstInterval() {
+  topicLstInterval(): void {
     // setInterval(() => {
       this.topicLst = this.topicSv.getListTopic();
     // }, 300000);

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
  *
  * @author MinBui
  */
-@Service
 public interface UserService {
     String createJWT(String username, String isStudent);
     Claims parseJWT(String jwt);

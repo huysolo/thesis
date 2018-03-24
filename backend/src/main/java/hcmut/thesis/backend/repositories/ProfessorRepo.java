@@ -7,11 +7,11 @@ package hcmut.thesis.backend.repositories;
 
 import hcmut.thesis.backend.models.Professor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  *
  * @author MinBui
  */
 public interface ProfessorRepo extends JpaRepository<Professor, Integer> {
-    
 }

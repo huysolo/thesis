@@ -9,17 +9,15 @@ package hcmut.thesis.backend.services.impl;
  *
  * @author MinBui
  */
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.String;
-import hcmut.thesis.backend.modelview.CurrUserInfo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.util.Date;
-import org.springframework.stereotype.Component;
 import hcmut.thesis.backend.services.UserService;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class UserSeviceImpl implements UserService {
     static final long EXPIRATIONTIME = 864_000_000; // 10 days
     static final String SECRET = "ThisIsASecret";
