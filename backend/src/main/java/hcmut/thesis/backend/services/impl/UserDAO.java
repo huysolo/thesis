@@ -77,7 +77,7 @@ public class UserDAO implements IUserDAO {
         CurrUserInfo currUserInfo = new CurrUserInfo();
         User user = this.getUser(username, password);
         if (user != null) {
-            Boolean isStudent = this.checkUser((int) user.getIdUser());
+            Boolean isStudent = this.checkUser(user.getIdUser());
             if(!isStudent){
                 Professor prof = this.findProfByUserId(user.getIdUser());
                 currUserInfo.setProfID(prof.getIdProfessor());

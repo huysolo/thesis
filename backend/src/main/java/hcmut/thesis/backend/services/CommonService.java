@@ -6,6 +6,7 @@ import hcmut.thesis.backend.modelview.ProfInfo;
 import java.util.List;
 
 public interface CommonService {
-    public List<Semester> getListSemester();
-    public List<ProfInfo> getListProf(Integer idFalcuty);
+    List<Semester> getListSemester();
+    List<ProfInfo> getListProf();
+    String getFullName(String fName, java.lang.String lName);
 }

@@ -20,6 +20,9 @@
       <div class="col-md-3 form-group">
         <select class="form-control">
           <option selected>All Proffesor</option>
+          <option *ngFor="let prof of profLst | async">
+            {{prof.name}}
+          </option>
         </select>
       </div>
       <div class="col-md-2">
