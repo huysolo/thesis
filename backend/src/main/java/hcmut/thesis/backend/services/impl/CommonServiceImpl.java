@@ -1,6 +1,5 @@
 package hcmut.thesis.backend.services.impl;
 
-import hcmut.thesis.backend.models.Professor;
 import hcmut.thesis.backend.models.Semester;
 import hcmut.thesis.backend.modelview.ProfInfo;
 import hcmut.thesis.backend.modelview.UserSession;
@@ -36,13 +35,12 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public List<ProfInfo> getListProf() {
         List<ProfInfo> result = new ArrayList<>();
-        Integer idFalcuty = userRepo.getIdFalcutyByUsername(userSession.getUsername());
+        Integer idFalcuty = userRepo.getUserByUsername(userSession.getUsername()).getIdFalcuty();
         userRepo.getAllByIdFalcuty(idFalcuty).forEach(user -> {
             ProfInfo profInfo = new ProfInfo();
 
             profInfo.setProfessor(userDAO.findProfByUserId(user.getIdUser()));
             profInfo.setName(getFullName(user.getFirstName(), user.getLastName()));
-
             result.add(profInfo);
         });
         return result;

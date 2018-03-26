@@ -85,6 +85,8 @@ dist/
 nbdist/
 .nb-gradle/
 
+.vscode/
+
 application.properties
 backend/src/main/resources/application.properties
 backend/src/main/resources/application.properties

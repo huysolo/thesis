@@ -15,6 +15,9 @@ export class ManageTopicComponent implements OnInit {
   public listSem: Observable<Semester[]>;
   public topicLst: Observable<Topic[]>;
   public profLst: Observable<ProfInfo[]>;
+
+  public selectedSem = -1;
+  public selectedProfId = -1;
   constructor(public topicSv: TopicService, public commonSv: CommonService) { }
 
   ngOnInit() {
@@ -27,6 +30,16 @@ export class ManageTopicComponent implements OnInit {
     // setInterval(() => {
       this.topicLst = this.topicSv.getListTopic();
     // }, 300000);
+  }
+
+  onChangeSemester(sem) {
+    this.selectedSem = sem;
+    this.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
+  }
+
+  onChangeProf(prof) {
+    this.selectedProfId = prof;
+    this.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
   }
 
 

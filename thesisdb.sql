@@ -239,6 +239,7 @@ CREATE TABLE user
   gender     VARCHAR(45) NOT NULL
   COMMENT '1: male
 	0: female',
+  id_falcuty INT         NULL,
   CONSTRAINT user_id_user_uindex
   UNIQUE (id_user),
   CONSTRAINT user_user_name_uindex

@@ -24,10 +24,7 @@ public class CommonController {
 
     @RequestMapping(value = "listProf", method = RequestMethod.GET)
     List<ProfInfo> getListProf(){
-        if(userSession.isProf() || userSession.isStudent()){
-            return commonService.getListProf();
-        } else {
-            return null;
-        }
+        return commonService.getListProf();
+
     }
 }

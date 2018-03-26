@@ -9,7 +9,7 @@ import { TopicDetail } from '../models/TopicDetail';
 export class TopicService {
   constructor(private http: HttpClient) {
   }
-  private topicListUrl = 'http://localhost:8080/topic/listTopic?semno=171';
+  private topicListUrl = 'http://localhost:8080/topic/listTopic';
   private topicDetailUrl = 'http://localhost:8080/topic/topicDetail';
 
   /**
@@ -25,6 +25,25 @@ export class TopicService {
    */
   public getTopicDetail(id: number) {
     return this.http.get<TopicDetail>(this.topicDetailUrl);
+  }
+
+  /**
+   * getListTopicBySemesterAndProf
+   */
+  public getListTopicBySemesterAndProf(sem: number, profId: number): Observable<Topic[]>  {
+    if (sem == -1 && profId == -1) {
+      return this.getListTopic();
+    } else {
+      if (sem != -1 && profId != -1) {
+        return this.http.get<Topic[]>(this.topicListUrl + '?semno=' + sem + '&profId=' + profId);
+      } else {
+        if (sem !== -1) {
+          return this.http.get<Topic[]>(this.topicListUrl + '?semno=' + sem);
+        } else {
+          return this.http.get<Topic[]>(this.topicListUrl + '?profId=' + profId);
+        }
+      }
+    }
   }
 
 }

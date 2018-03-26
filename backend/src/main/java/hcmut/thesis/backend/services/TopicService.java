@@ -5,6 +5,6 @@ import hcmut.thesis.backend.modelview.TopicDetail;
 
 import java.util.List;
 public interface TopicService {
-    List<Topic> getListTopicBySemester(Integer semesterNo);
+    List<Topic> getListTopicBySemester(Integer semesterNo, Integer profId);
     TopicDetail getTopicDetailById(Integer topId);
 }
