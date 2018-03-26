@@ -1,38 +1,38 @@
 <link href="https://fonts.googleapis.com/css?family=Baloo|Ubuntu" rel="stylesheet">
+
 <body>
 	<div class="container">
 		<section id="content">
-			<form #loginform="ngForm" (ngSubmit)="click()">
+			<form [formGroup]="profileForm" (ngSubmit)="edit(profileForm.value)">
 				<h1>My profile</h1>
 				<div>
-					<input type="text" placeholder="Username" value="{{authService.getUsername()}}"  name="username"/>
+					<input type="text" placeholder="Username" formControlName="username" />
 				</div>
 				<div>
-					<input type="text" placeholder="FirstName"  value="{{authService.getFirstname()}}"  name="firstname"/>
+					<input type="text" placeholder="FirstName" formControlName="firstname" />
 				</div>
 				<div>
-					<input type="text" placeholder="LastName" value="{{authService.getLastname()}}"  name="lastname"/>
+					<input type="text" placeholder="LastName" formControlName="lastname" />
 				</div>
 				<div>
-					<input type="text" placeholder="Email" value="{{authService.getEmail()}}"  name="email"/>
+					<input type="text" placeholder="Email" formControlName="email" />
 				</div>
 				<div>
-					<input type="text" placeholder="Gender" value="{{authService.getGender()}}" name="gender" />
+					<input type="text" placeholder="Gender" formControlName="gender" />
 				</div>
 				<div>
-					<input type="text" placeholder="Degree" value="{{authService.getDegree()}}"  name="degree"/>
+					<input type="text" *ngIf="authService.isProfessor()" placeholder="Degree" formControlName="degree" />
 				</div>
 				<div>
-					<input type="text" placeholder="Skills"  value="{{authService.getSkills()}}" name="skills"/>
+					<input type="text" *ngIf="authService.isProfessor()" placeholder="Skills" formControlName="skills" />
 				</div>
 				<div>
-					<input type="text" placeholder="ProfessorID" value="{{authService.getProfID()}}"  name="profID"/>
+					<input type="text" *ngIf="authService.isProfessor()" placeholder="ProfessorID" formControlName="profID" />
 				</div>
-				<div>
+				<div *ngIf="profileForm.dirty">
 					<input type="submit" value="Change" />
 				</div>
 			</form>
 		</section>
 	</div>
 </body>
-{{name}}

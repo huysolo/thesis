@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from './pages/login/login.component';
 import { ManageAccountComponent } from './pages/manage-account/manage-account.component';
 import { UserRoutingModule } from './user-routing.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -18,6 +18,7 @@ import {CheckloginGuard} from './pages/login/checklogin.guard.service';
     CommonModule,
     UserRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     HttpClientModule
   ],

@@ -5,6 +5,7 @@
  */
 package hcmut.thesis.backend.services;
 
+import hcmut.thesis.backend.models.Professor;
 import hcmut.thesis.backend.models.User;
 import hcmut.thesis.backend.modelview.CurrUserInfo;
 import org.springframework.stereotype.Service;
@@ -18,4 +19,5 @@ public interface IUserDAO {
     User getUser(String username, String Password);
     Boolean checkUser(int user_id);
     CurrUserInfo getCurrUserInfo(String username, String password);
+    Professor findProfByUserId(int id);
 }

@@ -31,6 +31,7 @@ export class LoginService {
           localStorage.setItem("degree", res.degree);
           localStorage.setItem("skills", res.skills);
           localStorage.setItem("profID", res.profID);
+          localStorage.setItem("userID",res.userID);
         }
       });
   }

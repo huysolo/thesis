@@ -41,7 +41,7 @@ export class AuthService {
     return localStorage.getItem('isStudent') === 'true';
   }
 
-  public isProffessor(): boolean {
+  public isProfessor(): boolean {
     return this.isLogin() && !this.isStudent();
   }
 }

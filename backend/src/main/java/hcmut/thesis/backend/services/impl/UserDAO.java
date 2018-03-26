@@ -90,6 +90,7 @@ public class UserDAO implements IUserDAO {
             String token = loginService.createJWT(user.getUserName(), isStd);
 
             currUserInfo.setUsername(user.getUserName());
+            currUserInfo.setUserID(user.getIdUser());
             currUserInfo.setFirstname(user.getFirstName());
             currUserInfo.setLastname(user.getLastName());
             currUserInfo.setEmail(user.getEmail());

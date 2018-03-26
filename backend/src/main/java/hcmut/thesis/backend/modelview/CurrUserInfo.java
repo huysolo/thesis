@@ -11,6 +11,7 @@ package hcmut.thesis.backend.modelview;
  */
 public class CurrUserInfo {
     private String username;
+    private int userID;
     private String token;
     private Boolean isStudent;
     private String firstname;
@@ -23,6 +24,9 @@ public class CurrUserInfo {
     private int profID;
     public String getUsername(){
         return this.username;
+    }
+    public int getUserID(){
+        return this.userID;
     }
     public String getFistname(){
         return this.firstname;
@@ -57,6 +61,9 @@ public class CurrUserInfo {
     
     public void setUsername(String username){
         this.username = username;
+    }
+    public void setUserID(int userID){
+        this.userID = userID;
     }
     public void setFirstname(String first_name){
         this.firstname = first_name;
