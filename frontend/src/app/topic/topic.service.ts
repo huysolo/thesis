@@ -31,19 +31,7 @@ export class TopicService {
    * getListTopicBySemesterAndProf
    */
   public getListTopicBySemesterAndProf(sem: number, profId: number): Observable<Topic[]>  {
-    if (sem == -1 && profId == -1) {
-      return this.getListTopic();
-    } else {
-      if (sem != -1 && profId != -1) {
-        return this.http.get<Topic[]>(this.topicListUrl + '?semno=' + sem + '&profId=' + profId);
-      } else {
-        if (sem !== -1) {
-          return this.http.get<Topic[]>(this.topicListUrl + '?semno=' + sem);
-        } else {
-          return this.http.get<Topic[]>(this.topicListUrl + '?profId=' + profId);
-        }
-      }
-    }
+    return this.http.get<Topic[]>(this.topicListUrl + '?semno=' + sem + '&profId=' + profId);
   }
 
 }

@@ -16,11 +16,13 @@ export class ManageTopicComponent implements OnInit {
   public topicLst: Observable<Topic[]>;
   public profLst: Observable<ProfInfo[]>;
 
-  public selectedSem = -1;
-  public selectedProfId = -1;
+  public selectedSem;
+  public selectedProfId;
   constructor(public topicSv: TopicService, public commonSv: CommonService) { }
 
   ngOnInit() {
+    this.selectedProfId = -1;
+    this.selectedSem = -1;
     this.topicLstInterval();
     this.listSem = this.commonSv.getListSemester();
     this.profLst = this.commonSv.getListProf();

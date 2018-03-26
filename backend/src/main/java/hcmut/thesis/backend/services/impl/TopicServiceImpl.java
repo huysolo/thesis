@@ -33,13 +33,13 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public List<Topic> getListTopicBySemester(Integer semesterNo, Integer profId) {
         List<Topic>  topicList;
-        if (semesterNo != null){
+        if (semesterNo != null && semesterNo != -1){
             List<Integer> topId = topicSemesterRepo.findTopBySemesterNo(semesterNo);
             topicList = topicRepo.findAllById(topId);
         } else {
             topicList = topicRepo.findAll();
         }
-        if (profId != null) topicList.removeIf(topic -> topic.getIdProf() != profId);
+        if (profId != null && profId != -1) topicList.removeIf(topic -> topic.getIdProf() != profId);
         return topicList;
     }
 

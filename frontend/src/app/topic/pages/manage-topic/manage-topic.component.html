@@ -1,11 +1,7 @@
 <br>
-<!-- Button trigger modal -->
-<!-- <div>
-  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#createTopic">
-    Create New Topic
-  </button>
-</div> -->
 <div>
+  <button type="button" name="new" id="new" class="btn btn-raised btn-success btn-md btn-block"  data-toggle="modal" data-target="#createTopic">New Topic</button>
+
   <form>
     <div class="form-row" id="filter">
       <div class="col-md-1">
@@ -13,23 +9,22 @@
       </div>
       <div class="col-md-3 form-group">
         <select class="form-control"  (change)="onChangeSemester($event.target.value)">
-          <option selected value="-1">All Semester</option>
+          <option selected [value]="-1">All Semester</option>
           <option *ngFor="let sem of listSem | async" [value]="sem.semesterNo">Semester No: {{sem.semesterNo}}</option>
         </select>
       </div>
       <div class="col-md-3 form-group">
         <select class="form-control" (change)="onChangeProf($event.target.value)">
-          <option selected value="-1">All Proffesor</option>
+          <option selected [value]="-1">All Proffesor</option>
           <option *ngFor="let prof of profLst | async" [value]="prof.professor.idProfessor">
             {{prof.name}}
           </option>
         </select>
       </div>
       <div class="col-md-2">
-        <button type="button" name="search" id="search" class="btn btn-primary btn-md btn-block">Search</button>
       </div>
       <div class="col-md-3 ">
-          <button type="button" name="new" id="new" class="btn btn-success btn-md btn-block"  data-toggle="modal" data-target="#createTopic">New Topic</button>
+          <button type="button" name="new" id="new" class="btn btn-raised btn-success btn-md btn-block"  data-toggle="modal" data-target="#createTopic">New Topic</button>
         </div>
     </div>
   </form>
