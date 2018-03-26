@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
  *
  * @author MinBui
  */
-@Service
 public interface IUserDAO {
     User getUser(String username, String Password);
     Boolean checkUser(int user_id);

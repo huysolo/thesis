@@ -7,7 +7,11 @@ package hcmut.thesis.backend.repositories;
 
 import hcmut.thesis.backend.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  *
@@ -15,6 +19,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserRepo extends JpaRepository<User, Integer>{
-    //public User findByLoginInfo(String user_name, String password);
+    @Query("SELECT u FROM User u WHERE u.idFalcuty = :idFalcuty")
+    List<User> getAllByIdFalcuty(@Param("idFalcuty") Integer idFalcuty);
+
+    @Query("SELECT u FROM User  u WHERE u.userName = :userName")
+    User getUserByUsername(@Param("userName") String userName);
+
 }
 

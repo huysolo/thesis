@@ -12,14 +12,17 @@
         <h3>Filter:</h3>
       </div>
       <div class="col-md-3 form-group">
-        <select class="form-control">
-          <option selected>All Semester</option>
-          <option *ngFor="let sem of listSem | async">Semester No: {{sem.semesterNo}}</option>
+        <select class="form-control"  (change)="onChangeSemester($event.target.value)">
+          <option selected value="-1">All Semester</option>
+          <option *ngFor="let sem of listSem | async" [value]="sem.semesterNo">Semester No: {{sem.semesterNo}}</option>
         </select>
       </div>
       <div class="col-md-3 form-group">
-        <select class="form-control">
-          <option selected>All Proffesor</option>
+        <select class="form-control" (change)="onChangeProf($event.target.value)">
+          <option selected value="-1">All Proffesor</option>
+          <option *ngFor="let prof of profLst | async" [value]="prof.professor.idProfessor">
+            {{prof.name}}
+          </option>
         </select>
       </div>
       <div class="col-md-2">

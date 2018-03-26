@@ -17,12 +17,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import hcmut.thesis.backend.services.UserService;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author MinBui
  */
-@Component
+@Service
 public class UserDAO implements IUserDAO {
 
     @Autowired
@@ -40,10 +41,10 @@ public class UserDAO implements IUserDAO {
     @Override
     public User getUser(String username, String password) {
         List<User> listUser = userRepo.findAll();
-        for (int i = 0; i < listUser.size(); i++) {
-            if ((listUser.get(i).getUserName() == null ? username == null : listUser.get(i).getUserName().equals(username))
-                    && (listUser.get(i).getPassword() == null ? password == null : listUser.get(i).getPassword().equals(password))) {
-                return listUser.get(i);
+        for (User aListUser : listUser) {
+            if ((aListUser.getUserName() == null ? username == null : aListUser.getUserName().equals(username))
+                    && (aListUser.getPassword() == null ? password == null : aListUser.getPassword().equals(password))) {
+                return aListUser;
             }
         }
         return null;
@@ -76,7 +77,7 @@ public class UserDAO implements IUserDAO {
         CurrUserInfo currUserInfo = new CurrUserInfo();
         User user = this.getUser(username, password);
         if (user != null) {
-            Boolean isStudent = this.checkUser((int) user.getIdUser());
+            Boolean isStudent = this.checkUser(user.getIdUser());
             if(!isStudent){
                 Professor prof = this.findProfByUserId(user.getIdUser());
                 currUserInfo.setProfID(prof.getIdProfessor());

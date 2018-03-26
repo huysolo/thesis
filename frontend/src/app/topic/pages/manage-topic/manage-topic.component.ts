@@ -4,6 +4,7 @@ import { Topic } from '../../../models/Topic';
 import { Observable } from 'rxjs/Observable';
 import { CommonService } from '../../../core/common.service';
 import { Semester } from '../../../models/Semester';
+import { ProfInfo } from '../../../models/ProfInfo';
 
 @Component({
   selector: 'app-manage-topic',
@@ -13,17 +14,32 @@ import { Semester } from '../../../models/Semester';
 export class ManageTopicComponent implements OnInit {
   public listSem: Observable<Semester[]>;
   public topicLst: Observable<Topic[]>;
+  public profLst: Observable<ProfInfo[]>;
+
+  public selectedSem = -1;
+  public selectedProfId = -1;
   constructor(public topicSv: TopicService, public commonSv: CommonService) { }
 
   ngOnInit() {
     this.topicLstInterval();
     this.listSem = this.commonSv.getListSemester();
+    this.profLst = this.commonSv.getListProf();
   }
 
-  topicLstInterval() {
+  topicLstInterval(): void {
     // setInterval(() => {
       this.topicLst = this.topicSv.getListTopic();
     // }, 300000);
+  }
+
+  onChangeSemester(sem) {
+    this.selectedSem = sem;
+    this.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
+  }
+
+  onChangeProf(prof) {
+    this.selectedProfId = prof;
+    this.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
   }
 
 

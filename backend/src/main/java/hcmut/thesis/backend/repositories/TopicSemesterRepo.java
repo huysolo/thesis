@@ -12,6 +12,7 @@ import java.util.List;
 public interface TopicSemesterRepo  extends JpaRepository<TopicPerSemester, Integer> {
     @Query("SELECT t.idTopic FROM TopicPerSemester t WHERE  t.semesterNo = :semesterNo")
     List<Integer> findTopBySemesterNo(@Param("semesterNo") Integer semesterNo);
+
 }
 
 
