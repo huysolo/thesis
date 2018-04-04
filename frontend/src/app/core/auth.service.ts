@@ -10,6 +10,9 @@ export class AuthService {
   public getUsername(): string {
     return localStorage.getItem('username');
   }
+  public getPassword(): string {
+    return localStorage.getItem('password');
+  }
   public getFirstname(): string {
     return localStorage.getItem('firstname');
   }

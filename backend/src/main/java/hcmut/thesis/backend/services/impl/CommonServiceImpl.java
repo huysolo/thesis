@@ -35,7 +35,7 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public List<ProfInfo> getListProf() {
         List<ProfInfo> result = new ArrayList<>();
-        Integer idFalcuty = userRepo.getUserByUsername(userSession.getUsername()).getIdFalcuty();
+        Integer idFalcuty = userDAO.findUserByUserId(userSession.getUserID()).getIdFalcuty();
         userRepo.getAllByIdFalcuty(idFalcuty).forEach(user -> {
             ProfInfo profInfo = new ProfInfo();
 

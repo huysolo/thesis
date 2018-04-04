@@ -1,0 +1,21 @@
+.list-group{
+  flex-grow: 0;
+  padding: 0px;
+}
+.img-avatar{
+  margin-right: 0px;
+    height: 30px;
+}
+.account{
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+
+#avatar-link{
+  padding: 0px;
+}
+
+dropdown-item{
+  padding-left: 0px;
+  padding-right: 0px;
+}

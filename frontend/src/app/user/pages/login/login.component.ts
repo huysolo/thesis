@@ -17,6 +17,8 @@ import {AuthService} from '../../../core/auth.service';
 })
 export class LoginComponent implements OnInit {
   alert: Boolean;
+  isLoading: Boolean;
+  isFail: Boolean;
   constructor(private loginService: LoginService, private router: Router, private authService: AuthService) {
     this.alert = false;
   }
@@ -24,13 +26,18 @@ export class LoginComponent implements OnInit {
   }
 
   LoginReq(form) {
-    console.log(form.value.username);
-
+    this.isLoading = true;
+    this.isFail = false;
     this.loginService.login(form.value).subscribe(
       data => {
+        this.isLoading = false;
+        if (this.authService.isLogin() === true) {
         this.router.navigate(['user/manager']);
+        } else {
+          this.isFail = true;
+        }
       },
-      error => {
+      err => {
 
       }
     );

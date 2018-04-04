@@ -10,6 +10,7 @@ import hcmut.thesis.backend.services.IUserDAO;
 import hcmut.thesis.backend.models.User;
 import hcmut.thesis.backend.repositories.UserRepo;
 import hcmut.thesis.backend.modelview.CurrUserInfo;
+import hcmut.thesis.backend.modelview.UserEdit;
 import hcmut.thesis.backend.modelview.UserSession;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +38,9 @@ public class LoginController {
 
     @Autowired
     UserService loginService;
+    
+     @Autowired
+    UserRepo userRepo;
 
     @Autowired
     IUserDAO iuserDAO;
@@ -46,12 +50,20 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public CurrUserInfo checkLogin(@RequestBody InfoLogin info) {
-        
+    public CurrUserInfo checkLogin(@RequestBody InfoLogin info) {        
         CurrUserInfo currUser = new CurrUserInfo();
         currUser = iuserDAO.getCurrUserInfo(info.getUsername(), info.getPassword());
-        System.out.println(currUser.getFistname());
         return currUser;
+    }
+    
+    @RequestMapping(value = "/profile", method = RequestMethod.POST)
+    @ResponseBody
+    public UserEdit editProfile(@RequestBody CurrUserInfo currUserInfo) { 
+       UserEdit userEdit = iuserDAO.CheckEditUser(currUserInfo);
+       if(userEdit.isEditEmail()== true && userEdit.isEditUsername() == true){
+           iuserDAO.EditUser(currUserInfo);
+       }
+       return userEdit;
     }
 
     @RequestMapping(value = "/demo1")

@@ -13,6 +13,6 @@ import org.springframework.stereotype.Service;
  * @author MinBui
  */
 public interface UserService {
-    String createJWT(String username, String isStudent);
+    String createJWT(String UserID);
     Claims parseJWT(String jwt);
 }

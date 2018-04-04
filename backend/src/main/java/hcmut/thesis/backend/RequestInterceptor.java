@@ -5,7 +5,9 @@
  */
 package hcmut.thesis.backend;
 
+import hcmut.thesis.backend.models.User;
 import hcmut.thesis.backend.modelview.UserSession;
+import hcmut.thesis.backend.services.IUserDAO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -29,15 +31,18 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
     
     @Autowired
     UserSession userSession;
+    
+    @Autowired
+    IUserDAO iuserDAO;
 
     @Override
     public boolean preHandle(HttpServletRequest request,
             HttpServletResponse response, Object object) throws Exception {
         String token = request.getHeader("token");
-        if (token != "" && token != null) {
-            userSession.setUsername(loginService.parseJWT(token).getSubject());
-            userSession.setIsStudent((loginService.parseJWT(token).getIssuer()== "true")? true: false);
-            userSession.setIsProf(!userSession.isStudent());
+        if (!"".equals(token) && token != null) {
+            userSession.setUserID(Integer.parseInt(loginService.parseJWT(token).getId()));
+            User user = iuserDAO.findUserByUserId(userSession.getUserID());
+            System.out.println(user.getUserName());
         }
         return true;
     }

@@ -16,26 +16,13 @@ import org.springframework.stereotype.Component;
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Component
 public class UserSession {
-    private String username;
-    private Boolean isStudent;
-    private Boolean isProf;
+    private int userID;
     
-    public String getUsername(){
-        return this.username;
+    public int getUserID(){
+        return this.userID;
     }
-    public Boolean isStudent(){
-        return this.isStudent;
-    }
-    public Boolean isProf(){
-        return this.isProf;
-    }
-    public void setUsername(String username){
-        this.username = username;
-    }
-    public void setIsStudent(Boolean isStudent){
-        this.isStudent = isStudent;
-    }
-    public void setIsProf(Boolean isProf){
-        this.isProf = isProf;
+
+    public void setUserID(int userID){
+        this.userID = userID;
     }
 }

@@ -300,3 +300,29 @@ form:after {
 	background-position: 0 -135px;
 	color: #00aeef;
 }
+
+.buttonfail {
+  font-size: 16px; /* Set a font-size */
+  border-radius: 30px;
+  height: 35px;
+  margin: 20px 0 35px 15px;
+  background-color: #f60505;
+  border: 1px solid #f5f5f6;
+  width: 120px;
+}
+.buttonload {
+  border: none; /* Remove borders */
+  font-size: 16px; /* Set a font-size */
+  border-radius: 30px;
+  height: 35px;
+  margin: 20px 0 35px 15px;
+  background: rgb(254,231,154);
+  border: 1px solid #D69E31;
+  width: 120px;
+}
+
+/* Add a right margin to each icon */
+.fa {
+  margin-left: -12px;
+  margin-right: 8px;
+}

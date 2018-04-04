@@ -12,6 +12,7 @@ import hcmut.thesis.backend.models.User;
 import hcmut.thesis.backend.repositories.StudentRepo;
 import hcmut.thesis.backend.repositories.UserRepo;
 import hcmut.thesis.backend.modelview.CurrUserInfo;
+import hcmut.thesis.backend.modelview.UserEdit;
 import hcmut.thesis.backend.repositories.ProfessorRepo;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,10 +88,12 @@ public class UserDAO implements IUserDAO {
             }
 
             String isStd = (isStudent) ? "true" : "false";
+            String userID = String.valueOf(user.getIdUser());
 
-            String token = loginService.createJWT(user.getUserName(), isStd);
+            String token = loginService.createJWT(userID);
 
             currUserInfo.setUsername(user.getUserName());
+            currUserInfo.setPassword(user.getPassword());
             currUserInfo.setUserID(user.getIdUser());
             currUserInfo.setFirstname(user.getFirstName());
             currUserInfo.setLastname(user.getLastName());
@@ -103,5 +106,65 @@ public class UserDAO implements IUserDAO {
             return currUserInfo;
         }
         return null;
+    }
+    
+    @Override
+    public User findUserByUserId(int id){
+        List<User> listUser = userRepo.findAll();
+        for(int i = 0; i< listUser.size(); i++){
+            if(listUser.get(i).getIdUser() == id){
+                return listUser.get(i);
+            }
+        }
+        return null;  
+    }
+    
+     @Override
+    public Student findStudentByUserId(int id){
+        List<Student> listStudent = studentRepo.findAll();
+        for(int i = 0; i< listStudent.size(); i++){
+            if(listStudent.get(i).getIdUser() == id){
+                return listStudent.get(i);
+            }
+        }
+        return null;  
+    }
+    
+    @Override
+    public UserEdit CheckEditUser(CurrUserInfo currUser){
+        UserEdit userEdit = new UserEdit();
+        userEdit.setEditUsername(true);
+         userEdit.setEditEmail(true);
+        List<User> listUser = userRepo.findAll();
+        for(int i = 0; i < listUser.size(); i++){
+            if((listUser.get(i).getUserName().equals(currUser.getUsername())) && (listUser.get(i).getIdUser() != currUser.getUserID())){
+                userEdit.setEditUsername(false);
+            }
+            if((listUser.get(i).getEmail().equals(currUser.getEmail())) && (listUser.get(i).getIdUser() != currUser.getUserID())){
+                userEdit.setEditEmail(false);
+            }
+        }
+    return userEdit;
+    }
+    
+    @Override
+    public void EditUser(CurrUserInfo currUser){
+        User user = new User();
+        user.setUserName(currUser.getUsername());
+        user.setPassword(currUser.getPassword());
+        user.setFirstName(currUser.getFistname());
+        user.setLastName(currUser.getLastname());
+        user.setEmail(currUser.getEmail());
+        user.setIdUser(currUser.getUserID());
+        user.setGender(currUser.getGender());
+        if(currUser.getProfID() != 0){
+            Professor prof = new Professor();
+            prof.setSkills(currUser.getSkills());
+            prof.setIdProfessor(currUser.getProfID());
+            prof.setDegree(currUser.getDegree());
+            prof.setIdUser(currUser.getUserID());
+            profRepo.save(prof);
+        }
+        userRepo.save(user);
     }
 }

@@ -6,9 +6,10 @@
 package hcmut.thesis.backend.services;
 
 import hcmut.thesis.backend.models.Professor;
+import hcmut.thesis.backend.models.Student;
 import hcmut.thesis.backend.models.User;
 import hcmut.thesis.backend.modelview.CurrUserInfo;
-import org.springframework.stereotype.Service;
+import hcmut.thesis.backend.modelview.UserEdit;
 
 /**
  *
@@ -19,4 +20,8 @@ public interface IUserDAO {
     Boolean checkUser(int user_id);
     CurrUserInfo getCurrUserInfo(String username, String password);
     Professor findProfByUserId(int id);
+    User findUserByUserId(int id);
+    Student findStudentByUserId(int id);
+    UserEdit CheckEditUser(CurrUserInfo currUser);
+    void EditUser(CurrUserInfo currUser);
 }

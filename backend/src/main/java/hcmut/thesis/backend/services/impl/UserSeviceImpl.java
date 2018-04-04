@@ -24,12 +24,10 @@ public class UserSeviceImpl implements UserService {
     static final String TOKEN_PREFIX = "Bearer";
 
     @Override
-    public String createJWT(String username, String isStudent)  {
+    public String createJWT(String UserID)  {
         String JWT = Jwts.builder()
                 .setAudience("")
-                .setSubject(username)
-                .setIssuer(isStudent)
-                .setId("")
+                .setId(UserID)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
