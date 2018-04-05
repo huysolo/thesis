@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TopicServiceImpl implements TopicService {
@@ -45,9 +46,13 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public TopicDetail getTopicDetailById(Integer topId) {
-        Topic topic = topicRepo.findById(topId).get();
-        List<TopicMission> topicMissionList = topicMissionRepo.findAllByTopicId(topId);
-        List<TopicRequirement> topicRequirementList = topicReqRepo.findAllByTopicId(topId);
-        return new TopicDetail(topic, topicMissionList, topicRequirementList);
+        Optional<Topic> optionalTopic = topicRepo.findById(topId);
+        if (optionalTopic.isPresent()){
+            Topic topic = optionalTopic.get();
+            List<TopicMission> topicMissionList = topicMissionRepo.findAllByTopicId(topId);
+            List<TopicRequirement> topicRequirementList = topicReqRepo.findAllByTopicId(topId);
+            return new TopicDetail(topic, topicMissionList, topicRequirementList);
+        }
+        return null;
     }
 }

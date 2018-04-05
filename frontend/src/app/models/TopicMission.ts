@@ -1,5 +1,6 @@
 export class TopicMission {
-  private idMission: number;
-  private idTopic: number;
-  private detail: String;
+  idMission: number;
+  idTopic: number;
+  detail: String;
+  constructor() {}
 }

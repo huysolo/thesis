@@ -1,5 +1,7 @@
 export class TopicRequirement {
-  private idReq: number;
-  private idTopic: number;
-  private detail: String;
+  public idReq: number;
+  public  idTopic: number;
+  public detail: String;
+  constructor() {
+  }
 }
