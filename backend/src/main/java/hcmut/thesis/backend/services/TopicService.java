@@ -7,4 +7,5 @@ import java.util.List;
 public interface TopicService {
     List<Topic> getListTopicBySemester(Integer semesterNo, Integer profId);
     TopicDetail getTopicDetailById(Integer topId);
+    void setTopicDetail(TopicDetail topicDetail);
 }

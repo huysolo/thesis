@@ -60,7 +60,7 @@ public class LoginController {
     @ResponseBody
     public UserEdit editProfile(@RequestBody CurrUserInfo currUserInfo) { 
        UserEdit userEdit = iuserDAO.CheckEditUser(currUserInfo);
-       if(userEdit.isEditEmail()== true && userEdit.isEditUsername() == true){
+       if(userEdit.isEditEmail() && userEdit.isEditUsername()){
            iuserDAO.EditUser(currUserInfo);
        }
        return userEdit;

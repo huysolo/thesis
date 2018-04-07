@@ -8,8 +8,8 @@ export class TopicDetail {
   topicRequirement: TopicRequirement[];
   constructor() {
     this.topic = new Topic();
-    this.topicMission = new Array<TopicMission>();
-    this.topicRequirement = new Array<TopicRequirement>();
+    this.topicMission = [];
+    this.topicRequirement = [];
   }
 
 }

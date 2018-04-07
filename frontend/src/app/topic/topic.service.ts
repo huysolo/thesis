@@ -11,6 +11,7 @@ export class TopicService {
   }
   private topicListUrl = 'http://localhost:8080/topic/listTopic';
   private topicDetailUrl = 'http://localhost:8080/topic/topicDetail';
+  private topicCreatelUrl = 'http://localhost:8080/topic/create';
 
   /**
    * getListTopic
@@ -32,6 +33,17 @@ export class TopicService {
    */
   public getListTopicBySemesterAndProf(sem: number, profId: number): Observable<Topic[]>  {
     return this.http.get<Topic[]>(this.topicListUrl + '?semno=' + sem + '&profId=' + profId);
+  }
+
+  public login(topicDetail: TopicDetail) {
+    console.log(topicDetail);
+
+    const loginUrl = `http://localhost:8080/topic/create`;
+    console.log(loginUrl);
+    return this.http.post<any>(loginUrl, topicDetail)
+      .map(res => {
+        console.log(res);
+      });
   }
 
 }

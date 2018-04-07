@@ -4,6 +4,7 @@ import { Topic } from '../../../models/Topic';
 import { TopicRequirement } from '../../../models/TopicRequirement';
 import { TopicMission } from '../../../models/TopicMission';
 import { AuthService } from '../../../core/auth.service';
+import { TopicService } from '../../topic.service';
 
 @Component({
   selector: 'app-create-topic',
@@ -11,22 +12,25 @@ import { AuthService } from '../../../core/auth.service';
   styleUrls: ['./create-topic.component.css']
 })
 export class CreateTopicComponent implements OnInit {
-  constructor(public authoSv: AuthService) { }
+  constructor(public authoSv: AuthService, public topicSv: TopicService) { }
   public lst: string[] = ['haha', 'huhu'];
   createTopic: TopicDetail;
   ngOnInit() {
     this.createTopic = new TopicDetail();
     this.createTopic.topic.idProf = this.authoSv.getProfID();
-    this.createTopic.topicMission.push(new TopicMission());
-    this.createTopic.topicRequirement.push(new TopicRequirement());
+    this.createTopic.topicMission.push(new TopicMission(0));
+    this.createTopic.topicRequirement.push(new TopicRequirement(0));
   }
 
   submitTopic() {
-    console.log(this.createTopic);
+    this.topicSv.login(this.createTopic).subscribe(data => {
+      console.log(data);
+    });
   }
 
   addReq() {
-    this.createTopic.topicRequirement.push(new TopicRequirement());
+    const req = new TopicRequirement(0);
+    this.createTopic.topicRequirement.push(new TopicRequirement(0));
   }
 
   removeReq(removePos: number) {
@@ -34,7 +38,9 @@ export class CreateTopicComponent implements OnInit {
   }
 
   addMission() {
-    this.createTopic.topicMission.push(new TopicMission());
+    const mission = new TopicMission(0);
+    mission.idTopic = 0;
+    this.createTopic.topicMission.push(new TopicMission(0));
   }
 
   removeMission(removePos: number) {

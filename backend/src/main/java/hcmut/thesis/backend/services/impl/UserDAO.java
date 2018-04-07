@@ -5,6 +5,7 @@
  */
 package hcmut.thesis.backend.services.impl;
 
+import hcmut.thesis.backend.modelview.UserSession;
 import hcmut.thesis.backend.services.IUserDAO;
 import hcmut.thesis.backend.models.Student;
 import hcmut.thesis.backend.models.Professor;
@@ -38,6 +39,9 @@ public class UserDAO implements IUserDAO {
     
     @Autowired
     ProfessorRepo profRepo;
+
+    @Autowired
+    private UserSession userSession;
 
     @Override
     public User getUser(String username, String password) {
@@ -166,5 +170,10 @@ public class UserDAO implements IUserDAO {
             profRepo.save(prof);
         }
         userRepo.save(user);
+    }
+
+    @Override
+    public Integer getCurrentUserFalcuty() {
+        return userRepo.getIdFalcutyByIdUser(userSession.getUserID());
     }
 }

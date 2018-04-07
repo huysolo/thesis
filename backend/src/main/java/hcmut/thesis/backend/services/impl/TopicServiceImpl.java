@@ -6,10 +6,12 @@ import hcmut.thesis.backend.models.TopicMission;
 import hcmut.thesis.backend.models.TopicRequirement;
 import hcmut.thesis.backend.modelview.TopicDetail;
 import hcmut.thesis.backend.repositories.*;
+import hcmut.thesis.backend.services.IUserDAO;
 import hcmut.thesis.backend.services.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.websocket.Session;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +33,9 @@ public class TopicServiceImpl implements TopicService {
     @Autowired
     ProfessorRepo professorRepo;
 
+    @Autowired
+    IUserDAO userDAO;
+
     @Override
     public List<Topic> getListTopicBySemester(Integer semesterNo, Integer profId) {
         List<Topic>  topicList;
@@ -51,8 +56,19 @@ public class TopicServiceImpl implements TopicService {
             Topic topic = optionalTopic.get();
             List<TopicMission> topicMissionList = topicMissionRepo.findAllByTopicId(topId);
             List<TopicRequirement> topicRequirementList = topicReqRepo.findAllByTopicId(topId);
-            return new TopicDetail(topic, topicMissionList, topicRequirementList);
+            return null;
         }
         return null;
+    }
+
+    @Override
+    public void setTopicDetail(TopicDetail topicDetail) {
+        Topic topic = topicDetail.getTopic();
+        topic.setIdFaculty(userDAO.getCurrentUserFalcuty());
+        topicRepo.save(topic);
+        topicDetail.getTopicMission().forEach(topicMissionDetail -> topicMissionDetail.setIdTopic(topic.getIdTop()));
+        topicMissionRepo.saveAll(topicDetail.getTopicMission());
+        topicDetail.getTopicRequirement().forEach(topicReqDetail -> topicReqDetail.setIdTopic(topic.getIdTop()));
+        topicReqRepo.saveAll(topicDetail.getTopicRequirement());
     }
 }

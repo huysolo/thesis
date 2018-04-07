@@ -24,4 +24,5 @@ public interface IUserDAO {
     Student findStudentByUserId(int id);
     UserEdit CheckEditUser(CurrUserInfo currUser);
     void EditUser(CurrUserInfo currUser);
+    Integer getCurrentUserFalcuty();
 }

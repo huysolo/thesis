@@ -15,17 +15,60 @@ public class TopicDetail {
         return topicMission;
     }
 
-    public List<TopicRequirement> getTopicRequirements() {
-        return topicRequirements;
+    public List<TopicRequirement> getTopicRequirement() {
+        return topicRequirement;
+    }
+
+    public void setTopic(Topic topic) {
+        this.topic = topic;
+    }
+
+    public void setTopicMission(List<TopicMission> topicMission) {
+        this.topicMission = topicMission;
+    }
+
+    public void setTopicRequirement(List<TopicRequirement> topicRequirement) {
+        this.topicRequirement = topicRequirement;
     }
 
     private Topic topic;
     private List<TopicMission> topicMission;
-    private List<TopicRequirement> topicRequirements;
+    private List<TopicRequirement> topicRequirement;
 
-    public TopicDetail(Topic topic, List<TopicMission> topicMission, List<TopicRequirement> topicRequirements) {
+    private Number startSemester;
+    private Number mumberOfSemester;
+
+
+
+
+    public Number getStartSemester() {
+        return startSemester;
+    }
+
+    public void setStartSemester(Number startSemester) {
+        this.startSemester = startSemester;
+    }
+
+    public Number getMumberOfSemester() {
+        return mumberOfSemester;
+    }
+
+    public void setMumberOfSemester(Number mumberOfSemester) {
+        this.mumberOfSemester = mumberOfSemester;
+    }
+
+    public TopicDetail(Topic topic, List<TopicMission> topicMission, List<TopicRequirement> topicRequirement) {
         this.topic = topic;
         this.topicMission = topicMission;
-        this.topicRequirements = topicRequirements;
+        this.topicRequirement = topicRequirement;
     }
+
+    public TopicDetail(Topic topic, List<TopicMission> topicMission, List<TopicRequirement> topicRequirement, Number startSemester, Number mumberOfSemester) {
+        this.topic = topic;
+        this.topicMission = topicMission;
+        this.topicRequirement = topicRequirement;
+        this.startSemester = startSemester;
+        this.mumberOfSemester = mumberOfSemester;
+    }
+
 }
