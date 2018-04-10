@@ -43,6 +43,12 @@ create table faculty
 )
   engine = InnoDB;
 
+create table hibernate_sequence
+(
+  next_val bigint null
+)
+  engine = MyISAM;
+
 create table join_per_meeting
 (
   id_student int not null,
@@ -152,11 +158,11 @@ create table student_task
 create table student_topic_sem
 (
   id_student   int             not null,
-  id_topic_sem int             not null
-    primary key,
+  id_topic_sem int             not null,
   team_lead    int default '0' not null
   comment 'team lead: 1
-		other member 0'
+		other member 0',
+  primary key (id_topic_sem, id_student)
 )
   comment 'List of student belong to each topic per semester'
   engine = InnoDB;
