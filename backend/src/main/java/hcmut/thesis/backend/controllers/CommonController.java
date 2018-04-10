@@ -1,13 +1,12 @@
 package hcmut.thesis.backend.controllers;
 
 import hcmut.thesis.backend.models.Semester;
+import hcmut.thesis.backend.models.StudentTopicSem;
 import hcmut.thesis.backend.modelview.ProfInfo;
+import hcmut.thesis.backend.repositories.StudentTopicSemRepo;
 import hcmut.thesis.backend.services.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,6 +15,8 @@ import java.util.List;
 public class CommonController {
     @Autowired
     CommonService commonService;
+    @Autowired
+    StudentTopicSemRepo studentTopicSemRepo;
 
     @RequestMapping(value = "listSemester", method = RequestMethod.GET)
     List<Semester> getListSemster(){
@@ -31,5 +32,10 @@ public class CommonController {
     @RequestMapping(value = "currentSem", method = RequestMethod.GET)
     Integer getCurrentTopicSemester(){
         return commonService.getCurrentSem();
+    }
+
+    @RequestMapping(value = "aaa", method = RequestMethod.GET)
+    List<StudentTopicSem> getaaa(@RequestParam("id") Integer id){
+        return studentTopicSemRepo.getAllByIdTopicSem(id);
     }
 }
