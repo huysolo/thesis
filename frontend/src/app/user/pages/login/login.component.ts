@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
       data => {
         this.isLoading = false;
         if (this.authService.isLogin() === true) {
-        this.router.navigate(['user/manager']);
+        this.router.navigate(['']);
         } else {
           this.isFail = true;
         }

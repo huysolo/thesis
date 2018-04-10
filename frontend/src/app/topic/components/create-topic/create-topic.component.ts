@@ -13,7 +13,6 @@ import { TopicService } from '../../topic.service';
 })
 export class CreateTopicComponent implements OnInit {
   constructor(public authoSv: AuthService, public topicSv: TopicService) { }
-  public lst: string[] = ['haha', 'huhu'];
   createTopic: TopicDetail;
   ngOnInit() {
     this.createTopic = new TopicDetail();
@@ -23,7 +22,7 @@ export class CreateTopicComponent implements OnInit {
   }
 
   submitTopic() {
-    this.topicSv.login(this.createTopic).subscribe(data => {
+    this.topicSv.createTopic(this.createTopic).subscribe(data => {
       console.log(data);
     });
   }

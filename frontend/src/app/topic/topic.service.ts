@@ -4,15 +4,18 @@ import { Observable } from 'rxjs/Observable';
 
 import { Topic } from '../models/Topic';
 import { TopicDetail } from '../models/TopicDetail';
+import { AuthService } from '../core/auth.service';
 
 @Injectable()
 export class TopicService {
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authoSv: AuthService) {
   }
   private topicListUrl = 'http://localhost:8080/topic/listTopic';
   private topicDetailUrl = 'http://localhost:8080/topic/topicDetail';
   private topicCreatelUrl = 'http://localhost:8080/topic/create';
-
+  private topicListSizeUrl = 'http://localhost:8080/topic/listTopicSize';
+  private seletedPage: number;
+  private pageSize: number;
   /**
    * getListTopic
    * Get List Topic for Current Semester
@@ -32,17 +35,12 @@ export class TopicService {
    * getListTopicBySemesterAndProf
    */
   public getListTopicBySemesterAndProf(sem: number, profId: number): Observable<Topic[]>  {
-    return this.http.get<Topic[]>(this.topicListUrl + '?semno=' + sem + '&profId=' + profId);
+    return this.http.get<Topic[]>(this.topicListUrl + '?semno=' + sem + '&profId=' + profId + '');
   }
 
-  public login(topicDetail: TopicDetail) {
-    console.log(topicDetail);
-
-    const loginUrl = `http://localhost:8080/topic/create`;
-    console.log(loginUrl);
-    return this.http.post<any>(loginUrl, topicDetail)
+  public createTopic(topicDetail: TopicDetail) {
+    return this.http.post<any>(this.topicCreatelUrl, topicDetail)
       .map(res => {
-        console.log(res);
       });
   }
 

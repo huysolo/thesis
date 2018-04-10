@@ -4,11 +4,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { MainPageComponent } from '../main-page/main-page.component';
 import {LoginComponent} from '../user/pages/login/login.component';
 import {MeetingComponent} from '../meeting/meeting.component';
+import { AuthGuardUserService } from '../core/auth-guard-user.service';
 
 const appRoutes: Routes = [
   {
     path: 'topic',
-    loadChildren: 'app/topic/topic.module#TopicModule'
+    loadChildren: 'app/topic/topic.module#TopicModule',
+    canActivate: [AuthGuardUserService]
   },
   {
     path: 'user',
@@ -21,7 +23,8 @@ const appRoutes: Routes = [
   ,
   {
     path: '',
-    component: MainPageComponent
+    component: MainPageComponent,
+    canActivate: [AuthGuardUserService]
   }
 ];
 

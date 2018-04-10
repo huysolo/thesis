@@ -48,7 +48,17 @@ public class CommonServiceImpl implements CommonService {
 
     @Override
     public String getFullName(String fNamme, String lname) {
-        return fNamme + " " + lname;    }
+        return fNamme + " " + lname;
+    }
+
+    @Override
+    public Integer getCurrentSem() {
+        List<Integer> semesters = semesterRepo.getCurrentApplySemester();
+        if (semesters.size() == 0){
+            return null;
+        }
+        return semesters.get(0);
+    }
 
 
 }

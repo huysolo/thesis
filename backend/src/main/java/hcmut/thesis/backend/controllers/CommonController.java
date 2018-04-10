@@ -2,10 +2,12 @@ package hcmut.thesis.backend.controllers;
 
 import hcmut.thesis.backend.models.Semester;
 import hcmut.thesis.backend.modelview.ProfInfo;
-import hcmut.thesis.backend.modelview.UserSession;
 import hcmut.thesis.backend.services.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -14,8 +16,6 @@ import java.util.List;
 public class CommonController {
     @Autowired
     CommonService commonService;
-    @Autowired
-    UserSession userSession;
 
     @RequestMapping(value = "listSemester", method = RequestMethod.GET)
     List<Semester> getListSemster(){
@@ -26,5 +26,10 @@ public class CommonController {
     List<ProfInfo> getListProf(){
         return commonService.getListProf();
 
+    }
+
+    @RequestMapping(value = "currentSem", method = RequestMethod.GET)
+    Integer getCurrentTopicSemester(){
+        return commonService.getCurrentSem();
     }
 }

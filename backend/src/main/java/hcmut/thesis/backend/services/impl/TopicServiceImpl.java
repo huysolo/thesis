@@ -1,19 +1,18 @@
 package hcmut.thesis.backend.services.impl;
 
-import hcmut.thesis.backend.models.Professor;
 import hcmut.thesis.backend.models.Topic;
 import hcmut.thesis.backend.models.TopicMission;
+import hcmut.thesis.backend.models.TopicPerSemester;
 import hcmut.thesis.backend.models.TopicRequirement;
 import hcmut.thesis.backend.modelview.TopicDetail;
 import hcmut.thesis.backend.repositories.*;
 import hcmut.thesis.backend.services.IUserDAO;
 import hcmut.thesis.backend.services.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import javax.websocket.Session;
-import java.util.ArrayList;
-import java.util.Collections;
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +34,12 @@ public class TopicServiceImpl implements TopicService {
 
     @Autowired
     IUserDAO userDAO;
+
+    @Autowired
+    SemesterRepo semesterRepo;
+
+    @Autowired
+    EntityManager entityManager;
 
     @Override
     public List<Topic> getListTopicBySemester(Integer semesterNo, Integer profId) {
@@ -62,13 +67,28 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void setTopicDetail(TopicDetail topicDetail) {
+    public HttpStatus setTopicDetail(TopicDetail topicDetail) {
+        List<Integer> semesters = semesterRepo.getCurrentApplySemester();
+        if (semesters.size() == 0){
+            return HttpStatus.EXPECTATION_FAILED;
+        }
         Topic topic = topicDetail.getTopic();
+//        topic.setIdProf(topicDetail.getTopic().getIdProf());
+//        topic.setStNumLimit(topicDetail.getTopic().getStNumLimit());
+//        topic.setSumary(topicDetail.getTopic().getSumary());
+//        topic.setTitle(topicDetail.getTopic().getTitle());
         topic.setIdFaculty(userDAO.getCurrentUserFalcuty());
-        topicRepo.save(topic);
+        topicRepo.saveAndFlush(topic);
+
+
         topicDetail.getTopicMission().forEach(topicMissionDetail -> topicMissionDetail.setIdTopic(topic.getIdTop()));
         topicMissionRepo.saveAll(topicDetail.getTopicMission());
         topicDetail.getTopicRequirement().forEach(topicReqDetail -> topicReqDetail.setIdTopic(topic.getIdTop()));
         topicReqRepo.saveAll(topicDetail.getTopicRequirement());
+        TopicPerSemester topicPerSemester = new TopicPerSemester();
+        topicPerSemester.setIdTopic(topic.getIdTop());
+        topicPerSemester.setSemesterNo(semesters.get(0));
+        topicSemesterRepo.save(topicPerSemester);
+        return HttpStatus.CREATED;
     }
 }

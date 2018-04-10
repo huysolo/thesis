@@ -35,28 +35,6 @@ public class TopicDetail {
     private List<TopicMission> topicMission;
     private List<TopicRequirement> topicRequirement;
 
-    private Number startSemester;
-    private Number mumberOfSemester;
-
-
-
-
-    public Number getStartSemester() {
-        return startSemester;
-    }
-
-    public void setStartSemester(Number startSemester) {
-        this.startSemester = startSemester;
-    }
-
-    public Number getMumberOfSemester() {
-        return mumberOfSemester;
-    }
-
-    public void setMumberOfSemester(Number mumberOfSemester) {
-        this.mumberOfSemester = mumberOfSemester;
-    }
-
     public TopicDetail(Topic topic, List<TopicMission> topicMission, List<TopicRequirement> topicRequirement) {
         this.topic = topic;
         this.topicMission = topicMission;
@@ -67,8 +45,6 @@ public class TopicDetail {
         this.topic = topic;
         this.topicMission = topicMission;
         this.topicRequirement = topicRequirement;
-        this.startSemester = startSemester;
-        this.mumberOfSemester = mumberOfSemester;
     }
 
 }

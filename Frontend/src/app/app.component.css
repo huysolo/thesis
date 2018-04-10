@@ -465,6 +465,14 @@ footer.sticky-footer {
   line-height: 55px;
 }
 
+.content-wrapper{
+  margin-bottom: 20px;
+}
+
+.container-fluid{
+  padding-bottom: 80px;
+}
+
 @media (min-width: 992px) {
   footer.sticky-footer {
     width: calc(100% - 250px);

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { CommonService } from '../../../core/common.service';
 import { Semester } from '../../../models/Semester';
 import { ProfInfo } from '../../../models/ProfInfo';
+import { AuthService } from '../../../core/auth.service';
 
 @Component({
   selector: 'app-manage-topic',
@@ -18,11 +19,11 @@ export class ManageTopicComponent implements OnInit {
 
   public selectedSem;
   public selectedProfId;
-  constructor(public topicSv: TopicService, public commonSv: CommonService) { }
+  constructor(public topicSv: TopicService, public commonSv: CommonService, public authoSv: AuthService) { }
 
   ngOnInit() {
-    this.selectedProfId = -1;
-    this.selectedSem = -1;
+    this.selectedProfId = this.authoSv.isProfessor() ? this.authoSv.getProfID() : -1;
+    this.selectedSem = this.authoSv.isProfessor() ? -1 : -1;
     this.topicLstInterval();
     this.listSem = this.commonSv.getListSemester();
     this.profLst = this.commonSv.getListProf();
