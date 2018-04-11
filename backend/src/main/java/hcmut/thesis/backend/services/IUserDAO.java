@@ -17,6 +17,7 @@ import hcmut.thesis.backend.modelview.UserEdit;
  */
 public interface IUserDAO {
     User getUser(String username, String Password);
+    User getUser(String username);
     Boolean checkUser(int user_id);
     CurrUserInfo getCurrUserInfo(String username, String password);
     Professor findProfByUserId(int id);

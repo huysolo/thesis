@@ -42,7 +42,6 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
         if (!"".equals(token) && token != null) {
             userSession.setUserID(Integer.parseInt(loginService.parseJWT(token).getId()));
             User user = iuserDAO.findUserByUserId(userSession.getUserID());
-            System.out.println(user.getUserName());
         }
         return true;
     }

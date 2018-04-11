@@ -119,6 +119,17 @@ public class UserDAO implements IUserDAO {
         return null;  
     }
     
+    @Override
+    public User getUser(String username){
+        List<User> listUser = userRepo.findAll();
+        for(int i = 0; i< listUser.size(); i++){
+            if(listUser.get(i).getUserName().equals(username)){
+                return listUser.get(i);
+            }
+        }
+        return null;
+    }
+    
      @Override
     public Student findStudentByUserId(int id){
         List<Student> listStudent = studentRepo.findAll();

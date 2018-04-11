@@ -29,7 +29,7 @@ import {CheckloginGuard} from './pages/login/checklogin.guard.service';
   }, LoginService, CheckloginGuard]
   ,
   declarations: [
-    LoginComponent, 
+    LoginComponent,
     ManageAccountComponent,
     LoginComponent,
     ManageAccountComponent

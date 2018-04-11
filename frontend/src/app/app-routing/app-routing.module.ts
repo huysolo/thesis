@@ -15,6 +15,10 @@ const appRoutes: Routes = [
     loadChildren: 'app/user/user.module#UserModule'
   },
   {
+    path: 'task',
+    loadChildren: 'app/task/task.module#TaskModule'
+  },
+  {
     path: 'meeting',
     component: MeetingComponent
   }
