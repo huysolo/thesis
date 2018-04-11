@@ -6,6 +6,7 @@ import { CommonService } from '../../../core/common.service';
 import { Semester } from '../../../models/Semester';
 import { ProfInfo } from '../../../models/ProfInfo';
 import { AuthService } from '../../../core/auth.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-manage-topic',
@@ -19,9 +20,12 @@ export class ManageTopicComponent implements OnInit {
 
   public selectedSem;
   public selectedProfId;
-  constructor(public topicSv: TopicService, public commonSv: CommonService, public authoSv: AuthService) { }
+  constructor(public topicSv: TopicService, public commonSv: CommonService, public authoSv: AuthService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.route.params.subscribe(param => {
+      console.log(param);
+    });
     this.selectedProfId = this.authoSv.isProfessor() ? this.authoSv.getProfID() : -1;
     this.selectedSem = this.authoSv.isProfessor() ? -1 : -1;
     this.topicLstInterval();

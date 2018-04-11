@@ -67,7 +67,7 @@ public class TopicController {
         if(!userSession.isStudent()){
             return HttpStatus.FORBIDDEN;
         }
-        return topicService.applyToTopic(topicId, userSession.getProf().getIdProfessor());
+        return topicService.applyToTopic(topicId, userSession.getStudent().getIdUser());
     }
 
     @GetMapping(value = "appliedTopic")
