@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <a class="float">
     <button type="button" class="btn btn-primary bmd-btn-fab" name="new" id="new" data-toggle="modal" data-target="#createTopic">
       <i class="material-icons">add</i>
@@ -48,10 +48,9 @@
       </li>
     </ul>
   </nav>
-  <div *ngFor="let topic of topicLst | async; let i = index">
-    <br>
-    <app-topic-content [topic]="topic" [topicNo]="i"></app-topic-content>
-  </div>
-</div>
 
-<app-create-topic></app-create-topic>
+</div> -->
+<div>
+<router-outlet></router-outlet>
+</div>
+<!-- <app-create-topic></app-create-topic> -->

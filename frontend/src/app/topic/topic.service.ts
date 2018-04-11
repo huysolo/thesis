@@ -8,9 +8,12 @@ import { AuthService } from '../core/auth.service';
 
 @Injectable()
 export class TopicService {
+  requestType: string;
   constructor(private http: HttpClient, private authoSv: AuthService) {
+    this.requestType = 'recent';
   }
   private topicListUrl = 'http://localhost:8080/topic/listTopic';
+  private topicRecentListUrl = 'http://localhost:8080/topic/recentTopics';
   private topicDetailUrl = 'http://localhost:8080/topic/topicDetail';
   private topicCreatelUrl = 'http://localhost:8080/topic/create';
   private topicListSizeUrl = 'http://localhost:8080/topic/listTopicSize';
@@ -21,8 +24,8 @@ export class TopicService {
    * getListTopic
    * Get List Topic for Current Semester
    */
-  public getListTopic(): Observable<Topic[]> {
-    return this.http.get<Topic[]>(this.topicListUrl);
+  public getListTopic(profId: Number): Observable<Topic[]> {
+    return this.http.get<Topic[]>(this.topicRecentListUrl  + '?profId='  + profId);
   }
 
   /**
@@ -34,9 +37,13 @@ export class TopicService {
 
   /**
    * getListTopicBySemesterAndProf
-   */
+  */
   public getListTopicBySemesterAndProf(sem: number, profId: number): Observable<Topic[]>  {
-    return this.http.get<Topic[]>(this.topicListUrl + '?semno=' + sem + '&profId=' + profId + '');
+    if (this.requestType === 'recent') {
+      return this.getListTopic(profId);
+    } else if (this.requestType === 'history') {
+      return this.http.get<Topic[]>(this.topicListUrl + '?semno=' + sem + '&profId=' + profId + '');
+    }
   }
 
   public createTopic(topicDetail: TopicDetail) {

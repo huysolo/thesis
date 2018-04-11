@@ -14,40 +14,35 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./manage-topic.component.css']
 })
 export class ManageTopicComponent implements OnInit {
-  public listSem: Observable<Semester[]>;
-  public topicLst: Observable<Topic[]>;
-  public profLst: Observable<ProfInfo[]>;
+  // public listSem: Observable<Semester[]>;
+  // public topicLst: Observable<Topic[]>;
+  // public profLst: Observable<ProfInfo[]>;
 
-  public selectedSem;
-  public selectedProfId;
+  // public selectedSem;
+  // public selectedProfId;
   constructor(public topicSv: TopicService, public commonSv: CommonService, public authoSv: AuthService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.route.params.subscribe(param => {
-      console.log(param);
-    });
-    this.selectedProfId = this.authoSv.isProfessor() ? this.authoSv.getProfID() : -1;
-    this.selectedSem = this.authoSv.isProfessor() ? -1 : -1;
-    this.topicLstInterval();
-    this.listSem = this.commonSv.getListSemester();
-    this.profLst = this.commonSv.getListProf();
+    // this.selectedProfId = this.authoSv.isProfessor() ? this.authoSv.getProfID() : -1;
+    // this.selectedSem = -1;
+    // this.topicLstInterval();
+    // this.listSem = this.commonSv.getListSemester();
+    // this.profLst = this.commonSv.getListProf();
   }
 
-  topicLstInterval(): void {
-    // setInterval(() => {
-      this.topicLst = this.topicSv.getListTopic();
-    // }, 300000);
-  }
+  // topicLstInterval(): void {
+  //     this.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
+  // }
 
-  onChangeSemester(sem) {
-    this.selectedSem = sem;
-    this.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
-  }
+  // onChangeSemester(sem) {
+  //   this.selectedSem = sem;
+  //   this.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
+  // }
 
-  onChangeProf(prof) {
-    this.selectedProfId = prof;
-    this.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
-  }
+  // onChangeProf(prof) {
+  //   this.selectedProfId = prof;
+  //   this.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
+  // }
 
 
 

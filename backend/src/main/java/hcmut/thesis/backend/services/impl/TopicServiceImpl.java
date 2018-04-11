@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,9 +37,6 @@ public class TopicServiceImpl implements TopicService {
     @Autowired
     StudentTopicSemRepo studentTopicSemRepo;
 
-    @Autowired
-    EntityManager entityManager;
-
 
 
     @Override
@@ -54,6 +50,18 @@ public class TopicServiceImpl implements TopicService {
         }
         if (profId != null && profId != -1) topicList.removeIf(topic -> topic.getIdProf() != profId);
         return topicList;
+    }
+
+    @Override
+    public List<Topic> getListTopicBySemester(Integer profId) {
+        List<Integer> semNo = semesterRepo.getCurrentApplySemester();
+        if(semNo.size() == 0) {
+            return null;
+        }
+        if (userSession.isProf()){
+            profId = userSession.getProf().getIdProfessor();
+        }
+        return getListTopicBySemester(semNo.get(0), profId);
     }
 
     @Override

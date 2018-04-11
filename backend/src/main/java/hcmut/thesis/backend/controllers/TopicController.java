@@ -21,6 +21,7 @@ public class TopicController {
 
     @Autowired
     UserSession userSession;
+
     @RequestMapping(value = "listTopic", method = RequestMethod.GET)
     List<Topic> getListTopic(
             @RequestParam(value = "semno", required = false) Integer semno,
@@ -29,6 +30,20 @@ public class TopicController {
         try {
             if (userSession.isUser()) {
                 return topicService.getListTopicBySemester(semno, profId);
+            } else {
+                return null;
+            }
+        } catch (NullPointerException e){
+            return null;
+        }
+    }
+    @RequestMapping(value = "recentTopics", method = RequestMethod.GET)
+    List<Topic> getListTopicRecent(
+            @RequestParam(value = "profId", required = false) Integer profId
+    ){
+        try {
+            if (userSession.isUser()) {
+                return topicService.getListTopicBySemester(profId);
             } else {
                 return null;
             }

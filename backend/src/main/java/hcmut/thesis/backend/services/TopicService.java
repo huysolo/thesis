@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 public interface TopicService {
     List<Topic> getListTopicBySemester(Integer semesterNo, Integer profId);
+    List<Topic> getListTopicBySemester(Integer profId);
     TopicDetail getTopicDetailById(Integer topId);
     HttpStatus setTopicDetail(TopicDetail topicDetail);
     HttpStatus applyToTopic(Integer topId, Integer studentId);
