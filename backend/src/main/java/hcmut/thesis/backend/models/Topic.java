@@ -11,6 +11,8 @@ public class Topic {
     private String sumary;
     private int idProf;
     private int idFaculty;
+    private Integer score;
+    private Integer semesterNo;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -90,5 +92,25 @@ public class Topic {
     public int hashCode() {
 
         return Objects.hash(idTop, title, stNumLimit, sumary, idProf, idFaculty);
+    }
+
+    @Basic
+    @Column(name = "score")
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    @Basic
+    @Column(name = "semester_no")
+    public Integer getSemesterNo() {
+        return semesterNo;
+    }
+
+    public void setSemesterNo(Integer semesterNo) {
+        this.semesterNo = semesterNo;
     }
 }

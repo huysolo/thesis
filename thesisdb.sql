@@ -189,11 +189,13 @@ create table topic
 (
   id_top       int auto_increment
     primary key,
-  title        varchar(150)    not null,
-  st_num_limit int default '0' not null,
-  sumary       varchar(200)    null,
-  id_prof      int             not null,
-  id_faculty   int             not null,
+  title        varchar(150)        not null,
+  st_num_limit int default '0'     not null,
+  sumary       varchar(200)        null,
+  id_prof      int                 not null,
+  id_faculty   int                 not null,
+  score        int(10) default '0' null,
+  semester_no  int(10)             null,
   constraint topic_id_top_uindex
   unique (id_top)
 )
@@ -270,8 +272,6 @@ create table user
   unique (id_user),
   constraint user_user_name_uindex
   unique (user_name),
-  constraint user_password_uindex
-  unique (password),
   constraint user_email_uindex
   unique (email)
 )

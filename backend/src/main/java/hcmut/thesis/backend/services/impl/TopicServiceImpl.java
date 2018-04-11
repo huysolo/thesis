@@ -16,8 +16,6 @@ import java.util.Optional;
 public class TopicServiceImpl implements TopicService {
     @Autowired
     TopicRepo topicRepo;
-    @Autowired
-    TopicSemesterRepo topicSemesterRepo;
 
     @Autowired
     TopicMissionRepo topicMissionRepo;
@@ -43,8 +41,7 @@ public class TopicServiceImpl implements TopicService {
     public List<Topic> getListTopicBySemester(Integer semesterNo, Integer profId) {
         List<Topic>  topicList;
         if (semesterNo != null && semesterNo != -1){
-            List<Integer> topId = topicSemesterRepo.findTopBySemesterNo(semesterNo);
-            topicList = topicRepo.findAllById(topId);
+            topicList = topicRepo.findTopBySemesterNo(semesterNo);
         } else {
             topicList = topicRepo.findAll();
         }
@@ -84,6 +81,7 @@ public class TopicServiceImpl implements TopicService {
         }
         Topic topic = topicDetail.getTopic();
         topic.setIdFaculty(userSession.getCurrentUserFalcuty());
+        topic.setSemesterNo(semesters.get(0));
         topicRepo.saveAndFlush(topic);
 
 
@@ -91,27 +89,28 @@ public class TopicServiceImpl implements TopicService {
         topicMissionRepo.saveAll(topicDetail.getTopicMission());
         topicDetail.getTopicRequirement().forEach(topicReqDetail -> topicReqDetail.setIdTopic(topic.getIdTop()));
         topicReqRepo.saveAll(topicDetail.getTopicRequirement());
-        TopicPerSemester topicPerSemester = new TopicPerSemester();
-        topicPerSemester.setIdTopic(topic.getIdTop());
-        topicPerSemester.setSemesterNo(semesters.get(0));
-        topicSemesterRepo.save(topicPerSemester);
         return HttpStatus.CREATED;
     }
 
     @Override
     public HttpStatus applyToTopic(Integer topId, Integer studentId) {
         List<Integer> semesters = semesterRepo.getCurrentApplySemester();
-        if (semesters.size() == 0) {
-            return HttpStatus.EXPECTATION_FAILED;
-        }
-        List<Integer> topicSemId = topicSemesterRepo.findTopicPerSemesterByIdTopicAndAndSemesterNo(topId, semesters.get(0));
-        if (topicSemId.size() == 0){
+        Optional<Topic> topicOp = topicRepo.findById(topId);
+        if (semesters.size() == 0 || !topicOp.isPresent() || !semesters.get(0).equals(topicOp.get().getSemesterNo())) {
             return HttpStatus.EXPECTATION_FAILED;
         }
 
         StudentTopicSem studentTopicSem = new StudentTopicSem();
+        List<StudentTopicSem> studentTopicSemList = studentTopicSemRepo.getStudentTopicSemByIdStudent(userSession.getStudent().getIdStudent());
+        for (StudentTopicSem st:
+             studentTopicSemList) {
+            Optional<Topic> topicOptional = topicRepo.findById(studentTopicSem.getIdTopicSem());
+            if (topicOptional.isPresent() && topicOptional.get().getSemesterNo().equals(semesters.get(0))){
+                return HttpStatus.EXPECTATION_FAILED;
+            }
+        }
         studentTopicSem.setIdStudent(studentId);
-        studentTopicSem.setIdTopicSem(topicSemId.get(0));
+        studentTopicSem.setIdTopicSem(topicOp.get().getIdTop());
         studentTopicSemRepo.save(studentTopicSem);
         return HttpStatus.CREATED;
     }
@@ -123,13 +122,13 @@ public class TopicServiceImpl implements TopicService {
             if (semesters.size() == 0) {
                 return null ;
             }
+            semesterNo = semesters.get(0);
         }
-        List<Integer> studentTopicSemsId = studentTopicSemRepo.getStudentTopicSemByIdStudent(userSession.getStudent().getIdStudent());
-        for (Integer stId :
-                studentTopicSemsId) {
-            TopicPerSemester topicPerSemester = topicSemesterRepo.findById(stId).get();
-            if (topicPerSemester.getSemesterNo().equals(semesterNo)){
-                return topicRepo.findById(topicPerSemester.getIdTopic()).get();
+        List<Topic> topicList = topicRepo.findTopBySemesterNo(semesterNo);
+        for (Topic topic :
+                topicList) {
+            if (studentTopicSemRepo.getStudentTopicSemByAll(userSession.getStudent().getIdStudent(), topic.getIdTop()).size() > 0){
+                return topic;
             }
         }
         return null;
