@@ -28,6 +28,11 @@
     </div>
   </form>
 </div>
+<div *ngIf="appliedTopic != null">
+  <h3 class="text-center">Applied Topic</h3>
+  <app-topic-content  [topic]="appliedTopic"></app-topic-content>
+  <br>
+</div>
 <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
     <li class="page-item disabled">
@@ -48,7 +53,7 @@
   </ul>
 </nav>
 <div *ngFor="let topic of topicLst | async; let i = index">
+  <app-topic-content [topic]="topic" [topicNo]="i" *ngIf="appliedTopic && topic.idTop != appliedTopic.idTop"></app-topic-content>
   <br>
-  <app-topic-content [topic]="topic" [topicNo]="i"></app-topic-content>
 </div>
 <app-create-topic></app-create-topic>

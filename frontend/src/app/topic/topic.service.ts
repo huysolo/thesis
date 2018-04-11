@@ -17,9 +17,18 @@ export class TopicService {
   private topicDetailUrl = 'http://localhost:8080/topic/topicDetail';
   private topicCreatelUrl = 'http://localhost:8080/topic/create';
   private topicListSizeUrl = 'http://localhost:8080/topic/listTopicSize';
-  private topicApply = 'http://localhost:8080/topic/apply';
+  private topicApplyUrl = 'http://localhost:8080/topic/apply';
+  private topicAppliedUrl = 'http://localhost:8080/topic/appliedTopic';
   private seletedPage: number;
   private pageSize: number;
+
+  /**
+   * getAppliedTopic
+   */
+  public getAppliedTopic(semno: Number): Observable<Topic> {
+    return this.http.get<Topic>(this.topicAppliedUrl +
+      (semno !== -1 ? '?semno=' + semno : ''));
+  }
   /**
    * getListTopic
    * Get List Topic for Current Semester
@@ -56,7 +65,7 @@ export class TopicService {
    * applyToTopic
    */
   public applyToTopic(topicId: Number) {
-    return this.http.post<any>(this.topicApply, topicId).map(res => {
+    return this.http.post<any>(this.topicApplyUrl, topicId).map(res => {
 
     });
   }

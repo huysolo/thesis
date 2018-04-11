@@ -90,7 +90,7 @@ public class TopicController {
         if(!userSession.isStudent()){
             return null;
         }
-        return topicService.getAppliedTopic(semno);
+        return topicService.getAppliedTopic(semno,  userSession.getStudent().getIdUser());
     }
 
 }

@@ -1,7 +1,12 @@
-<div class="w3-card-4 w3-hover-shadow" style="width:100%;">
+<div class="w3-card-4" style="width:100%;">
   <header class="w3-container">
     <div>
-      <h3 class="card-title pull-left">Topic {{topicNo}}: {{topic.title}}</h3>
+      <h4 class="card-title pull-left">
+          Topic
+        <ng-container *ngIf="topicNo">
+            {{topicNo}}
+        </ng-container>
+         : {{topic.title}}</h4>
       <div class="dropdown pull-right">
         <button class="btn btn-success active dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
           aria-expanded="false">
@@ -22,7 +27,7 @@
       <p class="card-text"><strong>Student subscription limit: </strong>{{topic.stNumLimit}}</p>
   </div>
 
-  <footer class="w3-container bg-light">
+  <!-- <footer class="w3-container bg-light">
     <h5>Footer</h5>
-  </footer>
+  </footer> -->
 </div>

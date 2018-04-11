@@ -99,16 +99,14 @@ public class TopicServiceImpl implements TopicService {
         if (semesters.size() == 0 || !topicOp.isPresent() || !semesters.get(0).equals(topicOp.get().getSemesterNo())) {
             return HttpStatus.EXPECTATION_FAILED;
         }
-
-        StudentTopicSem studentTopicSem = new StudentTopicSem();
-        List<StudentTopicSem> studentTopicSemList = studentTopicSemRepo.getStudentTopicSemByIdStudent(userSession.getStudent().getIdStudent());
-        for (StudentTopicSem st:
-             studentTopicSemList) {
-            Optional<Topic> topicOptional = topicRepo.findById(studentTopicSem.getIdTopicSem());
-            if (topicOptional.isPresent() && topicOptional.get().getSemesterNo().equals(semesters.get(0))){
+        List<Topic> topicList = topicRepo.findTopBySemesterNo(semesters.get(0));
+        for (Topic topic :
+                topicList) {
+            if(studentTopicSemRepo.getStudentTopicSemByAll(studentId, topic.getIdTop()).size() > 0){
                 return HttpStatus.EXPECTATION_FAILED;
             }
         }
+        StudentTopicSem studentTopicSem = new StudentTopicSem();
         studentTopicSem.setIdStudent(studentId);
         studentTopicSem.setIdTopicSem(topicOp.get().getIdTop());
         studentTopicSemRepo.save(studentTopicSem);
@@ -116,7 +114,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Topic getAppliedTopic(Integer semesterNo) {
+    public Topic getAppliedTopic(Integer semesterNo, Integer studendId) {
         if (semesterNo == null){
             List<Integer> semesters = semesterRepo.getCurrentApplySemester();
             if (semesters.size() == 0) {
@@ -127,7 +125,7 @@ public class TopicServiceImpl implements TopicService {
         List<Topic> topicList = topicRepo.findTopBySemesterNo(semesterNo);
         for (Topic topic :
                 topicList) {
-            if (studentTopicSemRepo.getStudentTopicSemByAll(userSession.getStudent().getIdStudent(), topic.getIdTop()).size() > 0){
+            if (studentTopicSemRepo.getStudentTopicSemByAll(studendId, topic.getIdTop()).size() > 0){
                 return topic;
             }
         }

@@ -11,5 +11,5 @@ public interface TopicService {
     TopicDetail getTopicDetailById(Integer topId);
     HttpStatus setTopicDetail(TopicDetail topicDetail);
     HttpStatus applyToTopic(Integer topId, Integer studentId);
-    Topic getAppliedTopic(Integer semesterNo);
+    Topic getAppliedTopic(Integer semesterNo, Integer studendId);
 }
