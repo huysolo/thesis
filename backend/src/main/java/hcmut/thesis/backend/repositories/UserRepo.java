@@ -22,6 +22,9 @@ public interface UserRepo extends JpaRepository<User, Integer>{
     @Query("SELECT u FROM User u WHERE u.idFalcuty = :idFalcuty")
     List<User> getAllByIdFalcuty(@Param("idFalcuty") Integer idFalcuty);
 
+    @Query("SELECT u.idFalcuty FROM  User u WHERE u.idUser = :idUser")
+    Integer getIdFalcutyByIdUser(@Param("idUser") Integer idUser);
+
     @Query("SELECT u FROM User  u WHERE u.userName = :userName")
     User getUserByUsername(@Param("userName") String userName);
 

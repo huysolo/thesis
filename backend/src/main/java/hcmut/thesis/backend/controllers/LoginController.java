@@ -53,6 +53,7 @@ public class LoginController {
     public CurrUserInfo checkLogin(@RequestBody InfoLogin info) {        
         CurrUserInfo currUser = new CurrUserInfo();
         currUser = iuserDAO.getCurrUserInfo(info.getUsername(), info.getPassword());
+        System.out.println(info);
         return currUser;
     }
     
@@ -60,7 +61,7 @@ public class LoginController {
     @ResponseBody
     public UserEdit editProfile(@RequestBody CurrUserInfo currUserInfo) { 
        UserEdit userEdit = iuserDAO.CheckEditUser(currUserInfo);
-       if(userEdit.isEditEmail()== true && userEdit.isEditUsername() == true){
+       if(userEdit.isEditEmail() && userEdit.isEditUsername()){
            iuserDAO.EditUser(currUserInfo);
        }
        return userEdit;
@@ -69,11 +70,8 @@ public class LoginController {
     @RequestMapping(value = "/demo1")
     @ResponseBody
     public String doEdit1() {
-        CurrUserInfo u = iuserDAO.getCurrUserInfo("Min", "min");
-        System.out.println("Username: " + u.getUsername() + u.getFistname() + u.getEmail() + u.getDegree());
-        System.out.println("Token: " + u.getToken());
-        System.out.println("isStudent :" + loginService.parseJWT(u.getToken()).getIssuer());
-        System.out.println("Confirmed username: " + loginService.parseJWT(u.getToken()).getSubject());
+//        CurrUserInfo currUser = iuserDAO.getCurrUserInfo("Min", "min");
+//        System.out.println(currUser.g);
         return "MinBui";
     }
 }

@@ -13,6 +13,9 @@ public interface TopicSemesterRepo  extends JpaRepository<TopicPerSemester, Inte
     @Query("SELECT t.idTopic FROM TopicPerSemester t WHERE  t.semesterNo = :semesterNo")
     List<Integer> findTopBySemesterNo(@Param("semesterNo") Integer semesterNo);
 
+    @Query("SELECT t.idTopicSemester FROM TopicPerSemester t WHERE  t.idTopic = :idTopic AND t.semesterNo = :semesterNo")
+    List<Integer> findTopicPerSemesterByIdTopicAndAndSemesterNo(@Param("idTopic") Integer idTopic, @Param("semesterNo") Integer semesterNo);
+
 }
 
 

@@ -7,6 +7,7 @@ import { TopicService } from '../topic/topic.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 import { CommonService } from './common.service';
+import { AuthGuardUserService } from './auth-guard-user.service';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { CommonService } from './common.service';
   providers: [
     AuthService,
     TopicService,
-    CommonService
+    CommonService,
+    AuthGuardUserService
   ]
 })
 export class CoreModule { }

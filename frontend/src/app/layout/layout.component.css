@@ -1,4 +1,4 @@
-.list-group{
+/* .list-group{
   flex-grow: 0;
   padding: 0px;
 }
@@ -18,4 +18,19 @@
 dropdown-item{
   padding-left: 0px;
   padding-right: 0px;
+} */
+.navbar-sidenav{
+  margin-top: 51px !important;
+  background: #424242 !important;
+  height: 100vh !important;
+}
+.navbar-sidenav .nav-link{
+  /* padding: 16px; */
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
+}
+/* #sidenavToggler{
+  padding: 18px  !important;
+} */
+.nav-bar{
 }

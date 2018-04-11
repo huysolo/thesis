@@ -7,6 +7,9 @@ import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 export class AuthService {
   constructor() {
   }
+  public getUserId(): string {
+    return localStorage.getItem('userID');
+  }
   public getUsername(): string {
     return localStorage.getItem('username');
   }
@@ -31,8 +34,8 @@ export class AuthService {
   public getDegree(): string {
     return localStorage.getItem('degree');
   }
-  public getProfID(): string {
-    return localStorage.getItem('profID');
+  public getProfID(): number {
+    return parseInt(localStorage.getItem('profID'));
   }
   public getToken(): string {
     return localStorage.getItem('token');

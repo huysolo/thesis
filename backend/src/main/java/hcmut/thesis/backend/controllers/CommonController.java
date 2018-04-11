@@ -4,6 +4,7 @@ import hcmut.thesis.backend.models.Semester;
 import hcmut.thesis.backend.models.StudentTopicSem;
 import hcmut.thesis.backend.modelview.ProfInfo;
 import hcmut.thesis.backend.modelview.UserSession;
+
 import hcmut.thesis.backend.repositories.StudentTopicSemRepo;
 import hcmut.thesis.backend.services.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class CommonController {
     
      @Autowired
     StudentTopicSemRepo stdTopicSemRepo;
+    StudentTopicSemRepo studentTopicSemRepo;
 
     @RequestMapping(value = "listSemester", method = RequestMethod.GET)
     List<Semester> getListSemster(){
@@ -37,4 +39,10 @@ public class CommonController {
     List<StudentTopicSem> getaaa(@RequestParam("id") Integer id) {
         return stdTopicSemRepo.getAllByIdTopicSem(id);
     }
+
+    @RequestMapping(value = "currentSem", method = RequestMethod.GET)
+    Integer getCurrentTopicSemester(){
+        return commonService.getCurrentSem();
+    }
+
 }

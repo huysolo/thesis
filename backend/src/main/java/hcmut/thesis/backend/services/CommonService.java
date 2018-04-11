@@ -9,4 +9,5 @@ public interface CommonService {
     List<Semester> getListSemester();
     List<ProfInfo> getListProf();
     String getFullName(String fName, java.lang.String lName);
+    Integer getCurrentSem();
 }

@@ -6,4 +6,10 @@ export class TopicDetail {
   topic: Topic;
   topicMission: TopicMission[];
   topicRequirement: TopicRequirement[];
+  constructor() {
+    this.topic = new Topic();
+    this.topicMission = [];
+    this.topicRequirement = [];
+  }
+
 }

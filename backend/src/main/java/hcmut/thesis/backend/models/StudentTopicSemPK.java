@@ -1,19 +1,18 @@
 package hcmut.thesis.backend.models;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Objects;
 
-@Entity
-@Table(name = "student_topic_sem", schema = "thesis", catalog = "")
-@IdClass(StudentTopicSemPK.class)
-public class StudentTopicSem {
+public class StudentTopicSemPK implements Serializable {
     private int idStudent;
     private int idTopicSem;
-    private int teamLead;
 
-    @Id
-    @Basic
     @Column(name = "id_student")
+    @Basic
+    @Id
     public int getIdStudent() {
         return idStudent;
     }
@@ -22,8 +21,8 @@ public class StudentTopicSem {
         this.idStudent = idStudent;
     }
 
-    @Id
     @Column(name = "id_topic_sem")
+    @Id
     public int getIdTopicSem() {
         return idTopicSem;
     }
@@ -32,29 +31,18 @@ public class StudentTopicSem {
         this.idTopicSem = idTopicSem;
     }
 
-    @Basic
-    @Column(name = "team_lead")
-    public int getTeamLead() {
-        return teamLead;
-    }
-
-    public void setTeamLead(int teamLead) {
-        this.teamLead = teamLead;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StudentTopicSem that = (StudentTopicSem) o;
+        StudentTopicSemPK that = (StudentTopicSemPK) o;
         return idStudent == that.idStudent &&
-                idTopicSem == that.idTopicSem &&
-                teamLead == that.teamLead;
+                idTopicSem == that.idTopicSem;
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(idStudent, idTopicSem, teamLead);
+        return Objects.hash(idStudent, idTopicSem);
     }
 }

@@ -3,29 +3,86 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
+        <h4 class="modal-title mce-text-center" id="topicTitleId"> New Topic</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title mce-text-center" id="topicTitleId"> New Topic</h4>
       </div>
       <div class="modal-body">
         <div class="container-fluid">
-          <form action="" method="post"  >
+          <form #createTopicForm="ngForm" action="" method="post" (ngSubmit)="submitTopic(createTopic)">
+
             <div class="form-group">
-              <label for="title-topic">Title</label>
-              <input type="text" name="title-topic" id="title-topic" class="form-control" placeholder="Insert your title here" [(ngModel)]="lst[0]">
+              <label for="title-topic">
+                <h5>Title</h5>
+              </label>
+              <input type="text" name="title-topic" id="title-topic" class="form-control" placeholder="Insert your title here" [(ngModel)]="createTopic.topic.title"
+                required #title="ngModel">
+              <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
+                Title is required
+              </div>
             </div>
             <div class="form-group">
-              <label for="summary-topic">Sumary</label>
-              <textarea name="summary-topic" id="summary-topic" cols="10" rows="5" class="form-control" placeholder="Insert your summary here"></textarea>
+              <label for="stLim">
+                <h5> Student Limit</h5>
+              </label>
+              <input type="number" [(ngModel)]="createTopic.topic.stNumLimit" class="form-control" name="stLim" id="stLim" aria-describedby="helpStLim"
+                placeholder="Insert limit" required #stLim="ngModel">
+                <div [hidden]="stLim.valid || stLim.pristine" class="alert alert-danger">
+                    Limit of student is required
+                  </div>
+              <small id="helpStLim" class="form-text text-muted">Limit of student allowed to apply to the topic</small>
+            </div>
+            <div class="form-group">
+              <label for="summary-topic">
+                <h5>Sumary</h5>
+              </label>
+              <textarea name="summary-topic" id="summary-topic" cols="10" rows="5" class="form-control" placeholder="Insert your summary here"
+                [(ngModel)]="createTopic.topic.sumary" ></textarea>
+            </div>
+            <div class="form-group">
+              <label for="">
+                <h5>Requirements</h5>
+              </label>
+              <ng-container *ngFor="let req of createTopic.topicRequirement; let i = index">
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" [(ngModel)]="req.detail" [ngModelOptions]="{standalone: true}" required #require="ngModel">
+                  <div class="input-group-append">
+                    <i class="material-icons btn-icon" *ngIf="createTopic.topicRequirement.length > 1" (click)="removeReq(i)">remove</i>
+                  </div>
+                </div>
+                <div [hidden]="require.valid || require.pristine" class="alert alert-danger">
+                    Requirement is required
+                  </div>
+              </ng-container>
+              <input name="btnAddReq" id="btnAddReq" class="btn btn-outline-primary btn-sm pull-right" type="button" value="Add" (click)="addReq()">
+            </div>
+            <br>
+            <div class="form-group">
+              <label for="">
+                <h5>Missions</h5>
+              </label>
+              <ng-container *ngFor="let miss of createTopic.topicMission; let i = index">
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" [(ngModel)]="miss.detail" [ngModelOptions]="{standalone: true}" required #mission="ngModel">
+                  <div class="input-group-append">
+                    <i class="material-icons btn-icon" *ngIf="createTopic.topicMission.length > 1" (click)="removeMission(i)">remove</i>
+                  </div>
+                </div>
+                <div [hidden]="mission.valid || mission.pristine" class="alert alert-danger">
+                    Misson is required
+                  </div>
+              </ng-container>
+              <input name="btnAddReq" id="btnAddReq" class="btn btn-outline-primary btn-sm pull-right" type="button" value="Add" (click)="addMission()">
             </div>
           </form>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-success" (click)="submitTopic()" [disabled]="!createTopicForm.form.valid">Submit</button>
       </div>
+      <button type="submit" (click)="submitTopic()">aaaa</button>
     </div>
   </div>
 </div>

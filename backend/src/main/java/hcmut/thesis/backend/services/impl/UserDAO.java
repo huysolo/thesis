@@ -5,20 +5,20 @@
  */
 package hcmut.thesis.backend.services.impl;
 
-import hcmut.thesis.backend.services.IUserDAO;
-import hcmut.thesis.backend.models.Student;
 import hcmut.thesis.backend.models.Professor;
+import hcmut.thesis.backend.models.Student;
 import hcmut.thesis.backend.models.User;
-import hcmut.thesis.backend.repositories.StudentRepo;
-import hcmut.thesis.backend.repositories.UserRepo;
 import hcmut.thesis.backend.modelview.CurrUserInfo;
 import hcmut.thesis.backend.modelview.UserEdit;
 import hcmut.thesis.backend.repositories.ProfessorRepo;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import hcmut.thesis.backend.repositories.StudentRepo;
+import hcmut.thesis.backend.repositories.UserRepo;
+import hcmut.thesis.backend.services.IUserDAO;
 import hcmut.thesis.backend.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  *
@@ -178,4 +178,5 @@ public class UserDAO implements IUserDAO {
         }
         userRepo.save(user);
     }
+
 }

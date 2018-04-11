@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Topic } from '../../../models/Topic';
+import { TopicService } from '../../topic.service';
+import { AuthService } from '../../../core/auth.service';
 
 @Component({
   selector: 'app-topic-content',
@@ -9,9 +11,13 @@ import { Topic } from '../../../models/Topic';
 export class TopicContentComponent implements OnInit {
   @Input('topic') topic: Topic;
   @Input('topicNo') topicNo: number;
-  constructor() { }
+  constructor(public topicSv: TopicService, public authoSv: AuthService) { }
 
   ngOnInit() {
+  }
+
+  apply() {
+    this.topicSv.applyToTopic(this.topic.idTop).subscribe(data => {});
   }
 
 }
