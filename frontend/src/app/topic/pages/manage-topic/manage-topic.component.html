@@ -49,6 +49,7 @@
     </ul>
   </nav>
   <div *ngFor="let topic of topicLst | async; let i = index">
+    <br>
     <app-topic-content [topic]="topic" [topicNo]="i"></app-topic-content>
   </div>
 </div>

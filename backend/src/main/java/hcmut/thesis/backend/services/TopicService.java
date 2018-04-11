@@ -9,4 +9,6 @@ public interface TopicService {
     List<Topic> getListTopicBySemester(Integer semesterNo, Integer profId);
     TopicDetail getTopicDetailById(Integer topId);
     HttpStatus setTopicDetail(TopicDetail topicDetail);
+    HttpStatus applyToTopic(Integer topId, Integer studentId);
+    Topic getAppliedTopic(Integer semesterNo);
 }

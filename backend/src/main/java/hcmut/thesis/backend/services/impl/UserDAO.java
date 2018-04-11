@@ -10,7 +10,6 @@ import hcmut.thesis.backend.models.Student;
 import hcmut.thesis.backend.models.User;
 import hcmut.thesis.backend.modelview.CurrUserInfo;
 import hcmut.thesis.backend.modelview.UserEdit;
-import hcmut.thesis.backend.modelview.UserSession;
 import hcmut.thesis.backend.repositories.ProfessorRepo;
 import hcmut.thesis.backend.repositories.StudentRepo;
 import hcmut.thesis.backend.repositories.UserRepo;
@@ -39,9 +38,6 @@ public class UserDAO implements IUserDAO {
     
     @Autowired
     ProfessorRepo profRepo;
-
-    @Autowired
-    private UserSession userSession;
 
     @Override
     public User getUser(String username, String password) {
@@ -123,7 +119,7 @@ public class UserDAO implements IUserDAO {
         return null;  
     }
     
-     @Override
+    @Override
     public Student findStudentByUserId(int id){
         List<Student> listStudent = studentRepo.findAll();
         for(int i = 0; i< listStudent.size(); i++){
@@ -170,11 +166,6 @@ public class UserDAO implements IUserDAO {
             profRepo.save(prof);
         }
         userRepo.save(user);
-    }
-
-    @Override
-    public Integer getCurrentUserFalcuty() {
-        return userRepo.getIdFalcutyByIdUser(userSession.getUserID());
     }
 
 }

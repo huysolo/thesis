@@ -1,12 +1,9 @@
 package hcmut.thesis.backend.services.impl;
 
-import hcmut.thesis.backend.models.Topic;
-import hcmut.thesis.backend.models.TopicMission;
-import hcmut.thesis.backend.models.TopicPerSemester;
-import hcmut.thesis.backend.models.TopicRequirement;
+import hcmut.thesis.backend.models.*;
 import hcmut.thesis.backend.modelview.TopicDetail;
+import hcmut.thesis.backend.modelview.UserSession;
 import hcmut.thesis.backend.repositories.*;
-import hcmut.thesis.backend.services.IUserDAO;
 import hcmut.thesis.backend.services.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,13 +30,18 @@ public class TopicServiceImpl implements TopicService {
     ProfessorRepo professorRepo;
 
     @Autowired
-    IUserDAO userDAO;
+    UserSession userSession;
 
     @Autowired
     SemesterRepo semesterRepo;
 
     @Autowired
+    StudentTopicSemRepo studentTopicSemRepo;
+
+    @Autowired
     EntityManager entityManager;
+
+
 
     @Override
     public List<Topic> getListTopicBySemester(Integer semesterNo, Integer profId) {
@@ -73,11 +75,7 @@ public class TopicServiceImpl implements TopicService {
             return HttpStatus.EXPECTATION_FAILED;
         }
         Topic topic = topicDetail.getTopic();
-//        topic.setIdProf(topicDetail.getTopic().getIdProf());
-//        topic.setStNumLimit(topicDetail.getTopic().getStNumLimit());
-//        topic.setSumary(topicDetail.getTopic().getSumary());
-//        topic.setTitle(topicDetail.getTopic().getTitle());
-        topic.setIdFaculty(userDAO.getCurrentUserFalcuty());
+        topic.setIdFaculty(userSession.getCurrentUserFalcuty());
         topicRepo.saveAndFlush(topic);
 
 
@@ -90,5 +88,42 @@ public class TopicServiceImpl implements TopicService {
         topicPerSemester.setSemesterNo(semesters.get(0));
         topicSemesterRepo.save(topicPerSemester);
         return HttpStatus.CREATED;
+    }
+
+    @Override
+    public HttpStatus applyToTopic(Integer topId, Integer studentId) {
+        List<Integer> semesters = semesterRepo.getCurrentApplySemester();
+        if (semesters.size() == 0) {
+            return HttpStatus.EXPECTATION_FAILED;
+        }
+        List<Integer> topicSemId = topicSemesterRepo.findTopicPerSemesterByIdTopicAndAndSemesterNo(topId, semesters.get(0));
+        if (topicSemId.size() == 0){
+            return HttpStatus.EXPECTATION_FAILED;
+        }
+
+        StudentTopicSem studentTopicSem = new StudentTopicSem();
+        studentTopicSem.setIdStudent(studentId);
+        studentTopicSem.setIdTopicSem(topicSemId.get(0));
+        studentTopicSemRepo.save(studentTopicSem);
+        return HttpStatus.CREATED;
+    }
+
+    @Override
+    public Topic getAppliedTopic(Integer semesterNo) {
+        if (semesterNo == null){
+            List<Integer> semesters = semesterRepo.getCurrentApplySemester();
+            if (semesters.size() == 0) {
+                return null ;
+            }
+        }
+        List<Integer> studentTopicSemsId = studentTopicSemRepo.getStudentTopicSemByIdStudent(userSession.getStudent().getIdStudent());
+        for (Integer stId :
+                studentTopicSemsId) {
+            TopicPerSemester topicPerSemester = topicSemesterRepo.findById(stId).get();
+            if (topicPerSemester.getSemesterNo().equals(semesterNo)){
+                return topicRepo.findById(topicPerSemester.getIdTopic()).get();
+            }
+        }
+        return null;
     }
 }

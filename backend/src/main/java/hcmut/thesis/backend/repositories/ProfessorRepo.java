@@ -17,4 +17,5 @@ import org.springframework.data.repository.query.Param;
 public interface ProfessorRepo extends JpaRepository<Professor, Integer> {
     @Query("SELECT p.idProfessor FROM Professor p WHERE p.idUser = :idUser")
     Integer getProfessorByIdUser(@Param("idUser") Integer idUser);
+
 }

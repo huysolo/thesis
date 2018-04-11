@@ -1,6 +1,7 @@
 package hcmut.thesis.backend.services.impl;
 
 import hcmut.thesis.backend.models.Semester;
+import hcmut.thesis.backend.models.User;
 import hcmut.thesis.backend.modelview.ProfInfo;
 import hcmut.thesis.backend.modelview.UserSession;
 import hcmut.thesis.backend.repositories.ProfessorRepo;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommonServiceImpl implements CommonService {
@@ -25,7 +27,8 @@ public class CommonServiceImpl implements CommonService {
     @Autowired
     private UserSession userSession;
     @Autowired
-    private IUserDAO userDAO;
+    private  IUserDAO userDAO;
+
 
     @Override
     public List<Semester> getListSemester() {
@@ -35,13 +38,17 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public List<ProfInfo> getListProf() {
         List<ProfInfo> result = new ArrayList<>();
-        Integer idFalcuty = userDAO.findUserByUserId(userSession.getUserID()).getIdFalcuty();
-        userRepo.getAllByIdFalcuty(idFalcuty).forEach(user -> {
-            ProfInfo profInfo = new ProfInfo();
-
-            profInfo.setProfessor(userDAO.findProfByUserId(user.getIdUser()));
-            profInfo.setName(getFullName(user.getFirstName(), user.getLastName()));
-            result.add(profInfo);
+        Integer idFalcuty = userSession.getCurrentUserFalcuty();
+        professorRepo.findAll().forEach(professor -> {
+            Optional<User> user = userRepo.findById(professor.getIdUser());
+            if (user.isPresent()){
+                if (user.get().getIdFalcuty().equals(idFalcuty)){
+                    ProfInfo profInfo = new ProfInfo();
+                    profInfo.setProfessor(userDAO.findProfByUserId(user.get().getIdUser()));
+                    profInfo.setName(getFullName(user.get().getFirstName(), user.get().getLastName()));
+                    result.add(profInfo);
+                }
+            }
         });
         return result;
     }

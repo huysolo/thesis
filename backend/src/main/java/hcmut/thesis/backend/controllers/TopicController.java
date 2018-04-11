@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityExistsException;
 import java.util.List;
 
 @CrossOrigin
@@ -49,12 +50,32 @@ public class TopicController {
     @ResponseBody
     HttpStatus setTopicDetail(@RequestBody String topicDetail) {
         if (!userSession.isProf()){
-            return HttpStatus.UNAUTHORIZED;
+            return HttpStatus.FORBIDDEN;
         }
-        Gson obj = new Gson();
-        TopicDetail topicDetailJS = obj.fromJson(topicDetail, TopicDetail.class);
-        return topicService.setTopicDetail(topicDetailJS);
+        try {
+            Gson obj = new Gson();
+            TopicDetail topicDetailJS = obj.fromJson(topicDetail, TopicDetail.class);
+            return topicService.setTopicDetail(topicDetailJS);
+        } catch (EntityExistsException e){
+            return HttpStatus.EXPECTATION_FAILED;
+        }
 
+    }
+
+    @PostMapping(value = "apply")
+    HttpStatus applyToTopic(@RequestBody Integer topicId){
+        if(!userSession.isStudent()){
+            return HttpStatus.FORBIDDEN;
+        }
+        return topicService.applyToTopic(topicId, userSession.getProf().getIdProfessor());
+    }
+
+    @GetMapping(value = "appliedTopic")
+    Topic getAppliedTopic(@RequestParam(value = "semno", required = false) Integer semno){
+        if(!userSession.isStudent()){
+            return null;
+        }
+        return topicService.getAppliedTopic(semno);
     }
 
 }
