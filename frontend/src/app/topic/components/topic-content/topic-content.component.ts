@@ -11,13 +11,23 @@ import { AuthService } from '../../../core/auth.service';
 export class TopicContentComponent implements OnInit {
   @Input('topic') topic: Topic;
   @Input('topicNo') topicNo: number;
+  @Input('semno') semno: Number;
   constructor(public topicSv: TopicService, public authoSv: AuthService) { }
 
   ngOnInit() {
   }
 
   apply() {
-    this.topicSv.applyToTopic(this.topic.idTop).subscribe(data => {});
+    this.topicSv.applyToTopic(this.topic.idTop).subscribe(data => {
+      if (data === 'CREATED') {
+        this.topicSv.getAppliedTopic(this.semno).subscribe( topic => {
+          this.topicSv.appliedTopic = topic;
+        });
+      }
+    });
+  }
+  reject(){
+
   }
 
 }

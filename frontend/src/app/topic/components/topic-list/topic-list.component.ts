@@ -15,8 +15,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TopicListComponent implements OnInit {
   public listSem: Observable<Semester[]>;
-  public topicLst: Observable<Topic[]>;
-  public appliedTopic: Topic;
+  // public topicLst: Observable<Topic[]>;
+  // public appliedTopic: Topic;
   public profLst: Observable<ProfInfo[]>;
 
   public selectedSem;
@@ -30,16 +30,17 @@ export class TopicListComponent implements OnInit {
       this.listSem = this.commonSv.getListSemester();
       this.profLst = this.commonSv.getListProf();
       this.topicSv.requestType = params['typ'];
+      this.topicSv.appliedTopic = null;
       if (this.topicSv.requestType === 'recent') {
         this.getAppliedTopic();
       }
-      this.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
+      this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
     });
   }
 
   onChangeSemester(sem) {
     this.selectedSem = sem;
-    this.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
+    this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
     if (this.selectedSem !== -1) {
       this.getAppliedTopic();
     }
@@ -47,12 +48,19 @@ export class TopicListComponent implements OnInit {
 
   onChangeProf(prof) {
     this.selectedProfId = prof;
-    this.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
+    this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
   }
 
   getAppliedTopic() {
     this.topicSv.getAppliedTopic(this.selectedSem).subscribe(topic => {
-      this.appliedTopic = topic;
+      this.topicSv.appliedTopic = topic;
     });
+  }
+
+  validTopic(topicId: number) {
+    if (this.topicSv.appliedTopic == null) {
+      return true;
+    }
+    return topicId !== this.topicSv.appliedTopic.idTop;
   }
 }

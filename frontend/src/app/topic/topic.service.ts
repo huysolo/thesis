@@ -12,6 +12,8 @@ export class TopicService {
   constructor(private http: HttpClient, private authoSv: AuthService) {
     this.requestType = 'recent';
   }
+  appliedTopic: Topic;
+  topicLst: Observable<Topic[]>;
   private topicListUrl = 'http://localhost:8080/topic/listTopic';
   private topicRecentListUrl = 'http://localhost:8080/topic/recentTopics';
   private topicDetailUrl = 'http://localhost:8080/topic/topicDetail';
@@ -58,6 +60,7 @@ export class TopicService {
   public createTopic(topicDetail: TopicDetail) {
     return this.http.post<any>(this.topicCreatelUrl, topicDetail)
       .map(res => {
+        return res;
       });
   }
 
@@ -66,7 +69,7 @@ export class TopicService {
    */
   public applyToTopic(topicId: Number) {
     return this.http.post<any>(this.topicApplyUrl, topicId).map(res => {
-
+      return res;
     });
   }
 

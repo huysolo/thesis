@@ -1,36 +1,11 @@
-<a class="float" *ngIf="topicSv.requestType === 'recent'">
+<a class="float" *ngIf="topicSv.requestType === 'recent' && authoSv.isProfessor()">
   <button type="button" class="btn btn-primary bmd-btn-fab" name="new" id="new" data-toggle="modal" data-target="#createTopic">
     <i class="material-icons">add</i>
   </button>
 </a>
-<div *ngIf="topicSv.requestType === 'history'">
-  <form>
-    <div class="form-row" id="filter">
-      <div class="col-md-2  form-group">
-        <h3>Filter:</h3>
-      </div>
-      <div class="col-md-3 form-group">
-        <select class="form-control" (change)="onChangeSemester($event.target.value)">
-          <option selected [value]="-1">All Semester</option>
-          <option *ngFor="let sem of listSem | async" [value]="sem.semesterNo">Semester No: {{sem.semesterNo}}</option>
-        </select>
-      </div>
-      <div class="col-md-3 form-group">
-        <select class="form-control" (change)="onChangeProf($event.target.value)" *ngIf="authoSv.isStudent()">
-          <option selected [value]="-1">All Proffesor</option>
-          <option *ngFor="let prof of profLst | async" [value]="prof.professor.idProfessor">
-            {{prof.name}}
-          </option>
-        </select>
-      </div>
-      <div class="col-md-4">
-      </div>
-    </div>
-  </form>
-</div>
-<div *ngIf="appliedTopic != null">
+<div *ngIf="topicSv.appliedTopic != null">
   <h3 class="text-center">Applied Topic</h3>
-  <app-topic-content  [topic]="appliedTopic"></app-topic-content>
+  <app-topic-content [topic]="topicSv.appliedTopic"></app-topic-content>
   <br>
 </div>
 <nav aria-label="Page navigation example">
@@ -52,8 +27,42 @@
     </li>
   </ul>
 </nav>
-<div *ngFor="let topic of topicLst | async; let i = index">
-  <app-topic-content [topic]="topic" [topicNo]="i" *ngIf="appliedTopic && topic.idTop != appliedTopic.idTop"></app-topic-content>
+
+<div >
+  <form *ngIf="topicSv.requestType === 'history'">
+    <div class="form-row" id="filter">
+      <div class="col-md-2  form-group">
+        <h3>Filter:</h3>
+      </div>
+      <div class="col-md-3 form-group">
+        <select class="form-control" (change)="onChangeSemester($event.target.value)">
+          <option selected [value]="-1">All Semester</option>
+          <option *ngFor="let sem of listSem | async" [value]="sem.semesterNo">Semester No: {{sem.semesterNo}}</option>
+        </select>
+      </div>
+      <div class="col-md-3 form-group">
+        <select class="form-control" (change)="onChangeProf($event.target.value)" *ngIf="authoSv.isStudent()">
+          <option selected [value]="-1">All Proffesor</option>
+          <option *ngFor="let prof of profLst | async" [value]="prof.professor.idProfessor">
+            {{prof.name}}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-4 form-check">
+
+      </div>
+    </div>
+
+  </form>
+  <form *ngIf="topicSv.requestType === 'recent'">
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="avail">
+      <label class="form-check-label" for="avail">Unavailable Topic</label>
+    </div>
+  </form>
+</div>
+<div *ngFor="let topic of topicSv.topicLst | async; let i = index">
+  <app-topic-content [topic]="topic" [topicNo]="i" *ngIf="validTopic(topic.idTop)" [semno]="selectedSem"></app-topic-content>
   <br>
 </div>
 <app-create-topic></app-create-topic>

@@ -13,8 +13,9 @@
           Option
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <ng-container *ngIf="topicSv.requestType === 'recent'">
-            <a class="dropdown-item" (click)="apply()" >Join</a>
+          <ng-container *ngIf="topicSv.requestType === 'recent' && authoSv.isStudent()">
+            <a class="dropdown-item" *ngIf="topicSv.appliedTopic == null" (click)="apply()" >Join</a>
+            <a class="dropdown-item"  *ngIf="topicSv.appliedTopic != null && topicSv.appliedTopic.idTop == topic.idTop" (click)="reject()" >Reject</a>
           </ng-container>
           <a class="dropdown-item" href="#">Detail</a>
         </div>
