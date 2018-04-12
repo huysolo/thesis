@@ -16,7 +16,7 @@ public class TaskInfo {
     public String title;
     public String description;
     public Timestamp deadline;
-    public List<String> student; 
+    public List<StudentDoTask> student; 
     
     public String getTitle(){
         return this.title;
@@ -24,7 +24,7 @@ public class TaskInfo {
     public String getDescription(){
         return this.description;
     }
-    public List<String> getStudent(){
+    public List<StudentDoTask> getStudent(){
         return this.student;
     }
     public Timestamp getDeadline(){
@@ -37,7 +37,7 @@ public class TaskInfo {
     public void setDescription(String description){
         this.description = description;
     }
-    public void setStudent(List<String> student){
+    public void setStudent(List<StudentDoTask> student){
         this.student = student;
     }
     public void setDeadline(Timestamp deadline){

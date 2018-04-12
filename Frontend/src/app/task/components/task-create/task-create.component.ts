@@ -22,13 +22,13 @@ export class TaskCreateComponent implements OnInit {
       deadline: ['2017-11-16T20:00', Validators.required]
     });
 
-    this.taskService.getStdDoTask().subscribe(
-      res => {
-        console.log(res);
-        this.taskStd = res;
-        console.log(this.taskStd);
-      }
-    );
+    // this.taskService.getStdDoTask().subscribe(
+    //   res => {
+    //     console.log(res);
+    //     this.taskStd = res;
+    //     console.log(this.taskStd);
+    //   }
+    // );
   }
 
   ngOnInit() {

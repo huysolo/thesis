@@ -8,13 +8,13 @@ export class TaskService {
 
   constructor(private httpClient: HttpClient) { }
 
-  createtask(form, listStd) {
+  createtask(task: TaskInfo) {
     const loginUrl = `http://localhost:8080/crttask`;
     return this.httpClient.post<any>(loginUrl, {
-      title: form.title,
-      description: form.description,
-      deadline: form.deadline,
-      student: listStd
+      title: task.title,
+      description: task.description,
+      deadline: task.deadline,
+      student: task.student
     });
   }
 
@@ -22,16 +22,11 @@ export class TaskService {
     const loginUrl = `http://localhost:8080/getlisttask`;
     return this.httpClient.post<any>(loginUrl, {
       title: 'Min'
-    }).subscribe(
-      res => {
-
-        this.taskStdList = res;
-      }
-    );
+    });
   }
 
-  getStdDoTask() {
-    const loginUrl = `http://localhost:8080/stddotask`;
+  getAllStudentDoTopic() {
+    const loginUrl = `http://localhost:8080/getallstd`;
     return this.httpClient.post<any>(loginUrl, {});
   }
 

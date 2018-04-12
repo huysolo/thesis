@@ -18,7 +18,8 @@ import java.util.List;
  * @author MinBui
  */
 @Repository
-public interface UserRepo extends JpaRepository<User, Integer>{
+public interface UserRepo extends JpaRepository<User, Integer> {
+
     @Query("SELECT u FROM User u WHERE u.idFalcuty = :idFalcuty")
     List<User> getAllByIdFalcuty(@Param("idFalcuty") Integer idFalcuty);
 
@@ -28,5 +29,7 @@ public interface UserRepo extends JpaRepository<User, Integer>{
     @Query("SELECT u FROM User  u WHERE u.userName = :userName")
     User getUserByUsername(@Param("userName") String userName);
 
-}
+    @Query("SELECT u.userName FROM User u WHERE u.idUser = :UserID")
+    String getUserNameFromID(@Param("UserID") Integer UserID);
 
+}

@@ -37,7 +37,7 @@ public class CommonController {
     
     @RequestMapping(value = "aaa", method = RequestMethod.GET)
     List<StudentTopicSem> getaaa(@RequestParam("id") Integer id) {
-        return stdTopicSemRepo.getAllByIdTopicSem(id);
+        return null;
     }
 
     @RequestMapping(value = "currentSem", method = RequestMethod.GET)

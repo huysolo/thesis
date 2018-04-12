@@ -6,10 +6,14 @@
 package hcmut.thesis.backend.controllers;
 
 import hcmut.thesis.backend.models.StudentTopicSem;
+import hcmut.thesis.backend.models.Task;
 import hcmut.thesis.backend.modelview.StudentDoTask;
 import hcmut.thesis.backend.modelview.TaskInfo;
+import hcmut.thesis.backend.repositories.StudentTaskRepo;
 import hcmut.thesis.backend.repositories.StudentTopicSemRepo;
+import hcmut.thesis.backend.repositories.TaskRepo;
 import hcmut.thesis.backend.services.ITaskDAO;
+import hcmut.thesis.backend.services.TaskService;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,36 +35,41 @@ public class TaskController {
 
     @Autowired
     ITaskDAO itaskDAO;
+    
+    @Autowired
+    TaskRepo taskRepo;
+    
+    @Autowired
+    TaskService taskService;
+    
+    @Autowired
+    StudentTaskRepo stdTaskRepo;
 
     @Autowired
     StudentTopicSemRepo stdTopicSemRepo;
 
     @RequestMapping(value = "/crttask", method = RequestMethod.POST)
     @ResponseBody
-    public String createTask(@RequestBody TaskInfo createInfo) {
+    public TaskInfo createTask(@RequestBody TaskInfo createInfo) {
         itaskDAO.createTask(createInfo);
-        return "MinBui";
+        return createInfo;
     }
 
     @RequestMapping(value = "/getlisttask", method = RequestMethod.POST)
     @ResponseBody
-    public List<TaskInfo> getListTask(@RequestBody String t) {
-        List<TaskInfo> taskList = new ArrayList<TaskInfo>();
-
-        return taskList;
+    public List<TaskInfo> getListTask() {
+        return taskService.getListTaskFromIDTopic(1);
     }
 
-    @RequestMapping(value = "/stddotask", method = RequestMethod.POST)
+    @RequestMapping(value = "/getallstd", method = RequestMethod.POST)
     @ResponseBody
-    public List<StudentTopicSem> studentDoTask() {
-        return stdTopicSemRepo.getAllByIdTopicSem(1);
+    public List<StudentDoTask> getAllStudentDoTopic() {
+        return taskService.getAllStudentDoTaskFromTopicID(1);
     }
 
     @RequestMapping(value = "/tasktest")
     @ResponseBody
-    public List<StudentTopicSem> createTasktest() {
-        return null;
+    public List<StudentDoTask> createTasktest(@RequestParam("id") Integer id) {
+        return taskService.getAllStudentDoTaskFromTopicID(id);
     }
-    
-
 }

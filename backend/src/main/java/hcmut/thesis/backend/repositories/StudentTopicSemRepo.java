@@ -24,7 +24,7 @@ import java.util.List;
 public interface StudentTopicSemRepo extends JpaRepository<StudentTopicSem, Integer> {
 
     @Query("SELECT st FROM StudentTopicSem st WHERE st.idTopicSem = :idTopicSem")
-    List<StudentTopicSem> getAllByIdTopicSem(@Param("idTopicSem") Integer idTopicSem);
+    List<StudentTopicSem> getAllStudentByIdTopicSem(@Param("idTopicSem") Integer idTopicSem);
 
     @Query("SELECT st FROM StudentTopicSem st WHERE st.idStudent = :idStudent")
     List<StudentTopicSem> getStudentTopicSemByIdStudent(@Param("idStudent") Integer idStudent);

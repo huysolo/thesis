@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {TaskCreateComponent} from '../task-create/task-create.component';
-import {TaskInfo} from '../task-info';
+import { TaskCreateComponent } from '../task-create/task-create.component';
+import { TaskInfo } from '../task-info';
 import { TaskService } from '../../task.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { StudentDoTask } from '../student-do-task';
 
 @Component({
   selector: 'app-task-content',
@@ -10,30 +11,37 @@ import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms'
   styleUrls: ['./task-content.component.css']
 })
 export class TaskContentComponent implements OnInit {
-  showFiller: Boolean ;
+  showFiller: Boolean;
   crttaskForm: FormGroup;
   checkStyle: String;
-  listStd = [{name: 'Min', class: ''} , {name: 'Min1', class: ''} , {name: 'Min2', class: ''} , {name: 'Min3', class: ''} ];
   listChecked: String[] = [];
-  taskStd: Array<any>;
-  private taskList: Array<any> = [{title: 'AAA', description: 'BBB', deadline: 'CCC', student: ['Min', 'Min1', 'Min2', 'Min3']}];
+  listAllStudent: Array<any>;
+  listTask: Array<any>;
   isCreate: String;
 
-  constructor(public taskService: TaskService, private fb: FormBuilder) {
+  createTask: TaskInfo;
+  listStdDoTask: Array<StudentDoTask> = [];
+
+
+  constructor( public taskService: TaskService, private fb: FormBuilder) {
     this.crttaskForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
       deadline: ['2017-11-16T20:00', Validators.required]
     });
 
-    this.taskService.getStdDoTask().subscribe(
+    this.taskService.getAllStudentDoTopic().subscribe(
       res => {
-        console.log(res);
-        this.taskStd = res;
-        console.log(this.taskStd);
+        this.listAllStudent = res;
       }
     );
-   }
+
+    this.taskService.getlistTask().subscribe(
+      res => {
+        this.listTask = res;
+      }
+    );
+  }
 
   ngOnInit() {
   }
@@ -41,16 +49,17 @@ export class TaskContentComponent implements OnInit {
   checked(list): void {
     if (list.class === undefined) {
       list.class = 'checked';
-      this.listChecked.push(list.idStudent);
+      const temp = <StudentDoTask>({stdName: list.stdName, archive: null, uploadDate: null});
+      this.listStdDoTask.push(temp);
     } else {
       list.class = undefined;
-      for (let i = 0; i < this.listChecked.length; i++) {
-        if (this.listChecked[i] === list.idStudent) {
-          this.listChecked.splice(i, 1);
+      for (let i = 0; i < this.listStdDoTask.length; i++) {
+        if (this.listStdDoTask[i].stdName === list.stdName) {
+          this.listStdDoTask.splice(i, 1);
         }
       }
     }
-    console.log(this.listChecked);
+    console.log(this.listStdDoTask);
   }
 
   isCreateTask() {
@@ -62,8 +71,10 @@ export class TaskContentComponent implements OnInit {
   }
 
   createtask(form) {
-    this.taskService.createtask(form, this.listChecked).subscribe(
+    const temp = <TaskInfo>({title: form.title, description: form.description, deadline: form.deadline, student: this.listStdDoTask});
+    this.taskService.createtask(temp).subscribe(
       res => {
+        this.listTask.push(res);
       }
     );
   }

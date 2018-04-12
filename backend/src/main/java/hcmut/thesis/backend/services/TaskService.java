@@ -13,8 +13,9 @@ import java.util.List;
  *
  * @author MinBui
  */
-public interface ITaskDAO {
+public interface TaskService {
+    List<StudentDoTask> getStudentDoTaskFromTaskID(int taskID);
+    List<TaskInfo> getListTaskFromIDTopic(int topicID);
+    List<StudentDoTask> getAllStudentDoTaskFromTopicID(int topicID);
     void createTask(TaskInfo taskInfo);
-    void createStudentTask(int taskID, List<StudentDoTask> std);
-    List<StudentDoTask> getStudentDoTask (int topicID);
 }

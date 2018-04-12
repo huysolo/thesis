@@ -28,7 +28,7 @@
               </p>
               <div class="scrollmenu">
                 <ul id="myUL">
-                  <li *ngFor="let list of taskStd" class="{{list.class}}" (click)="checked(list)">{{list.idStudent}}</li>
+                  <li *ngFor="let list of listAllStudent" class="{{list.class}}" (click)="checked(list)">{{list.stdName}}</li>
                 </ul>
               </div>
               <p>
@@ -39,7 +39,7 @@
                   <button type="submit" (click)="isCreateTask()" class="w3-button w3-block w3-green">Create</button>
                 </div>
                 <div class="w3-half">
-                  <button type="button" (click)="isCreateTask()" class="w3-button w3-block w3-red">Can't come</button>
+                  <button type="button" (click)="isCreateTask()" class="w3-button w3-block w3-red">Cancel</button>
                 </div>
               </div>
             </form>
@@ -47,7 +47,7 @@
         </div>
       </div>
 
-      <div class="w3-container w3-card w3-white w3-round w3-margin" *ngFor="let task of taskList">
+      <div class="w3-container w3-card w3-white w3-round w3-margin" *ngFor="let task of listTask">
         <br>
         <img src="assets/img/6.jpg" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
         <span class="w3-right w3-opacity">1 min</span>
@@ -69,14 +69,13 @@
             <b>Students :</b>
           </h5>
           <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
-            <tr *ngFor="let student of task.student">
+            <tr *ngFor="let std of task.student">
               <td>
-                <span class="w3-xlarge">{{student}}</span>
+                <span class="w3-xlarge">{{std.stdName}}</span>
                 <br>
               </td>
-              <td>United States</td>
-              <td>65%</td>
-              <td>65%</td>
+              <td>{{std.archive}}</td>
+              <td>{{std.uploadDate}}</td>
             </tr>
           </table>
           <br>

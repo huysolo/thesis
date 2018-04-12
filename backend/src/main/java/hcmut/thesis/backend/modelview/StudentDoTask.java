@@ -35,4 +35,10 @@ public class StudentDoTask {
    public void setUploadDate(Timestamp date){
        this.uploadDate = date;
    }
+   
+//   public StudentDoTask(String name, String archive, Timestamp date){
+//       this.stdName = name;
+//       this.archive = archive;
+//       this.uploadDate = date;
+//   }
 }

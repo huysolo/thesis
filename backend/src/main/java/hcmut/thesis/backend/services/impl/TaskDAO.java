@@ -39,11 +39,11 @@ public class TaskDAO implements ITaskDAO {
     IUserDAO iuserDAO;
     
     @Override
-    public void createStudentTask(int taskID, List<String> std){
+    public void createStudentTask(int taskID, List<StudentDoTask> std){
         for(int i = 0; i< std.size(); i++){
             StudentTask stdTask = new StudentTask();
             stdTask.setIdTask(taskID);
-            stdTask.setIdStudent(iuserDAO.getUser(std.get(i)).getIdUser());
+            stdTask.setIdStudent(iuserDAO.getUser(std.get(i).getStdName()).getIdUser());
             stdTaskRepo.save(stdTask);
         }
     }
