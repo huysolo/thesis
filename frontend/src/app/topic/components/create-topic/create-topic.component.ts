@@ -23,8 +23,12 @@ export class CreateTopicComponent implements OnInit {
 
   submitTopic() {
     this.topicSv.createTopic(this.createTopic).subscribe(data => {
-      console.log(data);
-    });
+      if (data === 'CREATED') {
+        this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(-1, this.authoSv.getProfID());
+      }
+    }, (err) => {
+      console.log(err);
+    }, );
   }
 
   addReq() {

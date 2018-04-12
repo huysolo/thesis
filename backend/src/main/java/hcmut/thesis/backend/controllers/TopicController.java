@@ -25,11 +25,12 @@ public class TopicController {
     @RequestMapping(value = "listTopic", method = RequestMethod.GET)
     List<Topic> getListTopic(
             @RequestParam(value = "semno", required = false) Integer semno,
-            @RequestParam(value = "profId", required = false) Integer profId
+            @RequestParam(value = "profId", required = false) Integer profId,
+            @RequestParam(value = "avail", required = false) Boolean available
     ){
         try {
             if (userSession.isUser()) {
-                return topicService.getListTopicBySemester(semno, profId);
+                return topicService.getListTopicBySemester(semno, profId, available);
             } else {
                 return null;
             }
@@ -39,11 +40,12 @@ public class TopicController {
     }
     @RequestMapping(value = "recentTopics", method = RequestMethod.GET)
     List<Topic> getListTopicRecent(
-            @RequestParam(value = "profId", required = false) Integer profId
+            @RequestParam(value = "profId", required = false) Integer profId,
+            @RequestParam(value = "avail", required = false) Boolean available
     ){
         try {
             if (userSession.isUser()) {
-                return topicService.getListTopicBySemester(profId);
+                return topicService.getListTopicBySemester(profId, available);
             } else {
                 return null;
             }
@@ -90,7 +92,14 @@ public class TopicController {
         if(!userSession.isStudent()){
             return null;
         }
-        return topicService.getAppliedTopic(semno);
+        return topicService.getAppliedTopic(semno,  userSession.getStudent().getIdUser());
+    }
+    @PostMapping(value = "reject")
+    HttpStatus rejectToTopic(@RequestBody Integer topicId){
+        if(!userSession.isStudent()){
+            return HttpStatus.FORBIDDEN;
+        }
+        return topicService.rejectTopic(topicId, userSession.getStudent().getIdUser());
     }
 
 }

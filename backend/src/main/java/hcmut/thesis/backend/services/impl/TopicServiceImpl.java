@@ -38,19 +38,23 @@ public class TopicServiceImpl implements TopicService {
 
 
     @Override
-    public List<Topic> getListTopicBySemester(Integer semesterNo, Integer profId) {
+    public List<Topic> getListTopicBySemester(Integer semesterNo, Integer profId, Boolean aval) {
+        aval = aval == null ? true : aval;
         List<Topic>  topicList;
         if (semesterNo != null && semesterNo != -1){
             topicList = topicRepo.findTopBySemesterNo(semesterNo);
         } else {
-            topicList = topicRepo.findAll();
+            topicList = topicRepo.findAllPublish();
         }
         if (profId != null && profId != -1) topicList.removeIf(topic -> topic.getIdProf() != profId);
+        if (aval) {
+            topicList.removeIf(topic -> !availableTopic(topic));
+        }
         return topicList;
     }
 
     @Override
-    public List<Topic> getListTopicBySemester(Integer profId) {
+    public List<Topic> getListTopicBySemester(Integer profId, Boolean aval) {
         List<Integer> semNo = semesterRepo.getCurrentApplySemester();
         if(semNo.size() == 0) {
             return null;
@@ -58,7 +62,7 @@ public class TopicServiceImpl implements TopicService {
         if (userSession.isProf()){
             profId = userSession.getProf().getIdProfessor();
         }
-        return getListTopicBySemester(semNo.get(0), profId);
+        return getListTopicBySemester(semNo.get(0), profId, aval);
     }
 
     @Override
@@ -99,16 +103,17 @@ public class TopicServiceImpl implements TopicService {
         if (semesters.size() == 0 || !topicOp.isPresent() || !semesters.get(0).equals(topicOp.get().getSemesterNo())) {
             return HttpStatus.EXPECTATION_FAILED;
         }
-
-        StudentTopicSem studentTopicSem = new StudentTopicSem();
-        List<StudentTopicSem> studentTopicSemList = studentTopicSemRepo.getStudentTopicSemByIdStudent(userSession.getStudent().getIdStudent());
-        for (StudentTopicSem st:
-             studentTopicSemList) {
-            Optional<Topic> topicOptional = topicRepo.findById(studentTopicSem.getIdTopicSem());
-            if (topicOptional.isPresent() && topicOptional.get().getSemesterNo().equals(semesters.get(0))){
+        List<Topic> topicList = topicRepo.findTopBySemesterNo(semesters.get(0));
+        for (Topic topic :
+                topicList) {
+            if(studentTopicSemRepo.getStudentTopicSemByAll(studentId, topic.getIdTop()).size() > 0){
+                return HttpStatus.MULTIPLE_CHOICES;
+            }
+            if (!availableTopic(topic)){
                 return HttpStatus.EXPECTATION_FAILED;
             }
         }
+        StudentTopicSem studentTopicSem = new StudentTopicSem();
         studentTopicSem.setIdStudent(studentId);
         studentTopicSem.setIdTopicSem(topicOp.get().getIdTop());
         studentTopicSemRepo.save(studentTopicSem);
@@ -116,7 +121,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Topic getAppliedTopic(Integer semesterNo) {
+    public Topic getAppliedTopic(Integer semesterNo, Integer studendId) {
         if (semesterNo == null){
             List<Integer> semesters = semesterRepo.getCurrentApplySemester();
             if (semesters.size() == 0) {
@@ -127,10 +132,33 @@ public class TopicServiceImpl implements TopicService {
         List<Topic> topicList = topicRepo.findTopBySemesterNo(semesterNo);
         for (Topic topic :
                 topicList) {
-            if (studentTopicSemRepo.getStudentTopicSemByAll(userSession.getStudent().getIdStudent(), topic.getIdTop()).size() > 0){
+            if (studentTopicSemRepo.getStudentTopicSemByAll(studendId, topic.getIdTop()).size() > 0){
                 return topic;
             }
         }
         return null;
+    }
+
+    @Override
+    public Integer numberOfApply(Integer topicId) {
+        return studentTopicSemRepo.getAllByIdTopicSem(topicId).size();
+    }
+
+    @Override
+    public Boolean availableTopic(Topic topic) {
+        return numberOfApply(topic.getIdTop()) < topic.getStNumLimit();
+    }
+
+    @Override
+    public HttpStatus rejectTopic(Integer topId, Integer studentId) {
+        List<Integer> semNo = semesterRepo.getCurrentApplySemester();
+        if(semNo.size() == 0) {
+            return HttpStatus.EXPECTATION_FAILED;
+        }
+        StudentTopicSem studentTopicSem = new StudentTopicSem();
+        studentTopicSem.setIdTopicSem(topId);
+        studentTopicSem.setIdStudent(studentId);
+        studentTopicSemRepo.delete(studentTopicSem);
+        return HttpStatus.CREATED;
     }
 }
