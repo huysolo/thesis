@@ -16,6 +16,8 @@ public class Task {
     private String description;
     private Timestamp deadline;
     private Integer idTopicSem;
+    private int submit;
+    private int pass;
 
     @Id
     @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY )
@@ -67,6 +69,26 @@ public class Task {
     public void setIdTopicSem(Integer idTopicSem) {
         this.idTopicSem = idTopicSem;
     }
+    
+    @Basic
+    @Column(name = "submit")
+    public int getSubmit() {
+        return this.submit;
+    }
+
+    public void setSubmit(int submit) {
+        this.submit = submit;
+    }
+    
+    @Basic
+    @Column(name = "pass")
+    public int getPass() {
+        return this.pass;
+    }
+
+    public void setPass(int pass) {
+        this.pass = pass;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -77,12 +99,14 @@ public class Task {
                 Objects.equals(title, task.title) &&
                 Objects.equals(description, task.description) &&
                 Objects.equals(deadline, task.deadline) &&
-                Objects.equals(idTopicSem, task.idTopicSem);
+                Objects.equals(idTopicSem, task.idTopicSem) &&
+                Objects.equals(submit, task.submit) &&
+                Objects.equals(pass, task.pass);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(idTask, title, description, deadline, idTopicSem);
+        return Objects.hash(idTask, title, description, deadline, submit, pass, idTopicSem);
     }
 }

@@ -23,6 +23,8 @@ public class CurrUserInfo {
     private String degree;
     private String skills;
     private int profID;
+    private int teamlead;
+    
     public String getUsername(){
         return this.username;
     }
@@ -61,6 +63,9 @@ public class CurrUserInfo {
     }
     public Boolean getIsStudent(){
         return this.isStudent;
+    }
+    public int getTeadLead(){
+        return this.teamlead;
     }
     
     public void setUsername(String username){
@@ -101,5 +106,9 @@ public class CurrUserInfo {
     }
     public void setIsStudent(boolean isStd){
         this.isStudent = isStd;
+    }
+    
+    public void setTeamLead(int isteamlead){
+        this.teamlead = isteamlead;
     }
 }

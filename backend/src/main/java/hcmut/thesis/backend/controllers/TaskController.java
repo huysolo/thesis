@@ -9,6 +9,7 @@ import hcmut.thesis.backend.models.StudentTopicSem;
 import hcmut.thesis.backend.models.Task;
 import hcmut.thesis.backend.modelview.StudentDoTask;
 import hcmut.thesis.backend.modelview.TaskInfo;
+import hcmut.thesis.backend.modelview.UserSession;
 import hcmut.thesis.backend.repositories.StudentTaskRepo;
 import hcmut.thesis.backend.repositories.StudentTopicSemRepo;
 import hcmut.thesis.backend.repositories.TaskRepo;
@@ -17,6 +18,7 @@ import hcmut.thesis.backend.services.TaskService;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,18 +37,21 @@ public class TaskController {
 
     @Autowired
     ITaskDAO itaskDAO;
-    
+
     @Autowired
     TaskRepo taskRepo;
-    
+
     @Autowired
     TaskService taskService;
-    
+
     @Autowired
     StudentTaskRepo stdTaskRepo;
 
     @Autowired
     StudentTopicSemRepo stdTopicSemRepo;
+
+    @Autowired
+    UserSession userSession;
 
     @RequestMapping(value = "/crttask", method = RequestMethod.POST)
     @ResponseBody
@@ -55,10 +60,20 @@ public class TaskController {
         return createInfo;
     }
 
-    @RequestMapping(value = "/getlisttask", method = RequestMethod.POST)
+    @RequestMapping(value = "/getlisttask", method = RequestMethod.GET)
     @ResponseBody
-    public List<TaskInfo> getListTask() {
-        return taskService.getListTaskFromIDTopic(1);
+    public List<TaskInfo> getListTask(@RequestParam("topicID") Integer topicID) {
+        if (userSession.isProf() == true) {
+            return taskService.getListTaskFromProf(topicID);
+        } else {
+            return taskService.getListTaskFromIDTopic(topicID);
+        }
+    }
+    
+    @RequestMapping(value = "/getlisttasktest", method = RequestMethod.GET)
+    @ResponseBody
+    public List<TaskInfo> getListTaskTest(@RequestParam("topicID") Integer topicID) {
+        return taskService.getListTaskFromProf(topicID);
     }
 
     @RequestMapping(value = "/getallstd", method = RequestMethod.POST)
@@ -66,10 +81,15 @@ public class TaskController {
     public List<StudentDoTask> getAllStudentDoTopic() {
         return taskService.getAllStudentDoTaskFromTopicID(1);
     }
+    
+    
 
     @RequestMapping(value = "/tasktest")
     @ResponseBody
-    public List<StudentDoTask> createTasktest(@RequestParam("id") Integer id) {
-        return taskService.getAllStudentDoTaskFromTopicID(id);
+    public void createTasktest(@RequestParam("taskID") Integer taskID, 
+                                    @RequestParam("submit") Integer submit) {
+        taskService.updateTaskSubmit(taskID, submit);
     }
+    
+    
 }

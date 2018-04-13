@@ -18,6 +18,7 @@ export class LoginService {
     })
       .map(res => {
         if (res) {
+          console.log(res);
           localStorage.setItem('isLogin', 'true');
           localStorage.setItem('token', res.token);
           localStorage.setItem('username', res.username);
@@ -32,6 +33,7 @@ export class LoginService {
           localStorage.setItem('skills', res.skills);
           localStorage.setItem('profID', res.profID);
           localStorage.setItem('userID', res.userID);
+          localStorage.setItem('teamLead', res.teadLead);
         } else {
           localStorage.setItem('isLogin', 'false');
         }

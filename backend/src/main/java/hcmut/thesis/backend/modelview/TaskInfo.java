@@ -13,11 +13,17 @@ import java.util.List;
  * @author MinBui
  */
 public class TaskInfo {
-    public String title;
-    public String description;
-    public Timestamp deadline;
-    public List<StudentDoTask> student; 
+    private int taskID;
+    private String title;
+    private String description;
+    private Timestamp deadline;
+    private int submit;
+    private int pass;
+    private List<StudentDoTask> student; 
     
+    public int getTaskID(){
+        return this.taskID;
+    }
     public String getTitle(){
         return this.title;
     }
@@ -30,7 +36,16 @@ public class TaskInfo {
     public Timestamp getDeadline(){
         return this.deadline;
     }
+    public int getSubmit(){
+        return this.submit;
+    }
+    public int getPass(){
+        return this.pass;
+    }
     
+    public void setTaskID(int id){
+        this.taskID = id;
+    }
     public void setTitle(String title){
         this.title = title;
     }
@@ -43,5 +58,10 @@ public class TaskInfo {
     public void setDeadline(Timestamp deadline){
         this.deadline = deadline;
     }
-    
+    public void setSubmit(int submit){
+        this.submit = submit;
+    }
+    public void setPass(int pass){
+        this.pass = pass;
+    }
 }

@@ -59,10 +59,14 @@ public class TaskServiceImpl implements TaskService {
         List<TaskInfo> listTask = new ArrayList<>();
         List<Task> t = taskRepo.getTaskFromIDTopic(topicID);
         for(int i = 0; i< t.size(); i++){
+            
             TaskInfo temp = new TaskInfo();
+            temp.setTaskID(t.get(i).getIdTask());
             temp.setTitle(t.get(i).getTitle());
             temp.setDescription(t.get(i).getDescription());
             temp.setDeadline(t.get(i).getDeadline());
+            temp.setSubmit(t.get(i).getSubmit());
+            temp.setPass(t.get(i).getPass());
             temp.setStudent(getStudentDoTaskFromTaskID(t.get(i).getIdTask()));
             listTask.add(temp);
         }
@@ -82,7 +86,29 @@ public class TaskServiceImpl implements TaskService {
     }
     
     @Override
-    public void createTask(TaskInfo taskInfo){
-        
+    public List<TaskInfo> getListTaskFromProf(int topicID){
+        List<TaskInfo> listTask = new ArrayList<>();
+        List<Task> t = taskRepo.getTaskSubmitFromProf(topicID);
+        for(int i = 0; i< t.size(); i++){
+            TaskInfo temp = new TaskInfo();
+            
+            temp.setTitle(t.get(i).getTitle());
+             temp.setTaskID(t.get(i).getIdTask());
+            temp.setDescription(t.get(i).getDescription());
+            temp.setDeadline(t.get(i).getDeadline());
+            temp.setSubmit(t.get(i).getSubmit());
+            temp.setPass(t.get(i).getPass());
+            temp.setStudent(getStudentDoTaskFromTaskID(t.get(i).getIdTask()));
+            listTask.add(temp);
+        }
+        return listTask;
+    }
+    
+    @Override
+    public Task updateTaskSubmit(int taskID, int submit) {
+        Task temp = taskRepo.getTaskFromTaskID(taskID);
+        temp.setSubmit(submit);
+        taskRepo.save(temp);
+        return temp;
     }
 }

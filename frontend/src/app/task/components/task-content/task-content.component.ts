@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { TaskCreateComponent } from '../task-create/task-create.component';
 import { TaskInfo } from '../task-info';
 import { TaskService } from '../../task.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { StudentDoTask } from '../student-do-task';
+import {AuthService} from '../../../core/auth.service';
+
 
 @Component({
   selector: 'app-task-content',
@@ -18,12 +19,16 @@ export class TaskContentComponent implements OnInit {
   listAllStudent: Array<any>;
   listTask: Array<any>;
   isCreate: String;
+  isSubmit: String;
+  showDropdown: String;
+
+  tempTaskID: number;
 
   createTask: TaskInfo;
   listStdDoTask: Array<StudentDoTask> = [];
 
 
-  constructor( public taskService: TaskService, private fb: FormBuilder) {
+  constructor(public taskService: TaskService, private fb: FormBuilder, public authService: AuthService) {
     this.crttaskForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -36,20 +41,27 @@ export class TaskContentComponent implements OnInit {
       }
     );
 
-    this.taskService.getlistTask().subscribe(
+    this.taskService.getlistTask(1).subscribe(
       res => {
         this.listTask = res;
       }
     );
+
+    this.isCreate = 'create';
+    this.isSubmit = 'submit';
   }
 
   ngOnInit() {
   }
 
+  saveTempTaskID (taskID: number) {
+    this.tempTaskID = taskID;
+  }
+
   checked(list): void {
     if (list.class === undefined) {
       list.class = 'checked';
-      const temp = <StudentDoTask>({stdName: list.stdName, archive: null, uploadDate: null});
+      const temp = <StudentDoTask>({ stdName: list.stdName, archive: null, uploadDate: null });
       this.listStdDoTask.push(temp);
     } else {
       list.class = undefined;
@@ -62,19 +74,39 @@ export class TaskContentComponent implements OnInit {
     console.log(this.listStdDoTask);
   }
 
-  isCreateTask() {
-    if (this.isCreate === 'create_task') {
-      this.isCreate = null;
-    } else {
+  isRenderPopup(temp: String, taskID: number) {
+    if (temp === 'create') {
       this.isCreate = 'create_task';
+    } else if (temp === 'submit') {
+      this.saveTempTaskID(taskID);
+      this.isSubmit = 'create_task';
+    } else if (temp === 'create_task') {
+      this.isCreate = 'create';
+      this.isSubmit = 'submit';
     }
   }
 
   createtask(form) {
-    const temp = <TaskInfo>({title: form.title, description: form.description, deadline: form.deadline, student: this.listStdDoTask});
+    const temp = <TaskInfo>({ title: form.title, description: form.description, deadline: form.deadline, student: this.listStdDoTask });
     this.taskService.createtask(temp).subscribe(
       res => {
         this.listTask.push(res);
+      }
+    );
+  }
+
+  showReview() {
+    if (this.showDropdown == null) {
+      this.showDropdown = 'w3-show';
+    } else {
+      this.showDropdown = null;
+    }
+  }
+
+  submitToProf() {
+    this.taskService.submitTask( this.tempTaskID , 1).subscribe(
+      res => {
+        console.log(res);
       }
     );
   }
