@@ -26,8 +26,12 @@ export class TopicContentComponent implements OnInit {
       }
     });
   }
-  reject(){
-
+  reject() {
+    this.topicSv.reject(this.topicSv.appliedTopic.idTop).subscribe(data => {
+      if (data === 'CREATED') {
+        this.topicSv.appliedTopic = null;
+      }
+    });
   }
 
 }

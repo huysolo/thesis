@@ -14,10 +14,10 @@ public interface TopicRepo extends JpaRepository<Topic, Integer> {
     @Query("SELECT t FROM Topic t WHERE t.semesterNo =:semesterNo")
     List<Topic> findTopBySemesterNo(@Param("semesterNo") Integer semesterNo);
 
-    @Query("SELECT t FROM Topic t WHERE t.semesterNo is not NULL")
-    List<Topic> findAllPublish();
+    @Query("SELECT t FROM Topic t WHERE t.semesterNo < :semesterNo")
+    List<Topic> findAllPublish(@Param("semesterNo") Integer semesterNo);
 
-    @Query("SELECT t FROM Topic t WHERE t.semesterNo is NULL")
-    List<Topic> findAllUnPublish();
+    @Query("SELECT t FROM Topic t WHERE t.semesterNo is NULL AND t.idProf = :idProf")
+    List<Topic> findAllUnPublish(@Param("idProf") Integer idProf);
 }
 

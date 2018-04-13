@@ -15,8 +15,6 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TopicListComponent implements OnInit {
   public listSem: Observable<Semester[]>;
-  // public topicLst: Observable<Topic[]>;
-  // public appliedTopic: Topic;
   public profLst: Observable<ProfInfo[]>;
 
   public selectedSem;

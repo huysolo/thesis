@@ -38,6 +38,20 @@ public class TopicController {
             return null;
         }
     }
+
+    @RequestMapping(value = "listDraft", method = RequestMethod.GET)
+    List<Topic> getListTopic(
+    ){
+        try {
+            if (userSession.isProf()) {
+                return topicService.getDraftTopics(userSession.getProf().getIdProfessor());
+            } else {
+                return null;
+            }
+        } catch (NullPointerException e){
+            return null;
+        }
+    }
     @RequestMapping(value = "recentTopics", method = RequestMethod.GET)
     List<Topic> getListTopicRecent(
             @RequestParam(value = "profId", required = false) Integer profId,
@@ -72,7 +86,7 @@ public class TopicController {
         try {
             Gson obj = new Gson();
             TopicDetail topicDetailJS = obj.fromJson(topicDetail, TopicDetail.class);
-            return topicService.setTopicDetail(topicDetailJS);
+            return topicService.setTopicDetail(topicDetailJS, false);
         } catch (EntityExistsException e){
             return HttpStatus.EXPECTATION_FAILED;
         }

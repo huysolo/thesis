@@ -44,7 +44,11 @@ public class TopicServiceImpl implements TopicService {
         if (semesterNo != null && semesterNo != -1){
             topicList = topicRepo.findTopBySemesterNo(semesterNo);
         } else {
-            topicList = topicRepo.findAllPublish();
+            List<Integer> semesters = semesterRepo.getCurrentApplySemester();
+            if (semesters.size() == 0){
+                return null;
+            }
+            topicList = topicRepo.findAllPublish(semesters.get(0));
         }
         if (profId != null && profId != -1) topicList.removeIf(topic -> topic.getIdProf() != profId);
         if (aval) {
@@ -78,14 +82,16 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public HttpStatus setTopicDetail(TopicDetail topicDetail) {
+    public HttpStatus setTopicDetail(TopicDetail topicDetail, Boolean publish) {
         List<Integer> semesters = semesterRepo.getCurrentApplySemester();
         if (semesters.size() == 0){
             return HttpStatus.EXPECTATION_FAILED;
         }
         Topic topic = topicDetail.getTopic();
         topic.setIdFaculty(userSession.getCurrentUserFalcuty());
-        topic.setSemesterNo(semesters.get(0));
+        if (publish){
+            topic.setSemesterNo(semesters.get(0));
+        }
         topicRepo.saveAndFlush(topic);
 
 
@@ -141,7 +147,12 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Integer numberOfApply(Integer topicId) {
-        return studentTopicSemRepo.getAllByIdTopicSem(topicId).size();
+        return studentTopicSemRepo.getAllStudentByIdTopicSem(topicId).size();
+    }
+
+    @Override
+    public List<Topic> getDraftTopics(Integer profId) {
+        return topicRepo.findAllUnPublish(profId);
     }
 
     @Override

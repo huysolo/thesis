@@ -7,7 +7,7 @@ import {TaskCreateComponent} from './components/task-create/task-create.componen
 const taskRoutes: Routes = [
   {
     path: 'content',
-    component: TaskContentComponent
+    component: TaskContentComponent,
   },
   {
     path: 'create',

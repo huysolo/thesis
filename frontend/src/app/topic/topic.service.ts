@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Topic } from '../models/Topic';
 import { TopicDetail } from '../models/TopicDetail';
 import { AuthService } from '../core/auth.service';
+import { Observer } from 'rxjs/Observer';
 
 @Injectable()
 export class TopicService {
@@ -21,9 +22,18 @@ export class TopicService {
   private topicListSizeUrl = 'http://localhost:8080/topic/listTopicSize';
   private topicApplyUrl = 'http://localhost:8080/topic/apply';
   private topicAppliedUrl = 'http://localhost:8080/topic/appliedTopic';
+  private topicRejectUrl = 'http://localhost:8080/topic/reject';
   private seletedPage: number;
   private pageSize: number;
 
+  /**
+   * reject
+   */
+  public reject(topicId: Number) {
+    return this.http.post<any>(this.topicRejectUrl, topicId).map(res => {
+      return res;
+    });
+  }
   /**
    * getAppliedTopic
    */
@@ -42,8 +52,8 @@ export class TopicService {
   /**
    * getTopicDetail
    */
-  public getTopicDetail(id: number) {
-    return this.http.get<TopicDetail>(this.topicDetailUrl);
+  public getTopicDetail(id: number): Observable<TopicDetail> {
+    return this.http.get<TopicDetail>(this.topicDetailUrl + '?topid=' + id);
   }
 
   /**
