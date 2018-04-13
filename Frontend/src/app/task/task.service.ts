@@ -23,14 +23,14 @@ export class TaskService {
     return this.httpClient.get<any>(loginUrl + '?topicID=' + topicID);
   }
 
-  getlistTaskTest(topicID: number) {
-    const loginUrl = `http://localhost:8080/getlisttasktest`;
-    return this.httpClient.get<any>(loginUrl + '?topicID=' + topicID);
-  }
-
   getAllStudentDoTopic() {
     const loginUrl = `http://localhost:8080/getallstd`;
     return this.httpClient.post<any>(loginUrl, {});
+  }
+
+  submitTask(taskID: number, submit: number) {
+    const loginUrl = `http://localhost:8080/submittask`;
+    return this.httpClient.get<any>(loginUrl + '?taskID=' + taskID + '&submit=' + submit + '');
   }
 
 }
