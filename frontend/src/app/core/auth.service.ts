@@ -43,6 +43,9 @@ export class AuthService {
   public isLogin(): boolean {
     return localStorage.getItem('isLogin') === 'true' ;
   }
+  public isTeamLead(): boolean {
+    return localStorage.getItem('teamLead') === '1' ;
+  }
   public isStudent(): boolean {
     return localStorage.getItem('isStudent') === 'true';
   }

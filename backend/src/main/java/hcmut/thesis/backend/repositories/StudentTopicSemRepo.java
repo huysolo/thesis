@@ -31,5 +31,8 @@ public interface StudentTopicSemRepo extends JpaRepository<StudentTopicSem, Inte
 
     @Query("SELECT st FROM StudentTopicSem st WHERE st.idStudent = :idStudent AND st.idTopicSem = :idTopicSem")
     List<StudentTopicSem> getStudentTopicSemByAll(@Param("idStudent") Integer idStudent, @Param("idTopicSem") Integer idTopicSem);
+    
+    @Query("SELECT st.teamLead FROM StudentTopicSem st WHERE st.idStudent = :studentID")
+    int getTeamLeadFromStudentID(@Param("studentID") Integer studentID);
 
 }

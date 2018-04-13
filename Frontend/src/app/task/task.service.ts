@@ -10,7 +10,7 @@ export class TaskService {
 
   createtask(task: TaskInfo) {
     const loginUrl = `http://localhost:8080/crttask`;
-    return this.httpClient.post<any>(loginUrl, {
+    return this.httpClient.post<TaskInfo>(loginUrl, {
       title: task.title,
       description: task.description,
       deadline: task.deadline,
@@ -18,11 +18,14 @@ export class TaskService {
     });
   }
 
-  getlistTask() {
+  getlistTask(topicID: number) {
     const loginUrl = `http://localhost:8080/getlisttask`;
-    return this.httpClient.post<any>(loginUrl, {
-      title: 'Min'
-    });
+    return this.httpClient.get<any>(loginUrl + '?topicID=' + topicID);
+  }
+
+  getlistTaskTest(topicID: number) {
+    const loginUrl = `http://localhost:8080/getlisttasktest`;
+    return this.httpClient.get<any>(loginUrl + '?topicID=' + topicID);
   }
 
   getAllStudentDoTopic() {

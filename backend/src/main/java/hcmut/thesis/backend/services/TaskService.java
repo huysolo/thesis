@@ -5,6 +5,7 @@
  */
 package hcmut.thesis.backend.services;
 
+import hcmut.thesis.backend.models.Task;
 import hcmut.thesis.backend.modelview.StudentDoTask;
 import hcmut.thesis.backend.modelview.TaskInfo;
 import java.util.List;
@@ -17,5 +18,7 @@ public interface TaskService {
     List<StudentDoTask> getStudentDoTaskFromTaskID(int taskID);
     List<TaskInfo> getListTaskFromIDTopic(int topicID);
     List<StudentDoTask> getAllStudentDoTaskFromTopicID(int topicID);
-    void createTask(TaskInfo taskInfo);
+    List<TaskInfo> getListTaskFromProf(int topicID);
+    Task updateTaskSubmit(int taskID, int submit);
+    
 }

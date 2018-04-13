@@ -141,7 +141,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Integer numberOfApply(Integer topicId) {
-        return studentTopicSemRepo.getAllByIdTopicSem(topicId).size();
+        return studentTopicSemRepo.getAllStudentByIdTopicSem(topicId).size();
     }
 
     @Override

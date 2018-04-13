@@ -12,6 +12,7 @@ import hcmut.thesis.backend.modelview.CurrUserInfo;
 import hcmut.thesis.backend.modelview.UserEdit;
 import hcmut.thesis.backend.repositories.ProfessorRepo;
 import hcmut.thesis.backend.repositories.StudentRepo;
+import hcmut.thesis.backend.repositories.StudentTopicSemRepo;
 import hcmut.thesis.backend.repositories.UserRepo;
 import hcmut.thesis.backend.services.IUserDAO;
 import hcmut.thesis.backend.services.UserService;
@@ -38,6 +39,9 @@ public class UserDAO implements IUserDAO {
     
     @Autowired
     ProfessorRepo profRepo;
+    
+     @Autowired
+    StudentTopicSemRepo stdTopicSemRepo;
 
     @Override
     public User getUser(String username, String password) {
@@ -85,6 +89,9 @@ public class UserDAO implements IUserDAO {
                 currUserInfo.setDegree(prof.getDegree());
                 currUserInfo.setSkills(prof.getSkills());
                 
+            }
+            else{
+                currUserInfo.setTeamLead(stdTopicSemRepo.getTeamLeadFromStudentID(studentRepo.getStdIDFromUserID(user.getIdUser())));
             }
 
             String isStd = (isStudent) ? "true" : "false";
