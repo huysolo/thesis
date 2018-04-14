@@ -11,7 +11,7 @@ import { Observer } from 'rxjs/Observer';
 export class TopicService {
   public pageList: Number[] = [];
   public selectedPage = 1;
-  public pageSize = 10;
+  public pageSize = 5;
   requestType: string;
   constructor(private http: HttpClient, private authoSv: AuthService) {
     this.requestType = 'recent';
@@ -27,6 +27,7 @@ export class TopicService {
   private topicAppliedUrl = 'http://localhost:8080/topic/appliedTopic';
   private topicRejectUrl = 'http://localhost:8080/topic/reject';
   private topicListDraftUrl = 'http://localhost:8080/topic/listDraft';
+  private topicPublishtUrl = 'http://localhost:8080/topic/publish';
 
 
   /**
@@ -97,11 +98,20 @@ export class TopicService {
     });
   }
 
+  /**
+   * publish
+   */
+  public publishTopic(topicId: Number) {
+    return this.http.post<any>(this.topicPublishtUrl, topicId).map(res => {
+      return res;
+    });
+  }
+
   public setPage(length: number) {
     const pageLength = length / this.pageSize + (length % this.pageSize > 0 ? 1 : 0);
     this.pageList = new Array<Number>();
     this.selectedPage = 1;
-    for (let i = 1; i < pageLength; i++) {
+    for (let i = 1; i <= pageLength; i++) {
       this.pageList.push(i);
     }
   }

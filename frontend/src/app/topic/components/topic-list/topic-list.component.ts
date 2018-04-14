@@ -8,7 +8,10 @@ import { ProfInfo } from '../../../models/ProfInfo';
 import { AuthService } from '../../../core/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observer } from 'rxjs/Observer';
-
+import { TopicDetail } from '../../../models/TopicDetail';
+import { TopicMission } from '../../../models/TopicMission';
+import { TopicRequirement } from '../../../models/TopicRequirement';
+declare var $: any;
 @Component({
   selector: 'app-topic-list',
   templateUrl: './topic-list.component.html',
@@ -20,6 +23,9 @@ export class TopicListComponent implements OnInit {
 
   public selectedSem;
   public selectedProfId;
+
+  public topicDetail = new TopicDetail();
+  title: String = 'New';
 
   constructor(public topicSv: TopicService, public commonSv: CommonService, public authoSv: AuthService, private route: ActivatedRoute) { }
 
@@ -69,5 +75,21 @@ export class TopicListComponent implements OnInit {
 
   inSelectedList(pos: number) {
     return pos < this.topicSv.selectedPage * this.topicSv.pageSize && pos >= (this.topicSv.selectedPage - 1) * this.topicSv.pageSize;
+  }
+
+  onEdit(event) {
+    this.topicSv.getTopicDetail(event).subscribe(data => {
+      this.title = 'Edit';
+      this.topicDetail = data;
+      $('#createTopic').modal('show');
+    });
+  }
+
+  newTopic() {
+    this.title = 'New';
+    this.topicDetail = new TopicDetail();
+    this.topicDetail.topic.idProf = this.authoSv.getProfID();
+    this.topicDetail.topicMission.push(new TopicMission(0));
+    this.topicDetail.topicRequirement.push(new TopicRequirement(0));
   }
 }

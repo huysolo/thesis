@@ -3,7 +3,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title mce-text-center" id="topicTitleId"> New Topic</h4>
+        <h4 class="modal-title mce-text-center" id="topicTitleId"> {{title}} Topic</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -64,7 +64,7 @@
               </label>
               <ng-container *ngFor="let miss of createTopic.topicMission; let i = index">
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control" [(ngModel)]="miss.detail" required #mission="ngModel" name="require{{i}}">
+                  <input type="text" class="form-control" [(ngModel)]="miss.detail" required #mission="ngModel" name="mission{{i}}">
                   <div class="input-group-append">
                     <i class="material-icons btn-icon" *ngIf="createTopic.topicMission.length > 1" (click)="removeMission(i)">remove</i>
                   </div>
@@ -80,17 +80,11 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-success" (click)="submitTopic()" [disabled]="!createTopicForm.form.valid" data-dismiss="modal">Submit</button>
+        <button type="submit" class="btn btn-success" (click)="submitTopic(true)" [disabled]="!createTopicForm.form.valid" data-dismiss="modal">Save As Draft</button>
+        <button type="submit" class="btn btn-success" (click)="submitTopic(false)" [disabled]="!createTopicForm.form.valid" data-dismiss="modal">Submit</button>
       </div>
     </div>
   </div>
 </div>
 
-<script>
-  $('#exampleModal').on('show.bs.modal', event => {
-    const button = $(event.relatedTarget);
-    const modal = $(this);
-    // Use above variables to manipulate the DOM
 
-  });
-</script>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Topic } from '../../../models/Topic';
 import { TopicService } from '../../topic.service';
 import { AuthService } from '../../../core/auth.service';
@@ -13,7 +13,8 @@ import { TopidDetailComponent } from '../topid-detail/topid-detail.component';
 })
 export class TopicContentComponent implements OnInit {
   @Input('topic') topic: Topic;
-  @Input('semno') semno: Number;
+  @Input('semno') semno;
+  @Output('editTopic') editTopic = new EventEmitter<Number>();
   constructor(public dialog: MatDialog, public topicSv: TopicService, public authoSv: AuthService) { }
 
   ngOnInit() {
@@ -41,13 +42,23 @@ export class TopicContentComponent implements OnInit {
       console.log(rs);
 
       const dialogRef = this.dialog.open(TopidDetailComponent, {
-        width: '450px',
+        width: '500px',
         data: { topicDetail: rs }
       });
     });
   }
 
   publish() {
+    this.topicSv.publishTopic(this.topic.idTop).subscribe(data => {
+      this.topicSv.topicLst = this.topicSv.topicLst.map(res => {
+        return res.filter(top => {
+          return top.idTop !== this.topic.idTop;
+        });
+      });
+    });
   }
 
+  edit() {
+    this.editTopic.emit(this.topic.idTop);
+  }
 }

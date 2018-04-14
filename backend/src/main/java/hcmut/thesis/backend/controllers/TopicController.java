@@ -86,7 +86,7 @@ public class TopicController {
         try {
             Gson obj = new Gson();
             TopicDetail topicDetailJS = obj.fromJson(topicDetail, TopicDetail.class);
-            return topicService.setTopicDetail(topicDetailJS, true);
+            return topicService.setTopicDetail(topicDetailJS, !topicDetailJS.getDraft());
         } catch (EntityExistsException e){
             return HttpStatus.EXPECTATION_FAILED;
         }

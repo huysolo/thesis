@@ -1,5 +1,5 @@
 <a class="float" *ngIf="topicSv.requestType !== 'history' && authoSv.isProfessor()">
-  <button type="button" class="btn btn-primary bmd-btn-fab" name="new" id="new" data-toggle="modal" data-target="#createTopic">
+  <button type="button" class="btn btn-primary bmd-btn-fab" name="new" id="new" data-toggle="modal" (click)="newTopic()" data-target="#createTopic">
     <i class="material-icons">add</i>
   </button>
 </a>
@@ -56,6 +56,13 @@
 </div>
 <h2 class="text-center">List of Topics:</h2>
 <div *ngFor="let topic of topicSv.topicLst | async; let i = index">
-  <app-topic-content [topic]="topic" *ngIf="validTopic(topic.idTop) && inSelectedList(i)" [semno]="selectedSem"></app-topic-content>
+  <app-topic-content [topic]="topic" *ngIf="validTopic(topic.idTop) && inSelectedList(i)" (editTopic)="onEdit($event)" [semno]="selectedSem"></app-topic-content>
 </div>
-<app-create-topic></app-create-topic>
+<app-create-topic [createTopic] = "topicDetail" [title] = "title"></app-create-topic>
+
+<script>
+  $('#createTopic').on('show.bs.modal', event => {
+    const button = $(event.relatedTarget);
+    const modal = $(this);
+  });
+</script>

@@ -13,15 +13,13 @@ import { TopicService } from '../../topic.service';
 })
 export class CreateTopicComponent implements OnInit {
   constructor(public authoSv: AuthService, public topicSv: TopicService) { }
-  createTopic: TopicDetail;
+  @Input('title') title: String = 'New';
+  @Input('createTopic') createTopic: TopicDetail;
   ngOnInit() {
-    this.createTopic = new TopicDetail();
-    this.createTopic.topic.idProf = this.authoSv.getProfID();
-    this.createTopic.topicMission.push(new TopicMission(0));
-    this.createTopic.topicRequirement.push(new TopicRequirement(0));
   }
 
-  submitTopic() {
+  submitTopic(draft: boolean) {
+    this.createTopic.draft = draft;
     this.topicSv.createTopic(this.createTopic).subscribe(data => {
       if (data === 'CREATED') {
         this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(-1, this.authoSv.getProfID());

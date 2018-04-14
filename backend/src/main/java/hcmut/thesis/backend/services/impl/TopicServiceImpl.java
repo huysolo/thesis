@@ -188,7 +188,7 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public HttpStatus edit(TopicDetail topicDetail) {
         try {
-            Topic topic = deleteTopicMissionAndRequirement(topicDetail.getTopic().getIdTop());
+            deleteTopicMissionAndRequirement(topicDetail.getTopic().getIdTop());
             setTopicDetail(topicDetail, false);
             return  HttpStatus.CREATED;
         } catch (NullPointerException e) {

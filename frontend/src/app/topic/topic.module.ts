@@ -21,10 +21,10 @@ import { TopidDetailComponent } from './components/topid-detail/topid-detail.com
     TopicListComponent,
     ManageTopicComponent,
     CreateTopicComponent,
-    TopidDetailComponent
+    TopidDetailComponent,
   ],
   entryComponents: [
-    TopidDetailComponent
+    TopidDetailComponent,
   ]
 })
 export class TopicModule { }
