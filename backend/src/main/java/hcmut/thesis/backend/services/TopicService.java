@@ -9,10 +9,11 @@ public interface TopicService {
     List<Topic> getListTopicBySemester(Integer semesterNo, Integer profId, Boolean available);
     List<Topic> getListTopicBySemester(Integer profId, Boolean aval);
     TopicDetail getTopicDetailById(Integer topId);
-    HttpStatus setTopicDetail(TopicDetail topicDetail);
+    HttpStatus setTopicDetail(TopicDetail topicDetail, Boolean publish);
     HttpStatus applyToTopic(Integer topId, Integer studentId);
     Topic getAppliedTopic(Integer semesterNo, Integer studendId);
     Integer numberOfApply(Integer topicId);
+    List<Topic> getDraftTopics(Integer profId);
     Boolean availableTopic(Topic topic);
     HttpStatus rejectTopic(Integer topId, Integer studentId);
 

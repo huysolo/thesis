@@ -7,6 +7,7 @@ import { TopicRoutingModule } from './topic-routing.module';
 import { CreateTopicComponent } from './components/create-topic/create-topic.component';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '../core/material.module';
+import { TopidDetailComponent } from './components/topid-detail/topid-detail.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { MaterialModule } from '../core/material.module';
     TopicContentComponent,
     TopicListComponent,
     ManageTopicComponent,
-    CreateTopicComponent
+    CreateTopicComponent,
+    TopidDetailComponent
   ],
 })
 export class TopicModule { }

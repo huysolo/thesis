@@ -6,8 +6,12 @@ import {TaskContentComponent} from './components/task-content/task-content.compo
 const taskRoutes: Routes = [
   {
     path: 'content',
-    component: TaskContentComponent
-  }
+    component: TaskContentComponent,
+  },
+  // {
+  //   path: 'create',
+  //   component: TaskCreateComponent
+  // }
 ];
 
 @NgModule({
