@@ -25,4 +25,5 @@ public interface IUserDAO {
     Student findStudentByUserId(int id);
     UserEdit CheckEditUser(CurrUserInfo currUser);
     void EditUser(CurrUserInfo currUser);
+    Boolean checkExistByStdID(int stdID);
 }

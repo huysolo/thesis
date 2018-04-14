@@ -20,5 +20,5 @@ public interface TaskService {
     List<StudentDoTask> getAllStudentDoTaskFromTopicID(int topicID);
     List<TaskInfo> getListTaskFromProf(int topicID);
     Task updateTaskSubmit(int taskID, int submit);
-    
+    Task updateTaskPass(int taskID, int pass);
 }

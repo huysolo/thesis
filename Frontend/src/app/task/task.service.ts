@@ -33,4 +33,9 @@ export class TaskService {
     return this.httpClient.get<any>(loginUrl + '?taskID=' + taskID + '&submit=' + submit + '');
   }
 
+  reviewTask(taskID: number, pass: number) {
+    const loginUrl = `http://localhost:8080/reviewtask`;
+    return this.httpClient.get<any>(loginUrl + '?taskID=' + taskID + '&pass=' + pass + '');
+  }
+
 }
