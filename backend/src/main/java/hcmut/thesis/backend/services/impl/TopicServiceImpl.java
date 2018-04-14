@@ -102,6 +102,8 @@ public class TopicServiceImpl implements TopicService {
         return HttpStatus.CREATED;
     }
 
+
+
     @Override
     public HttpStatus applyToTopic(Integer topId, Integer studentId) {
         List<Integer> semesters = semesterRepo.getCurrentApplySemester();

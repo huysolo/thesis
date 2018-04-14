@@ -46,7 +46,7 @@
               </label>
               <ng-container *ngFor="let req of createTopic.topicRequirement; let i = index">
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control" [(ngModel)]="req.detail" [ngModelOptions]="{standalone: true}" required #require="ngModel">
+                  <input type="text" class="form-control" [(ngModel)]="req.detail" name="require{{i}}" required #require="ngModel">
                   <div class="input-group-append">
                     <i class="material-icons btn-icon" *ngIf="createTopic.topicRequirement.length > 1" (click)="removeReq(i)">remove</i>
                   </div>
@@ -64,7 +64,7 @@
               </label>
               <ng-container *ngFor="let miss of createTopic.topicMission; let i = index">
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control" [(ngModel)]="miss.detail" [ngModelOptions]="{standalone: true}" required #mission="ngModel">
+                  <input type="text" class="form-control" [(ngModel)]="miss.detail" required #mission="ngModel" name="require{{i}}">
                   <div class="input-group-append">
                     <i class="material-icons btn-icon" *ngIf="createTopic.topicMission.length > 1" (click)="removeMission(i)">remove</i>
                   </div>
