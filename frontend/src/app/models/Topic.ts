@@ -5,4 +5,6 @@ export class Topic {
   sumary: string;
   idProf: number;
   idFalcuty: number;
+  score: Number;
+  semesterNo: Number;
 }

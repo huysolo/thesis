@@ -1,3 +1,31 @@
-<p>
-  topid-detail works!
-</p>
+<h1 matDialogTitle>{{topicDetail.topic.title}}</h1>
+
+<mat-dialog-content>
+  <p>
+    <strong>Summary:</strong> {{topicDetail.topic.sumary}}</p>
+  <p>
+    <strong>Limit Of Student:</strong> {{topicDetail.topic.stNumLimit}}</p>
+  <p>
+    <strong>Semester No:</strong> {{topicDetail.topic.semesterNo}}</p>
+  <ng-template *ngIf="topicDetail.topicRequirement != undefined && topicDetail.topicRequirement.length > 0">
+    <strong>Topic Requirements:</strong>
+    <ul>
+      <li *ngFor="let topicReq of topicDetail.topicRequirement">
+        {{topicReq.detail}}
+      </li>
+    </ul>
+  </ng-template>
+  <p *ngIf="topicDetail.topicMission != undefined && topicDetail.topicMission.length > 0">
+    <strong>
+      Topic Missions:
+    </strong>
+    <ul>
+      <li *ngFor="let topicMis of topicDetail.topicMission">
+        {{topicMis.detail}}
+      </li>
+    </ul>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button matDialogClose>Close dialog</button>
+</mat-dialog-actions>

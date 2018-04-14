@@ -2,6 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Topic } from '../../../models/Topic';
 import { TopicService } from '../../topic.service';
 import { AuthService } from '../../../core/auth.service';
+import { MatDialog } from '@angular/material';
+import { TopicDetail } from '../../../models/TopicDetail';
+import { TopidDetailComponent } from '../topid-detail/topid-detail.component';
 
 @Component({
   selector: 'app-topic-content',
@@ -10,9 +13,8 @@ import { AuthService } from '../../../core/auth.service';
 })
 export class TopicContentComponent implements OnInit {
   @Input('topic') topic: Topic;
-  @Input('topicNo') topicNo: number;
   @Input('semno') semno: Number;
-  constructor(public topicSv: TopicService, public authoSv: AuthService) { }
+  constructor(public dialog: MatDialog, public topicSv: TopicService, public authoSv: AuthService) { }
 
   ngOnInit() {
   }
@@ -20,7 +22,7 @@ export class TopicContentComponent implements OnInit {
   apply() {
     this.topicSv.applyToTopic(this.topic.idTop).subscribe(data => {
       if (data === 'CREATED') {
-        this.topicSv.getAppliedTopic(this.semno).subscribe( topic => {
+        this.topicSv.getAppliedTopic(this.semno).subscribe(topic => {
           this.topicSv.appliedTopic = topic;
         });
       }
@@ -32,6 +34,18 @@ export class TopicContentComponent implements OnInit {
         this.topicSv.appliedTopic = null;
       }
     });
+  }
+
+  getTopicId(): void {
+    this.topicSv.getTopicDetail(this.topic.idTop).subscribe(rs => {
+      console.log(rs);
+
+      const dialogRef = this.dialog.open(TopidDetailComponent, {
+        width: '450px',
+        data: { topicDetail: rs }
+      });
+    });
+
   }
 
 }

@@ -104,11 +104,11 @@ export class TaskContentComponent implements OnInit {
   }
 
   submitToProf() {
-    this.taskService.submitTask( this.tempTaskID , 1).subscribe(
-      res => {
-        console.log(res);
-      }
-    );
+    // this.taskService.submitTask( this.tempTaskID , 1).subscribe(
+    //   res => {
+    //     console.log(res);
+    //   }
+    // );
   }
 
 }

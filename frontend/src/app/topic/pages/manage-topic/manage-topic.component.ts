@@ -23,26 +23,7 @@ export class ManageTopicComponent implements OnInit {
   constructor(public topicSv: TopicService, public commonSv: CommonService, public authoSv: AuthService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    // this.selectedProfId = this.authoSv.isProfessor() ? this.authoSv.getProfID() : -1;
-    // this.selectedSem = -1;
-    // this.topicLstInterval();
-    // this.listSem = this.commonSv.getListSemester();
-    // this.profLst = this.commonSv.getListProf();
   }
-
-  // topicLstInterval(): void {
-  //     this.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
-  // }
-
-  // onChangeSemester(sem) {
-  //   this.selectedSem = sem;
-  //   this.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
-  // }
-
-  // onChangeProf(prof) {
-  //   this.selectedProfId = prof;
-  //   this.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
-  // }
 
 
 

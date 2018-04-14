@@ -7,11 +7,8 @@ const taskRoutes: Routes = [
   {
     path: 'content',
     component: TaskContentComponent,
+    pathMatch: 'full'
   },
-  // {
-  //   path: 'create',
-  //   component: TaskCreateComponent
-  // }
 ];
 
 @NgModule({

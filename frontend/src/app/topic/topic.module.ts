@@ -23,5 +23,8 @@ import { TopidDetailComponent } from './components/topid-detail/topid-detail.com
     CreateTopicComponent,
     TopidDetailComponent
   ],
+  entryComponents: [
+    TopidDetailComponent
+  ]
 })
 export class TopicModule { }

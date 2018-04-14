@@ -7,3 +7,13 @@
 header.w3-container {
   padding-right: 0px;
 }
+
+.relative-header{
+  position: relative;
+}
+
+.dropdown-right{
+  position: absolute;
+  top: 0;
+  right: 0;
+}

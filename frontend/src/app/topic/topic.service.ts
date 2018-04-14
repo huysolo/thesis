@@ -9,6 +9,9 @@ import { Observer } from 'rxjs/Observer';
 
 @Injectable()
 export class TopicService {
+  public pageList: Number[] = [];
+  public selectedPage = 1;
+  public pageSize = 10;
   requestType: string;
   constructor(private http: HttpClient, private authoSv: AuthService) {
     this.requestType = 'recent';
@@ -23,8 +26,7 @@ export class TopicService {
   private topicApplyUrl = 'http://localhost:8080/topic/apply';
   private topicAppliedUrl = 'http://localhost:8080/topic/appliedTopic';
   private topicRejectUrl = 'http://localhost:8080/topic/reject';
-  private seletedPage: number;
-  private pageSize: number;
+
 
   /**
    * reject
@@ -52,7 +54,7 @@ export class TopicService {
   /**
    * getTopicDetail
    */
-  public getTopicDetail(id: number): Observable<TopicDetail> {
+  public getTopicDetail(id: Number): Observable<TopicDetail> {
     return this.http.get<TopicDetail>(this.topicDetailUrl + '?topid=' + id);
   }
 
@@ -61,9 +63,15 @@ export class TopicService {
   */
   public getListTopicBySemesterAndProf(sem: number, profId: number): Observable<Topic[]>  {
     if (this.requestType === 'recent') {
-      return this.getListTopic(profId);
+      return this.getListTopic(profId).map(data => {
+        this.setPage(data.length);
+        return data;
+      });
     } else if (this.requestType === 'history') {
-      return this.http.get<Topic[]>(this.topicListUrl + '?semno=' + sem + '&profId=' + profId + '');
+      return this.http.get<Topic[]>(this.topicListUrl + '?semno=' + sem + '&profId=' + profId + '').map(data => {
+        this.setPage(data.length);
+        return data;
+      });
     }
   }
 
@@ -83,5 +91,12 @@ export class TopicService {
     });
   }
 
-
+  public setPage(length: number) {
+    const pageLength = length / this.pageSize + (length % this.pageSize > 0 ? 1 : 0);
+    this.pageList = new Array<Number>();
+    this.selectedPage = 1;
+    for (let i = 1; i < pageLength; i++) {
+      this.pageList.push(i);
+    }
+  }
 }

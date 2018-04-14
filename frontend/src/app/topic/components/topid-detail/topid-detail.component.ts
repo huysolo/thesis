@@ -1,5 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { TopicContentComponent } from '../topic-content/topic-content.component';
+import { TopicDetail } from '../../../models/TopicDetail';
+import { Observer } from 'rxjs/Observer';
+import { TopicService } from '../../topic.service';
 
 @Component({
   selector: 'app-topid-detail',
@@ -7,9 +12,13 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./topid-detail.component.css']
 })
 export class TopidDetailComponent implements OnInit {
-  @Input('topid') topid: number;
+  // @Input('topid') topid: number;
+  topicDetail: TopicDetail;
+  constructor(public dialogRef: MatDialogRef<TopicContentComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any, public topicSv: TopicService) {
+        this.topicDetail = data['topicDetail'];
 
-  constructor(private route: ActivatedRoute) { }
+    }
 
   ngOnInit() {
   }

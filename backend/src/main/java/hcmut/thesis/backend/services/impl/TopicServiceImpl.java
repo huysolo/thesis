@@ -76,7 +76,7 @@ public class TopicServiceImpl implements TopicService {
             Topic topic = optionalTopic.get();
             List<TopicMission> topicMissionList = topicMissionRepo.findAllByTopicId(topId);
             List<TopicRequirement> topicRequirementList = topicReqRepo.findAllByTopicId(topId);
-            return null;
+            return new TopicDetail(topic, topicMissionList, topicRequirementList);
         }
         return null;
     }

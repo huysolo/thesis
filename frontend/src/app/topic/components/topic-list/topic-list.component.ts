@@ -7,6 +7,7 @@ import { CommonService } from '../../../core/common.service';
 import { ProfInfo } from '../../../models/ProfInfo';
 import { AuthService } from '../../../core/auth.service';
 import { ActivatedRoute } from '@angular/router';
+import { Observer } from 'rxjs/Observer';
 
 @Component({
   selector: 'app-topic-list',
@@ -19,6 +20,7 @@ export class TopicListComponent implements OnInit {
 
   public selectedSem;
   public selectedProfId;
+
   constructor(public topicSv: TopicService, public commonSv: CommonService, public authoSv: AuthService, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -56,9 +58,16 @@ export class TopicListComponent implements OnInit {
   }
 
   validTopic(topicId: number) {
-    if (this.topicSv.appliedTopic == null) {
-      return true;
+    return this.topicSv.appliedTopic == null ||  topicId !== this.topicSv.appliedTopic.idTop;
+  }
+
+  setPage(selectedPage) {
+    if (selectedPage > 0 && selectedPage <= this.topicSv.pageList.length) {
+      this.topicSv.selectedPage = selectedPage;
     }
-    return topicId !== this.topicSv.appliedTopic.idTop;
+  }
+
+  inSelectedList(pos: number) {
+    return pos < this.topicSv.selectedPage * this.topicSv.pageSize && pos >= (this.topicSv.selectedPage - 1) * this.topicSv.pageSize;
   }
 }

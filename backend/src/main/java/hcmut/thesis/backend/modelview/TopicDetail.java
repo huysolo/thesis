@@ -41,10 +41,5 @@ public class TopicDetail {
         this.topicRequirement = topicRequirement;
     }
 
-    public TopicDetail(Topic topic, List<TopicMission> topicMission, List<TopicRequirement> topicRequirement, Number startSemester, Number mumberOfSemester) {
-        this.topic = topic;
-        this.topicMission = topicMission;
-        this.topicRequirement = topicRequirement;
-    }
 
 }

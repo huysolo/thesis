@@ -50,4 +50,30 @@ export class CreateTopicComponent implements OnInit {
     this.createTopic.topicMission.splice(removePos, 1);
   }
 
+  validList(datas: any[]) {
+    if (datas.length === 0) {
+      return false;
+    }
+    datas.forEach(data => {
+      if (data.detail == null || data.detail === '') {
+        return false;
+      }
+    });
+    return true;
+  }
+
+  validReq() {
+    if (!this.createTopic.topicRequirement) {
+      return false;
+    }
+    return this.validList(this.createTopic.topicRequirement);
+  }
+
+  validMis() {
+    if (!this.createTopic.topicMission) {
+      return false;
+    }
+    return this.validList(this.createTopic.topicMission);
+  }
+
 }

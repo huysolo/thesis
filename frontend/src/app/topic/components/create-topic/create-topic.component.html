@@ -29,7 +29,7 @@
               <input type="number" [(ngModel)]="createTopic.topic.stNumLimit" class="form-control" name="stLim" id="stLim" aria-describedby="helpStLim"
                 placeholder="Insert limit" required #stLim="ngModel">
                 <div [hidden]="stLim.valid || stLim.pristine" class="alert alert-danger">
-                    Limit of student is required
+                    Limit of student is not valid
                   </div>
               <small id="helpStLim" class="form-text text-muted">Limit of student allowed to apply to the topic</small>
             </div>
