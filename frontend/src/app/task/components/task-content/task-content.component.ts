@@ -103,12 +103,33 @@ export class TaskContentComponent implements OnInit {
     }
   }
 
+  reviewTask (taskID: number, pass: number) {
+    this.taskService.reviewTask(taskID, pass).subscribe(
+      res => {
+        if (res != null) {
+          for (let i = 0; i < this.listTask.length; i++) {
+            if (this.listTask[i].taskID === res.idTask) {
+              this.listTask[i].pass = res.pass;
+            }
+          }
+        }
+      }
+    );
+  }
+
   submitToProf() {
-    // this.taskService.submitTask( this.tempTaskID , 1).subscribe(
-    //   res => {
-    //     console.log(res);
-    //   }
-    // );
+    this.taskService.submitTask(this.tempTaskID, 1).subscribe(
+      res => {
+        if (res != null) {
+          for (let i = 0; i < this.listTask.length; i++) {
+            if (this.listTask[i].taskID === res.idTask) {
+              this.listTask[i].submit = 1;
+            }
+          }
+        }
+      }
+    );
+    this.isSubmit = 'submit';
   }
 
 }

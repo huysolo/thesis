@@ -111,4 +111,12 @@ public class TaskServiceImpl implements TaskService {
         taskRepo.save(temp);
         return temp;
     }
+    
+    @Override
+    public Task updateTaskPass(int taskID, int pass) {
+        Task temp = taskRepo.getTaskFromTaskID(taskID);
+        temp.setPass(pass);
+        taskRepo.save(temp);
+        return temp;
+    }
 }

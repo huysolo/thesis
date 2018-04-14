@@ -82,13 +82,26 @@ public class TaskController {
         return taskService.getAllStudentDoTaskFromTopicID(1);
     }
     
+    @RequestMapping(value = "/submittask")
+    @ResponseBody
+    public Task submitTask(@RequestParam("taskID") Integer taskID, 
+                                    @RequestParam("submit") Integer submit) {
+         return taskService.updateTaskSubmit(taskID, submit);
+    }
+    
+    @RequestMapping(value = "/reviewtask")
+    @ResponseBody
+    public Task reviewTask(@RequestParam("taskID") Integer taskID, 
+                                    @RequestParam("pass") Integer pass) {
+         return taskService.updateTaskPass(taskID, pass);
+    }
+    
     
 
     @RequestMapping(value = "/tasktest")
     @ResponseBody
-    public void createTasktest(@RequestParam("taskID") Integer taskID, 
-                                    @RequestParam("submit") Integer submit) {
-        taskService.updateTaskSubmit(taskID, submit);
+    public int createTasktest(@RequestParam("stdID") Integer stdID) {
+         return stdTopicSemRepo.getTeamLeadFromStudentID(stdID);
     }
     
     

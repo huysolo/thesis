@@ -7,6 +7,7 @@ package hcmut.thesis.backend.services.impl;
 
 import hcmut.thesis.backend.models.Professor;
 import hcmut.thesis.backend.models.Student;
+import hcmut.thesis.backend.models.StudentTopicSem;
 import hcmut.thesis.backend.models.User;
 import hcmut.thesis.backend.modelview.CurrUserInfo;
 import hcmut.thesis.backend.modelview.UserEdit;
@@ -36,11 +37,11 @@ public class UserDAO implements IUserDAO {
 
     @Autowired
     UserService loginService;
-    
+
     @Autowired
     ProfessorRepo profRepo;
-    
-     @Autowired
+
+    @Autowired
     StudentTopicSemRepo stdTopicSemRepo;
 
     @Override
@@ -65,12 +66,12 @@ public class UserDAO implements IUserDAO {
         }
         return false;
     }
-    
+
     @Override
-    public Professor findProfByUserId(int id){
+    public Professor findProfByUserId(int id) {
         List<Professor> listProf = profRepo.findAll();
-        for(int i = 0; i< listProf.size(); i++){
-            if(listProf.get(i).getIdUser() == id){
+        for (int i = 0; i < listProf.size(); i++) {
+            if (listProf.get(i).getIdUser() == id) {
                 return listProf.get(i);
             }
         }
@@ -83,15 +84,16 @@ public class UserDAO implements IUserDAO {
         User user = this.getUser(username, password);
         if (user != null) {
             Boolean isStudent = this.checkUser(user.getIdUser());
-            if(!isStudent){
+            if (!isStudent) {
                 Professor prof = this.findProfByUserId(user.getIdUser());
                 currUserInfo.setProfID(prof.getIdProfessor());
                 currUserInfo.setDegree(prof.getDegree());
                 currUserInfo.setSkills(prof.getSkills());
-                
-            }
-            else{
-                currUserInfo.setTeamLead(stdTopicSemRepo.getTeamLeadFromStudentID(studentRepo.getStdIDFromUserID(user.getIdUser())));
+
+            } else {
+                if (this.checkExistByStdID(studentRepo.getStdIDFromUserID(user.getIdUser()))) {
+                    currUserInfo.setTeamLead(stdTopicSemRepo.getTeamLeadFromStudentID(studentRepo.getStdIDFromUserID(user.getIdUser())));
+                }
             }
 
             String isStd = (isStudent) ? "true" : "false";
@@ -107,66 +109,66 @@ public class UserDAO implements IUserDAO {
             currUserInfo.setEmail(user.getEmail());
             currUserInfo.setGender(user.getGender());
             currUserInfo.setPhoto(user.getPhoto());
-            
+
             currUserInfo.setToken(token);
             currUserInfo.setIsStudent(isStudent);
             return currUserInfo;
         }
         return null;
     }
-    
+
     @Override
-    public User findUserByUserId(int id){
+    public User findUserByUserId(int id) {
         List<User> listUser = userRepo.findAll();
-        for(int i = 0; i< listUser.size(); i++){
-            if(listUser.get(i).getIdUser() == id){
-                return listUser.get(i);
-            }
-        }
-        return null;  
-    }
-    
-    @Override
-    public User getUser(String username){
-        List<User> listUser = userRepo.findAll();
-        for(int i = 0; i< listUser.size(); i++){
-            if(listUser.get(i).getUserName().equals(username)){
+        for (int i = 0; i < listUser.size(); i++) {
+            if (listUser.get(i).getIdUser() == id) {
                 return listUser.get(i);
             }
         }
         return null;
     }
-    
-     @Override
-    public Student findStudentByUserId(int id){
+
+    @Override
+    public User getUser(String username) {
+        List<User> listUser = userRepo.findAll();
+        for (int i = 0; i < listUser.size(); i++) {
+            if (listUser.get(i).getUserName().equals(username)) {
+                return listUser.get(i);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Student findStudentByUserId(int id) {
         List<Student> listStudent = studentRepo.findAll();
-        for(int i = 0; i< listStudent.size(); i++){
-            if(listStudent.get(i).getIdUser() == id){
+        for (int i = 0; i < listStudent.size(); i++) {
+            if (listStudent.get(i).getIdUser() == id) {
                 return listStudent.get(i);
             }
         }
-        return null;  
+        return null;
     }
-    
+
     @Override
-    public UserEdit CheckEditUser(CurrUserInfo currUser){
+    public UserEdit CheckEditUser(CurrUserInfo currUser) {
         UserEdit userEdit = new UserEdit();
         userEdit.setEditUsername(true);
-         userEdit.setEditEmail(true);
+        userEdit.setEditEmail(true);
         List<User> listUser = userRepo.findAll();
-        for(int i = 0; i < listUser.size(); i++){
-            if((listUser.get(i).getUserName().equals(currUser.getUsername())) && (listUser.get(i).getIdUser() != currUser.getUserID())){
+        for (int i = 0; i < listUser.size(); i++) {
+            if ((listUser.get(i).getUserName().equals(currUser.getUsername())) && (listUser.get(i).getIdUser() != currUser.getUserID())) {
                 userEdit.setEditUsername(false);
             }
-            if((listUser.get(i).getEmail().equals(currUser.getEmail())) && (listUser.get(i).getIdUser() != currUser.getUserID())){
+            if ((listUser.get(i).getEmail().equals(currUser.getEmail())) && (listUser.get(i).getIdUser() != currUser.getUserID())) {
                 userEdit.setEditEmail(false);
             }
         }
-    return userEdit;
+        return userEdit;
     }
-    
+
     @Override
-    public void EditUser(CurrUserInfo currUser){
+    public void EditUser(CurrUserInfo currUser) {
         User user = new User();
         user.setUserName(currUser.getUsername());
         user.setPassword(currUser.getPassword());
@@ -175,7 +177,7 @@ public class UserDAO implements IUserDAO {
         user.setEmail(currUser.getEmail());
         user.setIdUser(currUser.getUserID());
         user.setGender(currUser.getGender());
-        if(currUser.getProfID() != 0){
+        if (currUser.getProfID() != 0) {
             Professor prof = new Professor();
             prof.setSkills(currUser.getSkills());
             prof.setIdProfessor(currUser.getProfID());
@@ -184,6 +186,17 @@ public class UserDAO implements IUserDAO {
             profRepo.save(prof);
         }
         userRepo.save(user);
+    }
+
+    @Override
+    public Boolean checkExistByStdID(int stdID) {
+        List<StudentTopicSem> temp = stdTopicSemRepo.findAll();
+        for (int i = 0; i < temp.size(); i++) {
+            if (temp.get(i).getIdStudent() == stdID) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
