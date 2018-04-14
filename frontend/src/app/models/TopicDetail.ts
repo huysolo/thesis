@@ -6,10 +6,12 @@ export class TopicDetail {
   topic: Topic;
   topicMission: TopicMission[];
   topicRequirement: TopicRequirement[];
+  draft: Boolean;
   constructor() {
     this.topic = new Topic();
     this.topicMission = [];
     this.topicRequirement = [];
+    this.draft = false;
   }
 
 }

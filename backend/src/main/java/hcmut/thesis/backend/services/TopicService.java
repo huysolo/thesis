@@ -16,5 +16,8 @@ public interface TopicService {
     List<Topic> getDraftTopics(Integer profId);
     Boolean availableTopic(Topic topic);
     HttpStatus rejectTopic(Integer topId, Integer studentId);
+    HttpStatus publish(Integer topicId);
+    HttpStatus edit(TopicDetail topicDetail);
+    HttpStatus delete(Integer topicId);
 
 }

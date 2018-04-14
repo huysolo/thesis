@@ -90,6 +90,19 @@ public class TopicController {
         } catch (EntityExistsException e){
             return HttpStatus.EXPECTATION_FAILED;
         }
+    }
+
+    @RequestMapping(value = "publish", method = RequestMethod.POST)
+    @ResponseBody
+    HttpStatus setTopicDetail(@RequestBody Integer topicId) {
+        if (!userSession.isProf()){
+            return HttpStatus.FORBIDDEN;
+        }
+        try {
+            return topicService.publish(topicId);
+        } catch (EntityExistsException e){
+            return HttpStatus.EXPECTATION_FAILED;
+        }
 
     }
 

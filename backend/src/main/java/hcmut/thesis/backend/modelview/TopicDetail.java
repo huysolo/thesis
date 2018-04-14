@@ -7,6 +7,11 @@ import hcmut.thesis.backend.models.TopicRequirement;
 import java.util.List;
 
 public class TopicDetail {
+    private Topic topic;
+    private List<TopicMission> topicMission;
+    private List<TopicRequirement> topicRequirement;
+    private Boolean draft;
+
     public Topic getTopic() {
         return topic;
     }
@@ -31,14 +36,21 @@ public class TopicDetail {
         this.topicRequirement = topicRequirement;
     }
 
-    private Topic topic;
-    private List<TopicMission> topicMission;
-    private List<TopicRequirement> topicRequirement;
+
+    public Boolean getDraft() {
+        return draft;
+    }
+
+    public void setDraft(Boolean draft) {
+        this.draft = draft;
+    }
+
 
     public TopicDetail(Topic topic, List<TopicMission> topicMission, List<TopicRequirement> topicRequirement) {
         this.topic = topic;
         this.topicMission = topicMission;
         this.topicRequirement = topicRequirement;
+        this.draft = false;
     }
 
 

@@ -45,7 +45,9 @@ export class TopicContentComponent implements OnInit {
         data: { topicDetail: rs }
       });
     });
+  }
 
+  publish() {
   }
 
 }

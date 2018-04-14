@@ -26,6 +26,7 @@ export class TopicService {
   private topicApplyUrl = 'http://localhost:8080/topic/apply';
   private topicAppliedUrl = 'http://localhost:8080/topic/appliedTopic';
   private topicRejectUrl = 'http://localhost:8080/topic/reject';
+  private topicListDraftUrl = 'http://localhost:8080/topic/listDraft';
 
 
   /**
@@ -69,6 +70,11 @@ export class TopicService {
       });
     } else if (this.requestType === 'history') {
       return this.http.get<Topic[]>(this.topicListUrl + '?semno=' + sem + '&profId=' + profId + '').map(data => {
+        this.setPage(data.length);
+        return data;
+      });
+    } else {
+      return this.http.get<Topic[]>(this.topicListDraftUrl).map(data => {
         this.setPage(data.length);
         return data;
       });

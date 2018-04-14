@@ -13,6 +13,7 @@
             <a class="dropdown-item" *ngIf="topicSv.appliedTopic != null && topicSv.appliedTopic.idTop == topic.idTop" (click)="reject()">Reject</a>
           </ng-container>
           <a class="dropdown-item" (click)="getTopicId()">Detail</a>
+          <a class="dropdown-item" *ngIf="topicSv.requestType === 'draft'" (click)="publish()">Publish</a>
         </div>
       </div>
   </header>

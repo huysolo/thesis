@@ -174,4 +174,51 @@ public class TopicServiceImpl implements TopicService {
         studentTopicSemRepo.delete(studentTopicSem);
         return HttpStatus.CREATED;
     }
+
+    @Override
+    public HttpStatus publish(Integer topicId) {
+        TopicDetail topicDetail  = getTopicDetailById(topicId);
+        if (topicDetail == null){
+            return HttpStatus.NO_CONTENT;
+        }
+        setTopicDetail(topicDetail, true);
+        return HttpStatus.CREATED;
+    }
+
+    @Override
+    public HttpStatus edit(TopicDetail topicDetail) {
+        try {
+            Topic topic = deleteTopicMissionAndRequirement(topicDetail.getTopic().getIdTop());
+            setTopicDetail(topicDetail, false);
+            return  HttpStatus.CREATED;
+        } catch (NullPointerException e) {
+            return HttpStatus.NO_CONTENT;
+        }
+    }
+
+    @Override
+    public HttpStatus delete(Integer topicId) {
+        try {
+            Topic topic = deleteTopicMissionAndRequirement(topicId);
+            assert topic != null;
+            topicRepo.delete(topic);
+            return HttpStatus.CREATED;
+        } catch (NullPointerException e) {
+            return HttpStatus.FORBIDDEN;
+        }
+    }
+
+    private Topic deleteTopicMissionAndRequirement(Integer topicId) throws NullPointerException {
+        TopicDetail topicDetail = getTopicDetailById(topicId);
+        if (topicDetail.getTopic().getSemesterNo() != null) {
+            return null;
+        }
+        topicDetail.getTopicMission().forEach(topicMission -> {
+            topicMissionRepo.delete(topicMission);
+        });
+        topicDetail.getTopicRequirement().forEach(topicRequirement -> {
+            topicReqRepo.delete(topicRequirement);
+        });
+        return topicDetail.getTopic();
+    }
 }
