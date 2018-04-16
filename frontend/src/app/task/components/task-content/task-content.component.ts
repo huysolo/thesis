@@ -103,6 +103,14 @@ export class TaskContentComponent implements OnInit {
     }
   }
 
+  showTask(task) {
+    if (task.showFullTask === undefined) {
+      task.showFullTask = true;
+    } else {
+      task.showFullTask = undefined;
+    }
+  }
+
   reviewTask (taskID: number, pass: number) {
     this.taskService.reviewTask(taskID, pass).subscribe(
       res => {
