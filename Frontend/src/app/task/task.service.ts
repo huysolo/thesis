@@ -23,6 +23,11 @@ export class TaskService {
     return this.httpClient.get<any>(loginUrl + '?topicID=' + topicID);
   }
 
+  getPage(topicID: number, pageNumber: number) {
+    const loginUrl = `http://localhost:8080/getlisttask`;
+    return this.httpClient.get<any>(loginUrl + '?topicID=' + topicID + '&page=' + pageNumber + '');
+  }
+
   getAllStudentDoTopic() {
     const loginUrl = `http://localhost:8080/getallstd`;
     return this.httpClient.post<any>(loginUrl, {});

@@ -5,6 +5,7 @@ import { TaskListComponent } from './components/task-list/task-list.component';
 import {TaskRoutingModule} from './task-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {TaskService} from './task.service';
+import {FilterPipe} from './components/task-content/filter.pipe';
 
 @NgModule({
   imports: [
@@ -13,7 +14,7 @@ import {TaskService} from './task.service';
     FormsModule,
     ReactiveFormsModule
   ],
-  declarations: [TaskContentComponent, TaskListComponent],
+  declarations: [TaskContentComponent, TaskListComponent, FilterPipe],
   providers: [TaskService]
 })
 export class TaskModule { }
