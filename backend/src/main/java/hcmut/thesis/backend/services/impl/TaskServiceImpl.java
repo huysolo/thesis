@@ -8,6 +8,7 @@ package hcmut.thesis.backend.services.impl;
 import hcmut.thesis.backend.models.StudentTask;
 import hcmut.thesis.backend.models.StudentTopicSem;
 import hcmut.thesis.backend.models.Task;
+import hcmut.thesis.backend.modelview.PageInfo;
 import hcmut.thesis.backend.modelview.StudentDoTask;
 import hcmut.thesis.backend.modelview.TaskInfo;
 import hcmut.thesis.backend.repositories.StudentTaskRepo;
@@ -15,6 +16,7 @@ import hcmut.thesis.backend.repositories.StudentTopicSemRepo;
 import hcmut.thesis.backend.repositories.TaskRepo;
 import hcmut.thesis.backend.repositories.UserRepo;
 import hcmut.thesis.backend.services.TaskService;
+import static java.lang.Integer.min;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,5 +120,27 @@ public class TaskServiceImpl implements TaskService {
         temp.setPass(pass);
         taskRepo.save(temp);
         return temp;
+    }
+    
+    @Override
+    public PageInfo getPage(int pageNumber, int topicID, Boolean isStd){
+        PageInfo page = new PageInfo();
+        List<TaskInfo> listTask = new ArrayList<>();       
+        List<Task> t = (isStd == true)? taskRepo.getTaskFromIDTopic(topicID): taskRepo.getTaskSubmitFromProf(topicID);
+        for(int i = 4*pageNumber; i< min(4*(pageNumber + 1),t.size()); i++){
+            
+            TaskInfo temp = new TaskInfo();
+            temp.setTaskID(t.get(i).getIdTask());
+            temp.setTitle(t.get(i).getTitle());
+            temp.setDescription(t.get(i).getDescription());
+            temp.setDeadline(t.get(i).getDeadline());
+            temp.setSubmit(t.get(i).getSubmit());
+            temp.setPass(t.get(i).getPass());
+            temp.setStudent(getStudentDoTaskFromTaskID(t.get(i).getIdTask()));
+            listTask.add(temp);
+        }
+        page.setPageCount((t.size() / 4) + 1);
+        page.setTaskList(listTask);
+        return page;
     }
 }

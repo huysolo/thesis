@@ -3,7 +3,7 @@ import { TaskInfo } from '../task-info';
 import { TaskService } from '../../task.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { StudentDoTask } from '../student-do-task';
-import {AuthService} from '../../../core/auth.service';
+import { AuthService } from '../../../core/auth.service';
 
 
 @Component({
@@ -24,8 +24,14 @@ export class TaskContentComponent implements OnInit {
 
   tempTaskID: number;
 
+  searchText: String = '';
+
   createTask: TaskInfo;
   listStdDoTask: Array<StudentDoTask> = [];
+  public page: number;
+  pagecount: Array<number>;
+
+
 
 
   constructor(public taskService: TaskService, private fb: FormBuilder, public authService: AuthService) {
@@ -41,20 +47,22 @@ export class TaskContentComponent implements OnInit {
       }
     );
 
-    this.taskService.getlistTask(1).subscribe(
-      res => {
-        this.listTask = res;
-      }
-    );
+    // this.taskService.getlistTask(1).subscribe(
+    //   res => {
+    //     this.listTask = res;
+    //   }
+    // );
 
     this.isCreate = 'create';
     this.isSubmit = 'submit';
+    this.page = 0;
   }
 
   ngOnInit() {
+    this.getPage(1, this.page);
   }
 
-  saveTempTaskID (taskID: number) {
+  saveTempTaskID(taskID: number) {
     this.tempTaskID = taskID;
   }
 
@@ -111,7 +119,7 @@ export class TaskContentComponent implements OnInit {
     }
   }
 
-  reviewTask (taskID: number, pass: number) {
+  reviewTask(taskID: number, pass: number) {
     this.taskService.reviewTask(taskID, pass).subscribe(
       res => {
         if (res != null) {
@@ -138,6 +146,20 @@ export class TaskContentComponent implements OnInit {
       }
     );
     this.isSubmit = 'submit';
+  }
+
+  getPage(topicID: number, page: number) {
+    this.taskService.getPage(topicID, page).subscribe(
+      res => {
+        this.pagecount = new Array(res.pageCount);
+        this.listTask = res.taskList;
+      }
+    );
+  }
+
+  setPage(i: number) {
+    this.page = i;
+    this.getPage(1, this.page);
   }
 
 }

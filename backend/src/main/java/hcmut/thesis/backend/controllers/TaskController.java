@@ -7,6 +7,7 @@ package hcmut.thesis.backend.controllers;
 
 import hcmut.thesis.backend.models.StudentTopicSem;
 import hcmut.thesis.backend.models.Task;
+import hcmut.thesis.backend.modelview.PageInfo;
 import hcmut.thesis.backend.modelview.StudentDoTask;
 import hcmut.thesis.backend.modelview.TaskInfo;
 import hcmut.thesis.backend.modelview.UserSession;
@@ -62,12 +63,14 @@ public class TaskController {
 
     @RequestMapping(value = "/getlisttask", method = RequestMethod.GET)
     @ResponseBody
-    public List<TaskInfo> getListTask(@RequestParam("topicID") Integer topicID) {
-        if (userSession.isProf() == true) {
-            return taskService.getListTaskFromProf(topicID);
+    public PageInfo getListTask(@RequestParam("topicID") Integer topicID,
+            @RequestParam("page") Integer pageNumber) {
+        if (userSession.isStudent() == true) {
+            return taskService.getPage(pageNumber,topicID, true);
         } else {
-            return taskService.getListTaskFromIDTopic(topicID);
+            return taskService.getPage(pageNumber,topicID, false);
         }
+        //return taskService.getPage( pageNumber,topicID, true);
     }
     
     @RequestMapping(value = "/getlisttasktest", method = RequestMethod.GET)
@@ -100,8 +103,9 @@ public class TaskController {
 
     @RequestMapping(value = "/tasktest")
     @ResponseBody
-    public int createTasktest(@RequestParam("stdID") Integer stdID) {
-         return stdTopicSemRepo.getTeamLeadFromStudentID(stdID);
+    public PageInfo createTasktest(@RequestParam("topicID") Integer topicID,
+            @RequestParam("page") Integer pageNumber) {
+         return taskService.getPage(pageNumber, topicID, true);
     }
     
     
