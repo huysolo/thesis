@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Semester } from '../models/Semester';
 
 import { ProfInfo } from '../models/ProfInfo';
+import { Specialize } from '../models/Specialize';
 
 @Injectable()
 export class CommonService {
@@ -12,6 +13,7 @@ export class CommonService {
 
   private urlListSemester = 'http://localhost:8080/listSemester';
   private profListlUrl = 'http://localhost:8080/listProf';
+  private specfListlUrl = 'http://localhost:8080/listSpec';
 
   getListSemester(): Observable<Semester[]> {
     return this.http.get<Semester[]>(this.urlListSemester);
@@ -22,5 +24,12 @@ export class CommonService {
    */
   public getListProf(): Observable<ProfInfo[]> {
     return this.http.get<ProfInfo[]>(this.profListlUrl);
+  }
+
+  /**
+   * getListSpec
+   */
+  public getListSpec(): Observable<Specialize[]> {
+    return this.http.get<Specialize[]>(this.specfListlUrl);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Topic } from '../../../models/Topic';
 import { Semester } from '../../../models/Semester';
@@ -11,6 +11,7 @@ import { Observer } from 'rxjs/Observer';
 import { TopicDetail } from '../../../models/TopicDetail';
 import { TopicMission } from '../../../models/TopicMission';
 import { TopicRequirement } from '../../../models/TopicRequirement';
+import { HttpParams } from '@angular/common/http';
 declare var $: any;
 @Component({
   selector: 'app-topic-list',
@@ -21,18 +22,20 @@ export class TopicListComponent implements OnInit {
   public listSem: Observable<Semester[]>;
   public profLst: Observable<ProfInfo[]>;
 
-  public selectedSem;
-  public selectedProfId;
+  public selectedSem = null;
+  public selectedProfId = null;
 
   public topicDetail = new TopicDetail();
   title: String = 'New';
+  p = 1;
 
-  constructor(public topicSv: TopicService, public commonSv: CommonService, public authoSv: AuthService, private route: ActivatedRoute) { }
+  constructor(public topicSv: TopicService, private zone: NgZone,
+    public commonSv: CommonService, public authoSv: AuthService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.selectedProfId = this.authoSv.isProfessor() ? this.authoSv.getProfID() : -1;
+    this.selectedProfId = this.authoSv.isProfessor() ? this.authoSv.getProfID() : null;
     this.route.params.subscribe(params => {
-      this.selectedSem = -1;
+      // this.selectedSem = -1;
       this.listSem = this.commonSv.getListSemester();
       this.profLst = this.commonSv.getListProf();
       this.topicSv.requestType = params['typ'];
@@ -40,21 +43,40 @@ export class TopicListComponent implements OnInit {
       if (this.topicSv.requestType === 'recent') {
         this.getAppliedTopic();
       }
-      this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
+      this.getWithRarams();
+      // this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
     });
+  }
+
+  getWithRarams() {
+    this.zone.run(() => {
+      let params = new HttpParams();
+      console.log(this.selectedSem);
+      if (this.selectedSem != null) {
+        params = params.set('semno', this.selectedSem);
+      }
+      if (this.selectedProfId != null) {
+        params = params.set('profId', this.selectedProfId);
+      }
+      console.log(params);
+
+      this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(params);
+    });
+
   }
 
   onChangeSemester(sem) {
     this.selectedSem = sem;
-    this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
-    if (this.selectedSem !== -1) {
+    this.getWithRarams();
+    if (this.selectedSem !== null) {
       this.getAppliedTopic();
     }
   }
 
   onChangeProf(prof) {
     this.selectedProfId = prof;
-    this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
+    this.getWithRarams();
+    // this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
   }
 
   getAppliedTopic() {
@@ -82,6 +104,15 @@ export class TopicListComponent implements OnInit {
       this.title = 'Edit';
       this.topicDetail = data;
       $('#createTopic').modal('show');
+    });
+  }
+
+  onApply(event: Topic) {
+    this.topicSv.topicLst = this.topicSv.topicLst.map(topicLst => {
+      this.topicSv.appliedTopic = event;
+      return topicLst.filter(top => {
+        return top != null && top.idTop !==  this.topicSv.appliedTopic.idTop;
+      });
     });
   }
 

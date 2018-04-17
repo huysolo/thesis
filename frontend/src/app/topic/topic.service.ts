@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
@@ -43,14 +43,14 @@ export class TopicService {
    */
   public getAppliedTopic(semno: Number): Observable<Topic> {
     return this.http.get<Topic>(this.topicAppliedUrl +
-      (semno !== -1 ? '?semno=' + semno : ''));
+      (semno != null ? '?semno=' + semno : ''));
   }
   /**
    * getListTopic
    * Get List Topic for Current Semester
    */
-  public getListTopic(profId: Number): Observable<Topic[]> {
-    return this.http.get<Topic[]>(this.topicRecentListUrl  + '?profId='  + profId);
+  public getListTopic(params: HttpParams): Observable<Topic[]> {
+    return this.http.get<Topic[]>(this.topicRecentListUrl, {params: params});
   }
 
   /**
@@ -63,14 +63,16 @@ export class TopicService {
   /**
    * getListTopicBySemesterAndProf
   */
-  public getListTopicBySemesterAndProf(sem: number, profId: number): Observable<Topic[]>  {
+  public getListTopicBySemesterAndProf(params: HttpParams): Observable<Topic[]>  {
     if (this.requestType === 'recent') {
-      return this.getListTopic(profId).map(data => {
+      return this.getListTopic(params).map(data => {
         this.setPage(data.length);
         return data;
       });
     } else if (this.requestType === 'history') {
-      return this.http.get<Topic[]>(this.topicListUrl + '?semno=' + sem + '&profId=' + profId + '').map(data => {
+      return this.http.get<Topic[]>(this.topicListUrl, {params: params}
+        //  + '?semno=' + sem + '&profId=' + profId + '', {params: this.params}
+        ).map(data => {
         this.setPage(data.length);
         return data;
       });

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import hcmut.thesis.backend.models.Topic;
 import hcmut.thesis.backend.modelview.TopicDetail;
 import hcmut.thesis.backend.modelview.UserSession;
+import hcmut.thesis.backend.services.ITopicDAO;
 import hcmut.thesis.backend.services.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,21 +23,27 @@ public class TopicController {
     @Autowired
     UserSession userSession;
 
+    @Autowired
+    ITopicDAO topicDAO;
+
     @RequestMapping(value = "listTopic", method = RequestMethod.GET)
     List<Topic> getListTopic(
             @RequestParam(value = "semno", required = false) Integer semno,
             @RequestParam(value = "profId", required = false) Integer profId,
-            @RequestParam(value = "avail", required = false) Boolean available
+            @RequestParam(value = "avail", required = false) Boolean available,
+            @RequestParam(value = "spec", required = false) Integer specialize
+
     ){
-        try {
-            if (userSession.isUser()) {
-                return topicService.getListTopicBySemester(semno, profId, available);
-            } else {
-                return null;
-            }
-        } catch (NullPointerException e){
+        if (userSession.isUser()) {
+            return topicService.getListTopicBySemester(userSession.getCurrentUserFalcuty(), semno, profId, available, specialize);
+        } else {
             return null;
         }
+//        try {
+//
+//        } catch (NullPointerException e){
+//            return null;
+//        }
     }
 
     @RequestMapping(value = "listDraft", method = RequestMethod.GET)
@@ -55,11 +62,12 @@ public class TopicController {
     @RequestMapping(value = "recentTopics", method = RequestMethod.GET)
     List<Topic> getListTopicRecent(
             @RequestParam(value = "profId", required = false) Integer profId,
-            @RequestParam(value = "avail", required = false) Boolean available
+            @RequestParam(value = "avail", required = false) Boolean available,
+            @RequestParam(value = "spec", required = false) Integer specialize
     ){
         try {
             if (userSession.isUser()) {
-                return topicService.getListTopicBySemester(profId, available);
+                return topicService.getListRecentTopicBySemester(profId, available, specialize);
             } else {
                 return null;
             }

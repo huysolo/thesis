@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { TopicDetail } from '../../../models/TopicDetail';
 import { Topic } from '../../../models/Topic';
 import { TopicRequirement } from '../../../models/TopicRequirement';
@@ -15,6 +15,7 @@ export class CreateTopicComponent implements OnInit {
   constructor(public authoSv: AuthService, public topicSv: TopicService) { }
   @Input('title') title: String = 'New';
   @Input('createTopic') createTopic: TopicDetail;
+  @Output('created') created = new EventEmitter<Boolean>();
   ngOnInit() {
   }
 
@@ -22,7 +23,8 @@ export class CreateTopicComponent implements OnInit {
     this.createTopic.draft = draft;
     this.topicSv.createTopic(this.createTopic).subscribe(data => {
       if (data === 'CREATED') {
-        this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(-1, this.authoSv.getProfID());
+        this.created.emit(true);
+        // this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(-1, this.authoSv.getProfID());
       }
     }, (err) => {
       console.log(err);

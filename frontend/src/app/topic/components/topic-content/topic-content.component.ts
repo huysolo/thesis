@@ -15,6 +15,8 @@ export class TopicContentComponent implements OnInit {
   @Input('topic') topic: Topic;
   @Input('semno') semno;
   @Output('editTopic') editTopic = new EventEmitter<Number>();
+  @Output('applyTopic') applyTopic = new EventEmitter<Topic>();
+
   constructor(public dialog: MatDialog, public topicSv: TopicService, public authoSv: AuthService) { }
 
   ngOnInit() {
@@ -23,24 +25,33 @@ export class TopicContentComponent implements OnInit {
   apply() {
     this.topicSv.applyToTopic(this.topic.idTop).subscribe(data => {
       if (data === 'CREATED') {
-        this.topicSv.getAppliedTopic(this.semno).subscribe(topic => {
-          this.topicSv.appliedTopic = topic;
-        });
+        this.applyTopic.emit(this.topic);
+        // this.topicSv.topicLst = this.topicSv.topicLst.map(topicLst => {
+        //   this.topicSv.appliedTopic = this.topic;
+        //   return topicLst.filter(top => {
+        //     return top.idTop !== this.topicSv.idTop;
+        //   });
+        // });
+        // this.topicSv.getAppliedTopic(this.semno).subscribe(topic => {
+        //   this.topicSv.appliedTopic = topic;
+        // });
       }
     });
   }
   reject() {
     this.topicSv.reject(this.topicSv.appliedTopic.idTop).subscribe(data => {
       if (data === 'CREATED') {
-        this.topicSv.appliedTopic = null;
+        this.topicSv.topicLst = this.topicSv.topicLst.map(topicLst => {
+          topicLst.push(this.topicSv.appliedTopic);
+          this.topicSv.appliedTopic = null;
+          return topicLst;
+        });
       }
     });
   }
 
   getTopicId(): void {
     this.topicSv.getTopicDetail(this.topic.idTop).subscribe(rs => {
-      console.log(rs);
-
       const dialogRef = this.dialog.open(TopidDetailComponent, {
         width: '500px',
         data: { topicDetail: rs }

@@ -1,12 +1,17 @@
 package hcmut.thesis.backend.services.impl;
 
-import hcmut.thesis.backend.models.*;
+import hcmut.thesis.backend.models.StudentTopicSem;
+import hcmut.thesis.backend.models.Topic;
+import hcmut.thesis.backend.models.TopicMission;
+import hcmut.thesis.backend.models.TopicRequirement;
 import hcmut.thesis.backend.modelview.TopicDetail;
 import hcmut.thesis.backend.modelview.UserSession;
 import hcmut.thesis.backend.repositories.*;
+import hcmut.thesis.backend.services.ITopicDAO;
 import hcmut.thesis.backend.services.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,38 +40,48 @@ public class TopicServiceImpl implements TopicService {
     @Autowired
     StudentTopicSemRepo studentTopicSemRepo;
 
+    @Autowired
+    JdbcTemplate template;
 
+    @Autowired
+    ITopicDAO topicDAO;
 
     @Override
-    public List<Topic> getListTopicBySemester(Integer semesterNo, Integer profId, Boolean aval) {
+    public List<Topic> getListTopicBySemester(Integer idFal, Integer semesterNo, Integer profId, Boolean aval, Integer specialize) {
         aval = aval == null ? true : aval;
-        List<Topic>  topicList;
-        if (semesterNo != null && semesterNo != -1){
-            topicList = topicRepo.findTopBySemesterNo(semesterNo);
-        } else {
-            List<Integer> semesters = semesterRepo.getCurrentApplySemester();
-            if (semesters.size() == 0){
-                return null;
-            }
-            topicList = topicRepo.findAllPublish(semesters.get(0));
-        }
-        if (profId != null && profId != -1) topicList.removeIf(topic -> topic.getIdProf() != profId);
-        if (aval) {
-            topicList.removeIf(topic -> !availableTopic(topic));
-        }
-        return topicList;
+        return topicDAO.getFilteredTopicList(idFal, profId, specialize, semesterNo);
+//        List<Topic>  topicList;
+//        if (semesterNo != null && semesterNo != -1){
+//            topicList = topicRepo.findTopBySemesterNo(semesterNo);
+//        } else {
+//            List<Integer> semesters = semesterRepo.getCurrentApplySemester();
+//            if (semesters.size() == 0){
+//                return null;
+//            }
+//            topicList = topicRepo.findAllPublish(semesters.get(0));
+//        }
+//        if (profId != null && profId != -1) topicList.removeIf(topic -> topic.getIdProf() != profId);
+//        if (aval) {
+//            topicList.removeIf(topic -> !availableTopic(topic));
+//        }
+//        return topicList;
     }
 
     @Override
-    public List<Topic> getListTopicBySemester(Integer profId, Boolean aval) {
+    public List<Topic> getListRecentTopicBySemester(Integer profId, Boolean aval, Integer specialize) {
         List<Integer> semNo = semesterRepo.getCurrentApplySemester();
         if(semNo.size() == 0) {
             return null;
         }
-        if (userSession.isProf()){
+        Integer idFal = null;
+        if (specialize == null && userSession.isProf()){
             profId = userSession.getProf().getIdProfessor();
         }
-        return getListTopicBySemester(semNo.get(0), profId, aval);
+        if (userSession.isUser()) {
+            idFal = userSession.getCurrentUserFalcuty();
+        }
+        return getListTopicBySemester(idFal, semNo.get(0), profId, aval, specialize);
+
     }
 
     @Override
@@ -88,7 +103,7 @@ public class TopicServiceImpl implements TopicService {
             return HttpStatus.EXPECTATION_FAILED;
         }
         Topic topic = topicDetail.getTopic();
-        topic.setIdFaculty(userSession.getCurrentUserFalcuty());
+//        topic.setIdFaculty(userSession.getCurrentUserFalcuty());
         if (publish){
             topic.setSemesterNo(semesters.get(0));
         }
