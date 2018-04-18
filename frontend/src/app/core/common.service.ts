@@ -15,6 +15,7 @@ export class CommonService {
   private profListlUrl = 'http://localhost:8080/listProf';
   private specfListlUrl = 'http://localhost:8080/listSpec';
 
+
   getListSemester(): Observable<Semester[]> {
     return this.http.get<Semester[]>(this.urlListSemester);
   }

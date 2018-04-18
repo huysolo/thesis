@@ -12,6 +12,7 @@ import { TopicDetail } from '../../../models/TopicDetail';
 import { TopicMission } from '../../../models/TopicMission';
 import { TopicRequirement } from '../../../models/TopicRequirement';
 import { HttpParams } from '@angular/common/http';
+import { Specialize } from '../../../models/Specialize';
 declare var $: any;
 @Component({
   selector: 'app-topic-list',
@@ -21,9 +22,11 @@ declare var $: any;
 export class TopicListComponent implements OnInit {
   public listSem: Observable<Semester[]>;
   public profLst: Observable<ProfInfo[]>;
+  public specLst: Observable<Specialize[]>;
 
   public selectedSem = null;
   public selectedProfId = null;
+  public selectedSpecId = null;
 
   public topicDetail = new TopicDetail();
   title: String = 'New';
@@ -38,6 +41,7 @@ export class TopicListComponent implements OnInit {
       // this.selectedSem = -1;
       this.listSem = this.commonSv.getListSemester();
       this.profLst = this.commonSv.getListProf();
+      this.specLst = this.commonSv.getListSpec();
       this.topicSv.requestType = params['typ'];
       this.topicSv.appliedTopic = null;
       if (this.topicSv.requestType === 'recent') {
@@ -51,14 +55,15 @@ export class TopicListComponent implements OnInit {
   getWithRarams() {
     this.zone.run(() => {
       let params = new HttpParams();
-      console.log(this.selectedSem);
       if (this.selectedSem != null) {
         params = params.set('semno', this.selectedSem);
       }
       if (this.selectedProfId != null) {
         params = params.set('profId', this.selectedProfId);
       }
-      console.log(params);
+      if (this.selectedSpecId != null) {
+        params = params.set('spec', this.selectedSpecId);
+      }
 
       this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(params);
     });
@@ -77,6 +82,11 @@ export class TopicListComponent implements OnInit {
     this.selectedProfId = prof;
     this.getWithRarams();
     // this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
+  }
+
+  onChangeSpec(spec) {
+    this.selectedSpecId = spec;
+    this.getWithRarams();
   }
 
   getAppliedTopic() {

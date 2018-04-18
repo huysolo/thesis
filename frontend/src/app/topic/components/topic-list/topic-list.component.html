@@ -42,8 +42,13 @@
           </option>
         </select>
       </div>
-      <div class="col-md-4 form-group">
-        <input class="form-control" type="text" name="search" [(ngModel)]="filter">
+      <div class="col-md-3 form-group">
+        <select class="form-control" (change)="onChangeSpec($event.target.value)">
+          <option selected [value]="null">All Specialize</option>
+          <option *ngFor="let spec of specLst | async" [value]="spec.idSpecialize">
+            {{spec.name}}
+          </option>
+        </select>
       </div>
     </div>
 
@@ -55,12 +60,15 @@
     </div>
   </form>
 </div>
+<div class="col-md-4 form-group">
+  <input class="form-control" type="text" name="search" [(ngModel)]="filter">
+</div>
 <h2 class="text-center">List of Topics:</h2>
 <div *ngFor="let topic of topicSv.topicLst | async | filter:filter | paginate: { itemsPerPage: 5, currentPage: p }; let i = index">
   <app-topic-content [topic]="topic" (editTopic)="onEdit($event)" [semno]="selectedSem" (applyTopic)="onApply($event)"></app-topic-content>
 </div>
 <div class="text-center">
-  <pagination-controls (pageChange)="p = $event" (created)="getWithRarams()" ></pagination-controls>
+  <pagination-controls (pageChange)="p = $event" (created)="getWithRarams()"></pagination-controls>
 </div>
 <app-create-topic [createTopic]="topicDetail" [title]="title"></app-create-topic>
 
