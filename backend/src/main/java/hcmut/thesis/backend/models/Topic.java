@@ -32,7 +32,7 @@ public class Topic {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_top")
     public int getIdTop() {
         return idTop;

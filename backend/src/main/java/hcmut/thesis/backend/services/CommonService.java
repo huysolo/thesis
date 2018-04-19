@@ -12,4 +12,5 @@ public interface CommonService {
     String getFullName(String fName, java.lang.String lName);
     Integer getCurrentSem();
     List<Specialize> getAllByIdFalcuty(Integer idFal);
+    String getSpecByID(Integer idSpec);
 }

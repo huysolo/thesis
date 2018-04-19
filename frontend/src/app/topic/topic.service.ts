@@ -41,9 +41,8 @@ export class TopicService {
   /**
    * getAppliedTopic
    */
-  public getAppliedTopic(semno: Number): Observable<Topic> {
-    return this.http.get<Topic>(this.topicAppliedUrl +
-      (semno != null ? '?semno=' + semno : ''));
+  public getAppliedTopic(params: HttpParams): Observable<Topic> {
+    return this.http.get<Topic>(this.topicAppliedUrl, {params: params});
   }
   /**
    * getListTopic

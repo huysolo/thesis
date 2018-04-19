@@ -8,69 +8,62 @@
   <app-topic-content [topic]="topicSv.appliedTopic"></app-topic-content>
   <br>
 </div>
-<!-- <nav aria-label="Page navigation example" *ngIf="topicSv.pageList.length > 1">
-  <ul class="pagination justify-content-center">
-    <li class="page-item" [ngClass]="{'disabled': topicSv.selectedPage < 2}" (click)="setPage(topicSv.selectedPage -1)">
-      <a class="page-link" tabindex="-1">Previous</a>
-    </li>
-    <li class="page-item" *ngFor="let page of topicSv.pageList" [ngClass]="{'active': topicSv.selectedPage == page}">
-      <a class="page-link" (click)="setPage(page)">{{page}}</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link" [ngClass]="{'disabled': topicSv.selectedPage == topicSv.pageList.length}" (click)="setPage(topicSv.selectedPage + 1)">Next</a>
-    </li>
-  </ul>
-</nav> -->
 
 <div>
-  <form *ngIf="topicSv.requestType === 'history'">
-    <h3>Filter:</h3>
-    <div class="form-row" id="filter">
-      <!-- <div class="col-md-2  form-group">
-      </div> -->
-      <div class="col-md-3 form-group">
-        <select class="form-control" (change)="onChangeSemester($event.target.value)">
-          <option selected [value]="null">All Semester</option>
-          <option *ngFor="let sem of listSem | async" [value]="sem.semesterNo">Semester No: {{sem.semesterNo}}</option>
-        </select>
-      </div>
-      <div class="col-md-3 form-group">
-        <select class="form-control" (change)="onChangeProf($event.target.value)" *ngIf="authoSv.isStudent()">
-          <option selected [value]="null">All Proffesor</option>
-          <option *ngFor="let prof of profLst | async" [value]="prof.professor.idProfessor">
-            {{prof.name}}
-          </option>
-        </select>
-      </div>
-      <div class="col-md-3 form-group">
-        <select class="form-control" (change)="onChangeSpec($event.target.value)">
-          <option selected [value]="null">All Specialize</option>
-          <option *ngFor="let spec of specLst | async" [value]="spec.idSpecialize">
-            {{spec.name}}
-          </option>
-        </select>
-      </div>
+  <div class="row">
+    <div class="col-8">
+      <h3>Filter:</h3>
     </div>
-
-  </form>
-  <form *ngIf="topicSv.requestType === 'recent'">
+    <div class="col-4">
+      <input placeholder="Search" class="form-control" type="text" name="search" [(ngModel)]="filter">
+    </div>
+  </div>
+  <div>
+    <form>
+      <div class="form-row" id="filter">
+        <div class="col-md-4 form-group" *ngIf="topicSv.requestType === 'history'" >
+          <select class="form-control" (change)="onChangeSemester($event.target.value)">
+            <option selected [value]="0" >All Semester</option>
+            <option *ngFor="let sem of listSem | async" [value]="sem.semesterNo">Semester No: {{sem.semesterNo}}</option>
+          </select>
+        </div>
+        <div class="col-md-4 form-group" *ngIf="authoSv.isStudent()">
+          <select class="form-control" (change)="onChangeProf($event.target.value)" >
+            <option selected [value]="0">All Proffesor</option>
+            <option *ngFor="let prof of profLst | async" [value]="prof.professor.idProfessor">
+              {{prof.name}}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-4 form-group">
+          <select class="form-control" (change)="onChangeSpec($event.target.value)">
+            <option selected [value]="0">All Specialize</option>
+            <option *ngFor="let spec of specLst | async" [value]="spec.idSpecialize">
+              {{spec.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- <form *ngIf="topicSv.requestType === 'recent'">
     <div class="form-check">
       <input type="checkbox" class="form-check-input" id="avail">
       <label class="form-check-label" for="avail">Unavailable Topic</label>
     </div>
-  </form>
+  </form> -->
 </div>
-<div class="col-md-4 form-group">
-  <input class="form-control" type="text" name="search" [(ngModel)]="filter">
-</div>
-<h2 class="text-center">List of Topics:</h2>
+<!-- <div class="col-md-4 form-group">
+
+</div> -->
+<h2 class="text-center">List of Topics</h2>
 <div *ngFor="let topic of topicSv.topicLst | async | filter:filter | paginate: { itemsPerPage: 5, currentPage: p }; let i = index">
   <app-topic-content [topic]="topic" (editTopic)="onEdit($event)" [semno]="selectedSem" (applyTopic)="onApply($event)"></app-topic-content>
 </div>
 <div class="text-center">
-  <pagination-controls (pageChange)="p = $event" (created)="getWithRarams()"></pagination-controls>
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
 </div>
-<app-create-topic [createTopic]="topicDetail" [title]="title"></app-create-topic>
+<app-create-topic [createTopic]="topicDetail" [specLst] = "specLst" (created)="getWithRarams()"></app-create-topic>
 
 <script>
   $('#createTopic').on('show.bs.modal', event => {

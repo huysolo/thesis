@@ -7,10 +7,7 @@ import hcmut.thesis.backend.modelview.UserSession;
 import hcmut.thesis.backend.repositories.StudentTopicSemRepo;
 import hcmut.thesis.backend.services.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -48,6 +45,11 @@ public class CommonController {
             return null;
         }
         return commonService.getAllByIdFalcuty(userSession.getCurrentUserFalcuty());
+    }
+
+    @RequestMapping(value = "spec", method = RequestMethod.GET)
+    String getSpecNameById(@RequestParam("specId") Integer specId){
+        return commonService.getSpecByID(specId);
     }
 
 

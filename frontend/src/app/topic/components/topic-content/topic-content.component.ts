@@ -54,7 +54,9 @@ export class TopicContentComponent implements OnInit {
     this.topicSv.getTopicDetail(this.topic.idTop).subscribe(rs => {
       const dialogRef = this.dialog.open(TopidDetailComponent, {
         width: '500px',
-        data: { topicDetail: rs }
+        data: {
+          topicDetail: rs
+        }
       });
     });
   }

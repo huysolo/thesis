@@ -5,6 +5,8 @@ import { TopicRequirement } from '../../../models/TopicRequirement';
 import { TopicMission } from '../../../models/TopicMission';
 import { AuthService } from '../../../core/auth.service';
 import { TopicService } from '../../topic.service';
+import { Observable } from 'rxjs/Observable';
+import { Specialize } from '../../../models/Specialize';
 
 @Component({
   selector: 'app-create-topic',
@@ -13,8 +15,8 @@ import { TopicService } from '../../topic.service';
 })
 export class CreateTopicComponent implements OnInit {
   constructor(public authoSv: AuthService, public topicSv: TopicService) { }
-  @Input('title') title: String = 'New';
   @Input('createTopic') createTopic: TopicDetail;
+  @Input('specLst') specLst: Observable<Specialize>;
   @Output('created') created = new EventEmitter<Boolean>();
   ngOnInit() {
   }
@@ -24,7 +26,6 @@ export class CreateTopicComponent implements OnInit {
     this.topicSv.createTopic(this.createTopic).subscribe(data => {
       if (data === 'CREATED') {
         this.created.emit(true);
-        // this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(-1, this.authoSv.getProfID());
       }
     }, (err) => {
       console.log(err);
@@ -32,8 +33,8 @@ export class CreateTopicComponent implements OnInit {
   }
 
   addReq() {
-    const req = new TopicRequirement(0);
-    this.createTopic.topicRequirement.push(new TopicRequirement(0));
+    const req = new TopicRequirement();
+    this.createTopic.topicRequirement.push(new TopicRequirement());
   }
 
   removeReq(removePos: number) {
@@ -41,9 +42,9 @@ export class CreateTopicComponent implements OnInit {
   }
 
   addMission() {
-    const mission = new TopicMission(0);
+    const mission = new TopicMission();
     mission.idTopic = 0;
-    this.createTopic.topicMission.push(new TopicMission(0));
+    this.createTopic.topicMission.push(new TopicMission());
   }
 
   removeMission(removePos: number) {

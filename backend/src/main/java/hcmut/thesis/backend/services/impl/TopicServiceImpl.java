@@ -108,6 +108,7 @@ public class TopicServiceImpl implements TopicService {
             topic.setSemesterNo(semesters.get(0));
         }
         topicRepo.saveAndFlush(topic);
+        System.out.println(topic.getIdTop());
 
 
         topicDetail.getTopicMission().forEach(topicMissionDetail -> topicMissionDetail.setIdTopic(topic.getIdTop()));

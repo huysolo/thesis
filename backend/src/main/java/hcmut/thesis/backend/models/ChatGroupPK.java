@@ -8,7 +8,6 @@ import java.util.Objects;
 
 public class ChatGroupPK implements Serializable {
     private Timestamp time;
-    private int idTopicSem;
     private int idUser;
 
     @Column(name = "time")
@@ -19,16 +18,6 @@ public class ChatGroupPK implements Serializable {
 
     public void setTime(Timestamp time) {
         this.time = time;
-    }
-
-    @Column(name = "id_topic_sem")
-    @Id
-    public int getIdTopicSem() {
-        return idTopicSem;
-    }
-
-    public void setIdTopicSem(int idTopicSem) {
-        this.idTopicSem = idTopicSem;
     }
 
     @Column(name = "id_user")
@@ -46,14 +35,13 @@ public class ChatGroupPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChatGroupPK that = (ChatGroupPK) o;
-        return idTopicSem == that.idTopicSem &&
-                idUser == that.idUser &&
+        return idUser == that.idUser &&
                 Objects.equals(time, that.time);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(time, idTopicSem, idUser);
+        return Objects.hash(time, idUser);
     }
 }

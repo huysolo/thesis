@@ -76,5 +76,11 @@ public class CommonServiceImpl implements CommonService {
         return specializeRepo.findAllByIdFalcuty(idFal);
     }
 
+    @Override
+    public String getSpecByID(Integer idSpec) {
+        Optional<Specialize> specialize = specializeRepo.findById(idSpec);
+        return specialize.map(Specialize::getName).orElse(null);
+    }
+
 
 }
