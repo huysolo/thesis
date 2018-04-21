@@ -3,7 +3,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title mce-text-center" id="topicTitleId"> {{title}} Topic</h4>
+        <h4 class="modal-title mce-text-center" id="topicTitleId"> {{createTopic.topic.idTop == null ? 'New' : 'Edit'}} Topic</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -14,7 +14,7 @@
 
             <div class="form-group">
               <label for="title-topic">
-                <h5>Title</h5>
+                <h5>Title <span style="color: red">*</span></h5>
               </label>
               <input type="text" name="title-topic" id="title-topic" class="form-control" placeholder="Insert your title here" [(ngModel)]="createTopic.topic.title"
                 required #title="ngModel">
@@ -24,7 +24,7 @@
             </div>
             <div class="form-group">
               <label for="stLim">
-                <h5> Student Limit</h5>
+                <h5> Student Limit <span style="color: red">*</span></h5>
               </label>
               <input type="number" [(ngModel)]="createTopic.topic.stNumLimit" class="form-control" name="stLim" id="stLim" aria-describedby="helpStLim"
                 placeholder="Insert limit" required #stLim="ngModel">
@@ -35,14 +35,27 @@
             </div>
             <div class="form-group">
               <label for="summary-topic">
-                <h5>Sumary</h5>
+                <h5>Specialize <span style="color: red">*</span></h5>
               </label>
-              <textarea name="summary-topic" id="summary-topic" cols="10" rows="5" class="form-control" placeholder="Insert your summary here"
-                [(ngModel)]="createTopic.topic.sumary" ></textarea>
+              <select class="form-control"  [(ngModel)]="createTopic.topic.idSpecialize" name="spec"  required #spec="ngModel">
+                  <option *ngFor="let spec of specLst | async" [ngValue]="spec.idSpecialize">
+                    {{spec.name}}
+                  </option>
+              </select>
+              <div [hidden]="spec.valid || spec.pristine" class="alert alert-danger">
+                  Specialize is required
+                </div>
             </div>
             <div class="form-group">
+                <label for="specialize-topic">
+                  <h5>Sumary</h5>
+                </label>
+                <textarea name="specialize-topic" id="specialize-topic" cols="10" rows="5" class="form-control" placeholder="Insert your specialize here"
+                  [(ngModel)]="createTopic.topic.sumary" ></textarea>
+              </div>
+            <div class="form-group">
               <label for="">
-                <h5>Requirements</h5>
+                <h5>Requirements <span style="color: red">*</span></h5>
               </label>
               <ng-container *ngFor="let req of createTopic.topicRequirement; let i = index">
                 <div class="input-group mb-3">
@@ -60,7 +73,7 @@
             <br>
             <div class="form-group">
               <label for="">
-                <h5>Missions</h5>
+                <h5>Missions <span style="color: red">*</span></h5>
               </label>
               <ng-container *ngFor="let miss of createTopic.topicMission; let i = index">
                 <div class="input-group mb-3">

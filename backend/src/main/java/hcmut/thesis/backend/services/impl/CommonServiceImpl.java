@@ -1,11 +1,13 @@
 package hcmut.thesis.backend.services.impl;
 
 import hcmut.thesis.backend.models.Semester;
+import hcmut.thesis.backend.models.Specialize;
 import hcmut.thesis.backend.models.User;
 import hcmut.thesis.backend.modelview.ProfInfo;
 import hcmut.thesis.backend.modelview.UserSession;
 import hcmut.thesis.backend.repositories.ProfessorRepo;
 import hcmut.thesis.backend.repositories.SemesterRepo;
+import hcmut.thesis.backend.repositories.SpecializeRepo;
 import hcmut.thesis.backend.repositories.UserRepo;
 import hcmut.thesis.backend.services.CommonService;
 import hcmut.thesis.backend.services.IUserDAO;
@@ -24,6 +26,8 @@ public class CommonServiceImpl implements CommonService {
     private ProfessorRepo professorRepo;
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private SpecializeRepo specializeRepo;
     @Autowired
     private UserSession userSession;
     @Autowired
@@ -65,6 +69,17 @@ public class CommonServiceImpl implements CommonService {
             return null;
         }
         return semesters.get(0);
+    }
+
+    @Override
+    public List<Specialize> getAllByIdFalcuty(Integer idFal) {
+        return specializeRepo.findAllByIdFalcuty(idFal);
+    }
+
+    @Override
+    public String getSpecByID(Integer idSpec) {
+        Optional<Specialize> specialize = specializeRepo.findById(idSpec);
+        return specialize.map(Specialize::getName).orElse(null);
     }
 
 

@@ -8,6 +8,8 @@ import { CreateTopicComponent } from './components/create-topic/create-topic.com
 import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '../core/material.module';
 import { TopidDetailComponent } from './components/topid-detail/topid-detail.component';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 
 @NgModule({
   imports: [
@@ -15,6 +17,8 @@ import { TopidDetailComponent } from './components/topid-detail/topid-detail.com
     TopicRoutingModule,
     FormsModule,
     MaterialModule,
+    Ng2SearchPipeModule,
+    NgxPaginationModule
   ],
   declarations: [
     TopicContentComponent,

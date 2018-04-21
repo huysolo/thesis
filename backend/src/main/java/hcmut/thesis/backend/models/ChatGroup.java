@@ -23,7 +23,7 @@ public class ChatGroup {
         this.time = time;
     }
 
-    @Id
+    @Basic
     @Column(name = "id_topic_sem")
     public int getIdTopicSem() {
         return idTopicSem;

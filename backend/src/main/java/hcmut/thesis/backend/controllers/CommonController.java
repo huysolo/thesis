@@ -1,10 +1,9 @@
 package hcmut.thesis.backend.controllers;
 
 import hcmut.thesis.backend.models.Semester;
-import hcmut.thesis.backend.models.StudentTopicSem;
+import hcmut.thesis.backend.models.Specialize;
 import hcmut.thesis.backend.modelview.ProfInfo;
 import hcmut.thesis.backend.modelview.UserSession;
-
 import hcmut.thesis.backend.repositories.StudentTopicSemRepo;
 import hcmut.thesis.backend.services.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,15 +33,24 @@ public class CommonController {
         return commonService.getListProf();
 
     }
-    
-    @RequestMapping(value = "aaa", method = RequestMethod.GET)
-    List<StudentTopicSem> getaaa(@RequestParam("id") Integer id) {
-        return null;
-    }
 
     @RequestMapping(value = "currentSem", method = RequestMethod.GET)
     Integer getCurrentTopicSemester(){
         return commonService.getCurrentSem();
     }
+
+    @RequestMapping(value = "listSpec", method = RequestMethod.GET)
+    List<Specialize> getListSpec(){
+        if (!userSession.isUser()){
+            return null;
+        }
+        return commonService.getAllByIdFalcuty(userSession.getCurrentUserFalcuty());
+    }
+
+    @RequestMapping(value = "spec", method = RequestMethod.GET)
+    String getSpecNameById(@RequestParam("specId") Integer specId){
+        return commonService.getSpecByID(specId);
+    }
+
 
 }

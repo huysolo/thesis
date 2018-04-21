@@ -91,7 +91,7 @@
             <a [routerLink]="['/topic', 'history']">History</a>
           </li>
           <li>
-            <a [routerLink]="['/topic', 'draft']">Draft</a>
+            <a [routerLink]="['/topic', 'draft']" *ngIf="authService.isProfessor()">Draft</a>
           </li>
         </ul>
       </li>

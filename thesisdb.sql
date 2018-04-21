@@ -43,6 +43,17 @@ create table faculty
 )
   engine = InnoDB;
 
+create table file
+(
+  id_file     int                                 not null
+    primary key,
+  name        varchar(45)                         null,
+  upload_date timestamp default CURRENT_TIMESTAMP null,
+  id_user     varchar(45)                         null,
+  id_task     int                                 null
+)
+  engine = InnoDB;
+
 create table hibernate_sequence
 (
   next_val bigint null
@@ -118,6 +129,15 @@ create table semester
 )
   engine = InnoDB;
 
+create table specialize
+(
+  id_specialize int         not null
+    primary key,
+  id_falcuty    int         not null,
+  name          varchar(45) not null
+)
+  engine = InnoDB;
+
 create table standard
 (
   id_standard int not null
@@ -178,7 +198,9 @@ create table task
   description  varchar(200)                        null,
   deadline     timestamp default CURRENT_TIMESTAMP not null
   on update CURRENT_TIMESTAMP,
-  id_topic_sem int                                 null
+  id_topic_sem int                                 null,
+  pass         int                                 null,
+  submit       int                                 null
 )
   engine = InnoDB;
 
@@ -187,15 +209,17 @@ create index task_topic_per_semester_id_topic_semester_fk
 
 create table topic
 (
-  id_top       int auto_increment
+  id_top        int auto_increment
     primary key,
-  title        varchar(150)        not null,
-  st_num_limit int default '0'     not null,
-  sumary       varchar(200)        null,
-  id_prof      int                 not null,
-  id_faculty   int                 not null,
-  score        int(10) default '0' null,
-  semester_no  int(10)             null,
+  title         varchar(150)                        not null,
+  st_num_limit  int default '0'                     not null,
+  sumary        varchar(300)                        null,
+  id_prof       int                                 not null,
+  score         int(10) default '0'                 null,
+  semester_no   int(10)                             null,
+  id_specialize int                                 null,
+  upload_date   timestamp default CURRENT_TIMESTAMP null,
+  publish_date  timestamp                           null,
   constraint topic_id_top_uindex
   unique (id_top)
 )

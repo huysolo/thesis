@@ -1,21 +1,38 @@
 package hcmut.thesis.backend.models;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 public class Topic {
+    public Topic(int idTop, String title, int stNumLimit, String sumary, int idProf, Integer score, Integer semesterNo, Integer idSpecialize) {
+        this.idTop = idTop;
+        this.title = title;
+        this.stNumLimit = stNumLimit;
+        this.sumary = sumary;
+        this.idProf = idProf;
+        this.score = score;
+        this.semesterNo = semesterNo;
+        this.idSpecialize = idSpecialize;
+    }
+
     private int idTop;
     private String title;
     private int stNumLimit;
     private String sumary;
     private int idProf;
-    private int idFaculty;
     private Integer score;
     private Integer semesterNo;
+    private Integer idSpecialize;
+    private Timestamp uploadDate;
+    private Timestamp publishDate;
+
+    public Topic() {
+    }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_top")
     public int getIdTop() {
         return idTop;
@@ -66,35 +83,6 @@ public class Topic {
     }
 
     @Basic
-    @Column(name = "id_faculty")
-    public int getIdFaculty() {
-        return idFaculty;
-    }
-
-    public void setIdFaculty(int idFaculty) {
-        this.idFaculty = idFaculty;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Topic topic = (Topic) o;
-        return idTop == topic.idTop &&
-                stNumLimit == topic.stNumLimit &&
-                idProf == topic.idProf &&
-                idFaculty == topic.idFaculty &&
-                Objects.equals(title, topic.title) &&
-                Objects.equals(sumary, topic.sumary);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(idTop, title, stNumLimit, sumary, idProf, idFaculty);
-    }
-
-    @Basic
     @Column(name = "score")
     public Integer getScore() {
         return score;
@@ -112,5 +100,58 @@ public class Topic {
 
     public void setSemesterNo(Integer semesterNo) {
         this.semesterNo = semesterNo;
+    }
+
+    @Basic
+    @Column(name = "id_specialize")
+    public Integer getIdSpecialize() {
+        return idSpecialize;
+    }
+
+    public void setIdSpecialize(Integer idSpecialize) {
+        this.idSpecialize = idSpecialize;
+    }
+
+    @Basic
+    @Column(name = "upload_date")
+    public Timestamp getUploadDate() {
+        return uploadDate;
+    }
+
+    public void setUploadDate(Timestamp uploadDate) {
+        this.uploadDate = uploadDate;
+    }
+
+    @Basic
+    @Column(name = "publish_date")
+    public Timestamp getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(Timestamp publishDate) {
+        this.publishDate = publishDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Topic topic = (Topic) o;
+        return idTop == topic.idTop &&
+                stNumLimit == topic.stNumLimit &&
+                idProf == topic.idProf &&
+                Objects.equals(title, topic.title) &&
+                Objects.equals(sumary, topic.sumary) &&
+                Objects.equals(score, topic.score) &&
+                Objects.equals(semesterNo, topic.semesterNo) &&
+                Objects.equals(idSpecialize, topic.idSpecialize) &&
+                Objects.equals(uploadDate, topic.uploadDate) &&
+                Objects.equals(publishDate, topic.publishDate);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(idTop, title, stNumLimit, sumary, idProf, score, semesterNo, idSpecialize, uploadDate, publishDate);
     }
 }

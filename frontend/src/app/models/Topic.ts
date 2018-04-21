@@ -4,7 +4,7 @@ export class Topic {
   stNumLimit: Number;
   sumary: string;
   idProf: number;
-  idFalcuty: number;
+  idSpecialize: number;
   score: Number;
   semesterNo: Number;
 }

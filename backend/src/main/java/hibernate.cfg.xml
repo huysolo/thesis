@@ -25,6 +25,8 @@
         <mapping class="hcmut.thesis.backend.models.TopicMission"/>
         <mapping class="hcmut.thesis.backend.models.TopicRequirement"/>
         <mapping class="hcmut.thesis.backend.models.Notification"/>
+        <mapping class="hcmut.thesis.backend.models.File"/>
+        <mapping class="hcmut.thesis.backend.models.Specialize"/>
         <!-- <property name="connection.username"/> -->
         <!-- <property name="connection.password"/> -->
 

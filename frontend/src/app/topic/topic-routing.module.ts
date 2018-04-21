@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ManageTopicComponent } from './pages/manage-topic/manage-topic.component';
 import { TopicListComponent } from './components/topic-list/topic-list.component';
 import { TopicDetail } from '../models/TopicDetail';
+import { AuthTopicGuardService } from './auth-topic-guard.service';
 
 const topicRoutes: Routes = [
   {
@@ -12,7 +13,8 @@ const topicRoutes: Routes = [
     children: [
       {
         path: ':typ',
-        component: TopicListComponent
+        component: TopicListComponent,
+        // canActivate: [AuthTopicGuardService]
       }
     ]
   }
