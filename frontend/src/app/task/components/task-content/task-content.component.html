@@ -115,6 +115,9 @@
               <i class="fa fa-calendar fa-fw w3-margin-right"></i>{{task.deadline | date}}</h6>
             <hr>
           </div>
+
+
+
           <div class="w3-dropdown-hover w3-margin-bottom ">
             <button *ngIf="this.authService.isProfessor() && task.pass == 0" type="button" class="w3-button w3-white w3-border">
               <i class="fa fa-pencil"></i> Review</button>
@@ -127,10 +130,56 @@
               <a (click)="reviewTask(task.taskID, 1)" class="w3-bar-item w3-button w3-show w3-border">Not Pass</a>
             </div>
           </div>
-          <!-- <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom">
-          <i class="fa fa-thumbs-up"></i>  Like</button> -->
-          <!-- <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom">
-          <i class="fa fa-comment"></i>  Comment</button> -->
+
+          <p class="w3-right">
+            <button (click)="getTaskComment(task)" class="w3-button w3-black">
+              <b>Replies </b>
+              <span *ngIf="task.comment" class="w3-tag w3-white"> {{task.comment.length}}</span>
+            </button>
+          </p>
+          <p class="w3-clear"></p>
+
+          <div *ngIf="task.showCmt == true" class="w3-col m12">
+            <div class="">
+
+              <div class="w3-container w3-padding">
+                <!-- <p contenteditable="true" class="w3-opacity w3-border w3-padding" #comment>Enter your feedback</p> -->
+                <!-- <input type="text" name="message" placeholder="Type Message ..." class="w3-padding" #input>
+                <button (click)="sendComment(input.value, task.taskID)" type="button" class="w3-button w3-theme">
+                  <i class="fa fa-pencil"></i>  Comment</button> -->
+
+                <form>
+                  <div class="input-group">
+                    <textarea class="form-control" rows="3" placeholder="Type Message ..." #input></textarea>
+                    <span class="input-group-btn">
+                      <button type="submit" (click)="sendComment(input.value, task.taskID)" class="w3-button w3-blue w3-round">Send</button>
+                    </span>
+                  </div>
+                </form>
+              </div>
+
+              <div id="demo2" style="background-color: whitesmoke">
+
+                <div *ngFor="let cmt of task.comment" class="w3-row">
+                  <hr style="margin-top: 0px;">
+                  <div class="w3-col l2 m3">
+                    <img src="https://bootdey.com/img/Content/user_1.jpg" style="width:90px;">
+                  </div>
+                  <div class="w3-col l10 m9">
+                    <h4>{{cmt.username}}
+                      <span class="w3-opacity w3-medium">{{cmt.time | date}}</span>
+                    </h4>
+                    <p>{{cmt.content}}</p>
+                    <br>
+                  </div>
+                </div>
+
+                <div class="w3-margin-bottom"></div>
+              </div>
+            </div>
+          </div>
+
+
         </div>
 
         <div class="w3-row" *ngIf="task.showFullTask == undefined">
@@ -167,8 +216,8 @@
 
       <div class="w3-center">
         <div class="w3-bar w3-border">
-         
-           <a (click)= "setPage(i)" [ngClass]="(i == this.page)?' w3-bar-item w3-button w3-green':'w3-bar-item w3-button '" *ngFor="let page of pagecount; let i= index">{{i}}</a>
+
+          <a (click)="setPage(i)" [ngClass]="(i == this.page)?' w3-bar-item w3-button w3-green':'w3-bar-item w3-button '" *ngFor="let page of pagecount; let i= index">{{i}}</a>
         </div>
       </div>
 

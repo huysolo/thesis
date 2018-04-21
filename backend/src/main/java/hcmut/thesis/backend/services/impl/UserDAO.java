@@ -94,6 +94,7 @@ public class UserDAO implements IUserDAO {
                 if (this.checkExistByStdID(studentRepo.getStdIDFromUserID(user.getIdUser()))) {
                     currUserInfo.setTeamLead(stdTopicSemRepo.getTeamLeadFromStudentID(studentRepo.getStdIDFromUserID(user.getIdUser())));
                 }
+                currUserInfo.setTopicID(stdTopicSemRepo.getTopicIDFromStudentID(studentRepo.getStdIDFromUserID(user.getIdUser())));
             }
 
             String isStd = (isStudent) ? "true" : "false";
@@ -109,6 +110,7 @@ public class UserDAO implements IUserDAO {
             currUserInfo.setEmail(user.getEmail());
             currUserInfo.setGender(user.getGender());
             currUserInfo.setPhoto(user.getPhoto());
+            
 
             currUserInfo.setToken(token);
             currUserInfo.setIsStudent(isStudent);

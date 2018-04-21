@@ -31,5 +31,8 @@ public interface UserRepo extends JpaRepository<User, Integer> {
 
     @Query("SELECT u.userName FROM User u WHERE u.idUser = :UserID")
     String getUserNameFromID(@Param("UserID") Integer UserID);
+    
+    @Query("SELECT u FROM User u WHERE u.idUser = :UserID")
+    User getUserFromID(@Param("UserID") Integer UserID);
 
 }

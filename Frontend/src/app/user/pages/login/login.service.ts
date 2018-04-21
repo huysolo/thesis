@@ -34,6 +34,7 @@ export class LoginService {
           localStorage.setItem('profID', res.profID);
           localStorage.setItem('userID', res.userID);
           localStorage.setItem('teamLead', res.teadLead);
+          localStorage.setItem('topicID', res.topicID);
         } else {
           localStorage.setItem('isLogin', 'false');
         }

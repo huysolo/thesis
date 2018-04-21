@@ -4,6 +4,7 @@ import { TaskService } from '../../task.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { StudentDoTask } from '../student-do-task';
 import { AuthService } from '../../../core/auth.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -31,10 +32,14 @@ export class TaskContentComponent implements OnInit {
   public page: number;
   pagecount: Array<number>;
 
+  topicID: any;
+  listTaskComment: Array<any>;
+
+  disconnection : any;
 
 
 
-  constructor(public taskService: TaskService, private fb: FormBuilder, public authService: AuthService) {
+  constructor(public taskService: TaskService, private fb: FormBuilder, public authService: AuthService, private route: ActivatedRoute) {
     this.crttaskForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -47,19 +52,22 @@ export class TaskContentComponent implements OnInit {
       }
     );
 
-    // this.taskService.getlistTask(1).subscribe(
-    //   res => {
-    //     this.listTask = res;
-    //   }
-    // );
-
     this.isCreate = 'create';
     this.isSubmit = 'submit';
-    this.page = 0;
+
   }
 
   ngOnInit() {
-    this.getPage(1, this.page);
+    this.page = 0;
+
+    this.route.params.subscribe(params => {
+      this.topicID = params['typ'];
+      if (this.topicID === undefined) {
+        this.topicID = -1;
+      }
+      console.log(this.topicID);
+      this.getPage(this.topicID, this.page);
+    });
   }
 
   saveTempTaskID(taskID: number) {
@@ -160,6 +168,45 @@ export class TaskContentComponent implements OnInit {
   setPage(i: number) {
     this.page = i;
     this.getPage(1, this.page);
+  }
+
+  getTaskComment(task) {
+    if (task.showCmt === undefined) {
+      task.showCmt = true;
+      this.taskService.getTaskComment(task.taskID).subscribe(
+        res => {
+              task.comment = res;
+        }
+      );
+
+      const stompClient = this.taskService.receiveMessage();
+      stompClient.connect({}, frame => {
+        task.disconnection =  stompClient.subscribe<any>('/topic/comment' + task.taskID, res => {
+          task.comment.push(JSON.parse(res.body));
+        });
+      });
+    } else {
+      task.showCmt = undefined;
+      task.disconnection.unsubscribe();
+    }
+
+
+  }
+
+  sendComment(comment: String, taskid: number) {
+    this.taskService.sendComment(comment, taskid).subscribe(
+      res => {
+
+      }
+    );
+  }
+
+  showCmt(task) {
+    if (task.showCmt === undefined) {
+      task.showCmt = true;
+    } else {
+      task.showCmt = undefined;
+    }
   }
 
 }

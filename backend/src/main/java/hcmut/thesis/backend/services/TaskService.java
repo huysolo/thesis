@@ -8,6 +8,7 @@ package hcmut.thesis.backend.services;
 import hcmut.thesis.backend.models.Task;
 import hcmut.thesis.backend.modelview.PageInfo;
 import hcmut.thesis.backend.modelview.StudentDoTask;
+import hcmut.thesis.backend.modelview.TaskComment;
 import hcmut.thesis.backend.modelview.TaskInfo;
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface TaskService {
     Task updateTaskSubmit(int taskID, int submit);
     Task updateTaskPass(int taskID, int pass);
     PageInfo getPage(int pageNumber, int topicID, Boolean isStd);
+    List<TaskComment> getTaskComment(int taskID);
+    
 }

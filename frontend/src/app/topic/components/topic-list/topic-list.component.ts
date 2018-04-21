@@ -40,6 +40,7 @@ export class TopicListComponent implements OnInit {
       if (this.topicSv.requestType === 'recent') {
         this.getAppliedTopic();
       }
+
       this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
     });
   }

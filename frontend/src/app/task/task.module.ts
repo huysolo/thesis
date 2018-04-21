@@ -6,6 +6,7 @@ import {TaskRoutingModule} from './task-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {TaskService} from './task.service';
 import {FilterPipe} from './components/task-content/filter.pipe';
+import { TaskChatgroupComponent } from './components/task-chatgroup/task-chatgroup.component';
 
 @NgModule({
   imports: [
@@ -14,7 +15,7 @@ import {FilterPipe} from './components/task-content/filter.pipe';
     FormsModule,
     ReactiveFormsModule
   ],
-  declarations: [TaskContentComponent, TaskListComponent, FilterPipe],
+  declarations: [TaskContentComponent, TaskListComponent, FilterPipe, TaskChatgroupComponent],
   providers: [TaskService]
 })
 export class TaskModule { }
