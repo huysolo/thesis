@@ -37,6 +37,9 @@ export class AuthService {
   public getProfID(): number {
     return parseInt(localStorage.getItem('profID'));
   }
+  public getTopicID(): number {
+    return parseInt(localStorage.getItem('topicID'));
+  }
   public getToken(): string {
     return localStorage.getItem('token');
   }

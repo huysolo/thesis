@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TaskInfo } from './components/task-info';
+// const SockJs = require('sockjs-client');
+// const Stomp = require('stompjs');
+
+import * as SockJs from 'sockjs-client';
+import * as Stomp from 'stompjs';
 
 @Injectable()
 export class TaskService {
   taskStdList: Array<any>;
+  private socket;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -43,4 +49,34 @@ export class TaskService {
     return this.httpClient.get<any>(loginUrl + '?taskID=' + taskID + '&pass=' + pass + '');
   }
 
+  getTopicCount() {
+    const loginUrl = `http://localhost:8080/topiccount`;
+    return this.httpClient.get<any>(loginUrl);
+  }
+
+  receiveMessage() {
+    const socket = new SockJs(`http://localhost:8080/socket`);
+    const stompClient = Stomp.over(socket);
+    return stompClient;
+  }
+
+  sendMessage(message) {
+    const loginUrl = `http://localhost:8080/notify`;
+    return this.httpClient.get<any>(loginUrl + '?message=' + message);
+  }
+
+  getAllMessage() {
+    const loginUrl = `http://localhost:8080/getallmessage`;
+    return this.httpClient.get<any>(loginUrl);
+  }
+
+  getTaskComment(taskID: number) {
+    const loginUrl = `http://localhost:8080/gettaskcomment`;
+    return this.httpClient.get<any>(loginUrl  +'?taskid=' +taskID);
+  }
+
+  sendComment(comment: String, taskid: number){
+    const Url = `http://localhost:8080/taskcomment`;
+    return this.httpClient.get<any>(Url + '?comment=' + comment + '&taskid=' + taskid + '');
+  }
 }

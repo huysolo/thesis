@@ -20,7 +20,9 @@ public interface TopicRepo extends JpaRepository<Topic, Integer> {
 
     @Query("SELECT t FROM Topic t WHERE t.semesterNo is NULL AND t.idProf = :idProf")
     List<Topic> findAllUnPublish(@Param("idProf") Integer idProf);
-
-
+    
+    @Query("SELECT t FROM Topic t WHERE t.idProf = :idProf")
+    List<Topic> findTopicFromProfID(@Param("idProf") Integer idProf);
+    
 }
 

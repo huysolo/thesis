@@ -5,14 +5,18 @@
  */
 package hcmut.thesis.backend.services.impl;
 
+import hcmut.thesis.backend.models.CommentTask;
 import hcmut.thesis.backend.models.StudentTask;
 import hcmut.thesis.backend.models.StudentTopicSem;
 import hcmut.thesis.backend.models.Task;
+import hcmut.thesis.backend.models.User;
 import hcmut.thesis.backend.modelview.PageInfo;
 import hcmut.thesis.backend.modelview.StudentDoTask;
+import hcmut.thesis.backend.modelview.TaskComment;
 import hcmut.thesis.backend.modelview.TaskInfo;
 import hcmut.thesis.backend.repositories.StudentTaskRepo;
 import hcmut.thesis.backend.repositories.StudentTopicSemRepo;
+import hcmut.thesis.backend.repositories.TaskCommentRepo;
 import hcmut.thesis.backend.repositories.TaskRepo;
 import hcmut.thesis.backend.repositories.UserRepo;
 import hcmut.thesis.backend.services.TaskService;
@@ -41,6 +45,9 @@ public class TaskServiceImpl implements TaskService {
     
     @Autowired
     StudentTopicSemRepo stdTopicSemRepo;
+    
+    @Autowired
+    TaskCommentRepo taskCommentRepo;
     
     @Override
     public List<StudentDoTask> getStudentDoTaskFromTaskID(int taskID){
@@ -142,5 +149,22 @@ public class TaskServiceImpl implements TaskService {
         page.setPageCount((t.size() / 4) + 1);
         page.setTaskList(listTask);
         return page;
+    }
+    
+    @Override
+    public List<TaskComment> getTaskComment(int taskID){
+        List<TaskComment> listComment = new ArrayList<>();
+        List<CommentTask> t = taskCommentRepo.getCommentFromTaskID(taskID);
+        for(int i = 0; i< t.size(); i++){
+            TaskComment temp = new TaskComment();
+            User user = userRepo.getUserFromID(t.get(i).getIdUser());
+            temp.setUsername(user.getUserName());
+            temp.setGender(user.getGender());
+            temp.setTaskID(taskID);
+            temp.setTime(t.get(i).getTime());
+            temp.setContent(t.get(i).getContent());
+            listComment.add(temp);
+        }
+        return listComment;
     }
 }

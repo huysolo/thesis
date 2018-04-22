@@ -63,6 +63,10 @@ export class TopicListComponent implements OnInit {
       if (this.selectedSem != 0) {
         params = params.set('semno', this.selectedSem.toString());
       }
+      
+      //Bux
+     // this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
+
       if (this.selectedProfId != 0) {
         params = params.set('profId', this.selectedProfId.toString());
       }

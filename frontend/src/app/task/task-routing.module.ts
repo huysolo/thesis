@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import {TaskContentComponent} from './components/task-content/task-content.component';
 import { FormUploadComponent } from './components/upload/form-upload/form-upload.component';
+import { TaskListComponent } from './components/task-list/task-list.component';
+import {TaskChatgroupComponent} from './components/task-chatgroup/task-chatgroup.component';
 
 const taskRoutes: Routes = [
   {
@@ -14,6 +16,20 @@ const taskRoutes: Routes = [
     path: 'upload',
     component: FormUploadComponent,
     pathMatch: 'full'
+  },{
+    path: 'chatgroup',
+    component: TaskChatgroupComponent,
+    pathMatch: 'full'
+  },
+  {
+    path: '',
+    component: TaskListComponent,
+    children: [
+      {
+        path: ':typ',
+        component: TaskContentComponent
+      }
+    ]
   }
 ];
 

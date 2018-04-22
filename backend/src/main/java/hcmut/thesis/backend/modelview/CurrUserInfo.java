@@ -24,6 +24,7 @@ public class CurrUserInfo {
     private String skills;
     private int profID;
     private int teamlead;
+    private int topicID;
     
     public String getUsername(){
         return this.username;
@@ -66,6 +67,9 @@ public class CurrUserInfo {
     }
     public int getTeadLead(){
         return this.teamlead;
+    }
+    public int getTopicID(){
+        return this.topicID;
     }
     
     public void setUsername(String username){
@@ -110,5 +114,8 @@ public class CurrUserInfo {
     
     public void setTeamLead(int isteamlead){
         this.teamlead = isteamlead;
+    }
+    public void setTopicID(int id){
+        this.topicID = id;
     }
 }

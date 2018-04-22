@@ -10,6 +10,7 @@ import { DetailUploadComponent } from './components/upload/detail-upload/detail-
 import { FormUploadComponent } from './components/upload/form-upload/form-upload.component';
 import { ListUploadComponent } from './components/upload/list-upload/list-upload.component';
 import { UploadFileService } from './upload-file.service';
+import { TaskChatgroupComponent } from './components/task-chatgroup/task-chatgroup.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,15 @@ import { UploadFileService } from './upload-file.service';
     FormsModule,
     ReactiveFormsModule
   ],
-  declarations: [TaskContentComponent, TaskListComponent, FilterPipe, DetailUploadComponent, FormUploadComponent, ListUploadComponent],
+  declarations: [
+    TaskContentComponent,
+    TaskListComponent,
+    FilterPipe,
+    DetailUploadComponent,
+    FormUploadComponent,
+    ListUploadComponent,
+    TaskChatgroupComponent
+  ],
   providers: [TaskService, UploadFileService]
 })
 export class TaskModule { }

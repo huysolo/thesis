@@ -6,13 +6,20 @@
 package hcmut.thesis.backend.controllers;
 
 import hcmut.thesis.backend.models.Task;
+import hcmut.thesis.backend.models.Topic;
+import hcmut.thesis.backend.modelview.ChatGroupInfo;
 import hcmut.thesis.backend.modelview.PageInfo;
 import hcmut.thesis.backend.modelview.StudentDoTask;
+import hcmut.thesis.backend.modelview.TaskComment;
 import hcmut.thesis.backend.modelview.TaskInfo;
 import hcmut.thesis.backend.modelview.UserSession;
+import hcmut.thesis.backend.repositories.ProfessorRepo;
+import hcmut.thesis.backend.repositories.StudentRepo;
 import hcmut.thesis.backend.repositories.StudentTaskRepo;
 import hcmut.thesis.backend.repositories.StudentTopicSemRepo;
 import hcmut.thesis.backend.repositories.TaskRepo;
+import hcmut.thesis.backend.repositories.TopicRepo;
+import hcmut.thesis.backend.services.ChatGroupService;
 import hcmut.thesis.backend.services.ITaskDAO;
 import hcmut.thesis.backend.services.TaskService;
 import hcmut.thesis.backend.services.impl.StorageService;
@@ -59,6 +66,16 @@ public class TaskController {
 
     @Autowired
     StorageService storageService;
+    TopicRepo topicRepo;
+
+    @Autowired
+    ProfessorRepo profRepo;
+
+    @Autowired
+    StudentRepo stdRepo;
+    
+    @Autowired
+    ChatGroupService chatGroupService;
 
     @RequestMapping(value = "/crttask", method = RequestMethod.POST)
     @ResponseBody
@@ -71,18 +88,20 @@ public class TaskController {
     @ResponseBody
     public PageInfo getListTask(@RequestParam("topicID") Integer topicID,
             @RequestParam("page") Integer pageNumber) {
-        if (userSession.isStudent()) {
+        if (topicID == -1) {
+            topicID = stdTopicSemRepo.getTopicIDFromStudentID(stdRepo.getStdIDFromUserID(userSession.getUserID()));
+        }
+        if (userSession.isStudent() == true) {
             return taskService.getPage(pageNumber,topicID, true);
         } else {
             return taskService.getPage(pageNumber,topicID, false);
         }
-        //return taskService.getPage( pageNumber,topicID, true);
     }
-    
-    @RequestMapping(value = "/getlisttasktest", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/topiccount", method = RequestMethod.GET)
     @ResponseBody
-    public List<TaskInfo> getListTaskTest(@RequestParam("topicID") Integer topicID) {
-        return taskService.getListTaskFromProf(topicID);
+    public List<Topic> getListTaskTest() {
+        return topicRepo.findTopicFromProfID(profRepo.getProfessorByIdUser(userSession.getUserID()));
     }
 
     @RequestMapping(value = "/getallstd", method = RequestMethod.POST)
@@ -90,30 +109,40 @@ public class TaskController {
     public List<StudentDoTask> getAllStudentDoTopic() {
         return taskService.getAllStudentDoTaskFromTopicID(1);
     }
-    
+
     @RequestMapping(value = "/submittask")
     @ResponseBody
-    public Task submitTask(@RequestParam("taskID") Integer taskID, 
-                                    @RequestParam("submit") Integer submit) {
-         return taskService.updateTaskSubmit(taskID, submit);
+    public Task submitTask(@RequestParam("taskID") Integer taskID,
+            @RequestParam("submit") Integer submit) {
+        return taskService.updateTaskSubmit(taskID, submit);
     }
-    
+
     @RequestMapping(value = "/reviewtask")
     @ResponseBody
-    public Task reviewTask(@RequestParam("taskID") Integer taskID, 
-                                    @RequestParam("pass") Integer pass) {
-         return taskService.updateTaskPass(taskID, pass);
+    public Task reviewTask(@RequestParam("taskID") Integer taskID,
+            @RequestParam("pass") Integer pass) {
+        return taskService.updateTaskPass(taskID, pass);
     }
     
+    @RequestMapping(value = "/getallmessage")
+    @ResponseBody
+    public List<ChatGroupInfo> getAllMessage(){
+        return chatGroupService.getchatGroupFromUderID(userSession.getUserID());
+    }
     
+    @RequestMapping(value = "/gettaskcomment")
+    @ResponseBody
+    public List<TaskComment> getTaskComment(@RequestParam("taskid") Integer taskID){
+        return taskService.getTaskComment(taskID);
+    }
 
     @RequestMapping(value = "/tasktest")
     @ResponseBody
-    public PageInfo createTasktest(@RequestParam("topicID") Integer topicID,
-            @RequestParam("page") Integer pageNumber) {
-         return taskService.getPage(pageNumber, topicID, true);
+    public List<TaskComment> createTasktest(@RequestParam("taskid") Integer taskID){
+        return taskService.getTaskComment(taskID);
     }
 
+<<<<<<< HEAD
 
     private List<String> files = new ArrayList<String>();
 
@@ -151,4 +180,6 @@ public class TaskController {
                 .body(file);
     }
     
+=======
+>>>>>>> 5b4540ee60784e910298224c384b821c4b6936ea
 }

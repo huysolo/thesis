@@ -5,6 +5,7 @@ import { MainPageComponent } from '../main-page/main-page.component';
 import {LoginComponent} from '../user/pages/login/login.component';
 import {MeetingComponent} from '../meeting/meeting.component';
 import { AuthGuardUserService } from '../core/auth-guard-user.service';
+import {LayoutComponent} from '../layout/layout.component';
 
 const appRoutes: Routes = [
   {
@@ -21,8 +22,8 @@ const appRoutes: Routes = [
     loadChildren: 'app/task/task.module#TaskModule'
   },
   {
-    path: 'meeting',
-    component: MeetingComponent
+    path: 'layout',
+    component: LayoutComponent
   }
   ,
   {
