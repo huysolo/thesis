@@ -1,15 +1,10 @@
 create table chat_group
 (
-  time         timestamp default CURRENT_TIMESTAMP not null
-  on update CURRENT_TIMESTAMP,
+  time         timestamp default CURRENT_TIMESTAMP not null,
   id_topic_sem int                                 not null,
   id_user      int                                 not null,
   content      varchar(50)                         not null,
-  primary key (time, id_topic_sem, id_user),
-  constraint chat_group_id_topic_sem_uindex
-  unique (id_topic_sem),
-  constraint chat_group_id_user_uindex
-  unique (id_user)
+  primary key (time, id_user)
 )
   engine = InnoDB;
 
