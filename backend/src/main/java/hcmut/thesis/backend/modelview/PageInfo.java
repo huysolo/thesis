@@ -18,6 +18,7 @@ public class PageInfo {
     public int getPageCount(){
         return this.pageCount;
     }
+
     public List<TaskInfo> getTaskList(){
         return this.taskList;
     }

@@ -49,14 +49,16 @@ public class TaskDAO implements ITaskDAO {
     }
     
     @Override
-    public void createTask(TaskInfo taskInfo){
+    public TaskInfo createTask(TaskInfo taskInfo, int topicid){
         Task newTask = new Task();
         newTask.setTitle(taskInfo.getTitle());
         newTask.setDescription(taskInfo.getDescription());
         newTask.setDeadline(taskInfo.getDeadline());
-        newTask.setIdTopicSem(1);
+        newTask.setIdTopicSem(topicid);
         Task task =  taskRepo.saveAndFlush(newTask);
         createStudentTask(task.getIdTask(), taskInfo.getStudent());
+        taskInfo.setTaskID(task.getIdTask());
+        return taskInfo;
     }
     
     @Override

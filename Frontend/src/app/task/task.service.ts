@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TaskInfo } from './components/task-info';
-// const SockJs = require('sockjs-client');
-// const Stomp = require('stompjs');
 
 import * as SockJs from 'sockjs-client';
 import * as Stomp from 'stompjs';
@@ -36,7 +34,7 @@ export class TaskService {
 
   getAllStudentDoTopic() {
     const loginUrl = `http://localhost:8080/getallstd`;
-    return this.httpClient.post<any>(loginUrl, {});
+    return this.httpClient.get<any>(loginUrl);
   }
 
   submitTask(taskID: number, submit: number) {
@@ -51,6 +49,21 @@ export class TaskService {
 
   getTopicCount() {
     const loginUrl = `http://localhost:8080/topiccount`;
+    return this.httpClient.get<any>(loginUrl);
+  }
+
+  getSemCount(){
+    const Url = `http://localhost:8080/semcount`;
+    return this.httpClient.get<any>(Url);
+  }
+
+  getTopicFromSemID(semid) {
+    const loginUrl = `http://localhost:8080/getlisttopic`;
+    return this.httpClient.get<any>(loginUrl + '?semid=' + semid);
+  }
+
+  getTopicFromStd(){
+    const loginUrl = `http://localhost:8080/stdgetlisttopic`;
     return this.httpClient.get<any>(loginUrl);
   }
 

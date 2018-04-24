@@ -14,6 +14,7 @@ import hcmut.thesis.backend.modelview.TaskComment;
 import hcmut.thesis.backend.modelview.TaskInfo;
 import hcmut.thesis.backend.modelview.UserSession;
 import hcmut.thesis.backend.repositories.ProfessorRepo;
+import hcmut.thesis.backend.repositories.SemesterRepo;
 import hcmut.thesis.backend.repositories.StudentRepo;
 import hcmut.thesis.backend.repositories.StudentTaskRepo;
 import hcmut.thesis.backend.repositories.StudentTopicSemRepo;
@@ -21,7 +22,9 @@ import hcmut.thesis.backend.repositories.TaskRepo;
 import hcmut.thesis.backend.repositories.TopicRepo;
 import hcmut.thesis.backend.services.ChatGroupService;
 import hcmut.thesis.backend.services.ITaskDAO;
+import hcmut.thesis.backend.services.IUserDAO;
 import hcmut.thesis.backend.services.TaskService;
+import hcmut.thesis.backend.services.TopicService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,6 +45,9 @@ public class TaskController {
 
     @Autowired
     ITaskDAO itaskDAO;
+    
+    @Autowired
+    IUserDAO iuserDAO;
 
     @Autowired
     TaskRepo taskRepo;
@@ -69,12 +75,17 @@ public class TaskController {
     
     @Autowired
     ChatGroupService chatGroupService;
+    @Autowired
+    SemesterRepo semRepo;
+    
+    @Autowired
+    TopicService topicService;
 
     @RequestMapping(value = "/crttask", method = RequestMethod.POST)
     @ResponseBody
     public TaskInfo createTask(@RequestBody TaskInfo createInfo) {
-        itaskDAO.createTask(createInfo);
-        return createInfo;
+        int topicid = taskService.getCurrTopicFromStdID(userSession.getStudent().getIdStudent()).getIdTop();
+        return itaskDAO.createTask(createInfo, topicid);
     }
 
     @RequestMapping(value = "/getlisttask", method = RequestMethod.GET)
@@ -82,7 +93,7 @@ public class TaskController {
     public PageInfo getListTask(@RequestParam("topicID") Integer topicID,
             @RequestParam("page") Integer pageNumber) {
         if (topicID == -1) {
-            topicID = stdTopicSemRepo.getTopicIDFromStudentID(stdRepo.getStdIDFromUserID(userSession.getUserID()));
+            topicID = topicService.getAppliedTopic(semRepo.getCurrentApplySemester().get(0),userSession.getStudent().getIdStudent()).getIdTop();
         }
         if (userSession.isStudent() == true) {
             return taskService.getPage(pageNumber,topicID, true);
@@ -96,11 +107,33 @@ public class TaskController {
     public List<Topic> getListTaskTest() {
         return topicRepo.findTopicFromProfID(profRepo.getProfessorByIdUser(userSession.getUserID()));
     }
+    
+    @RequestMapping(value = "/getlisttopic", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Topic> getTopicFromSemID(@RequestParam(value="semid") Integer semid) {
+        if(semid == -1){
+            semid = semRepo.getCurrentApplySemester().get(0);
+        }
+        return topicRepo.findListSemFromSemID(userSession.getProf().getIdProfessor(), semid);
+    }
+    
+    @RequestMapping(value = "/stdgetlisttopic", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Topic> getTopicFromStd() {
+       return taskService.getListTopicFromStdID(userSession.getStudent().getIdStudent());
+    }
+    
+    @RequestMapping(value = "/semcount", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Integer> getListSem() {
+        return topicRepo.findListSemFromProfID(userSession.getProf().getIdProfessor());
+    }
 
-    @RequestMapping(value = "/getallstd", method = RequestMethod.POST)
+    @RequestMapping(value = "/getallstd", method = RequestMethod.GET)
     @ResponseBody
     public List<StudentDoTask> getAllStudentDoTopic() {
-        return taskService.getAllStudentDoTaskFromTopicID(1);
+        int topicid = taskService.getCurrTopicFromStdID(userSession.getStudent().getIdStudent()).getIdTop();
+        return taskService.getAllStudentDoTaskFromTopicID(topicid);
     }
 
     @RequestMapping(value = "/submittask")
@@ -131,8 +164,9 @@ public class TaskController {
 
     @RequestMapping(value = "/tasktest")
     @ResponseBody
-    public List<TaskComment> createTasktest(@RequestParam("taskid") Integer taskID){
-        return taskService.getTaskComment(taskID);
+    public int createTasktest(@RequestParam("stdid") Integer stdid, 
+            @RequestParam("semid") Integer semid){
+        return 0;
     }
 
 }

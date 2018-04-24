@@ -6,6 +6,7 @@
 package hcmut.thesis.backend.services;
 
 import hcmut.thesis.backend.models.Task;
+import hcmut.thesis.backend.models.Topic;
 import hcmut.thesis.backend.modelview.PageInfo;
 import hcmut.thesis.backend.modelview.StudentDoTask;
 import hcmut.thesis.backend.modelview.TaskComment;
@@ -25,5 +26,6 @@ public interface TaskService {
     Task updateTaskPass(int taskID, int pass);
     PageInfo getPage(int pageNumber, int topicID, Boolean isStd);
     List<TaskComment> getTaskComment(int taskID);
-    
+    List<Topic> getListTopicFromStdID(int stdid);
+    Topic getCurrTopicFromStdID(int stdid);
 }

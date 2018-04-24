@@ -12,8 +12,10 @@ import hcmut.thesis.backend.models.User;
 import hcmut.thesis.backend.modelview.CurrUserInfo;
 import hcmut.thesis.backend.modelview.UserEdit;
 import hcmut.thesis.backend.repositories.ProfessorRepo;
+import hcmut.thesis.backend.repositories.SemesterRepo;
 import hcmut.thesis.backend.repositories.StudentRepo;
 import hcmut.thesis.backend.repositories.StudentTopicSemRepo;
+import hcmut.thesis.backend.repositories.TopicRepo;
 import hcmut.thesis.backend.repositories.UserRepo;
 import hcmut.thesis.backend.services.IUserDAO;
 import hcmut.thesis.backend.services.UserService;
@@ -43,6 +45,12 @@ public class UserDAO implements IUserDAO {
 
     @Autowired
     StudentTopicSemRepo stdTopicSemRepo;
+
+    @Autowired
+    TopicRepo topicRepo;
+
+    @Autowired
+    SemesterRepo semRepo;
 
     @Override
     public User getUser(String username, String password) {
@@ -91,10 +99,10 @@ public class UserDAO implements IUserDAO {
                 currUserInfo.setSkills(prof.getSkills());
 
             } else {
-                if (this.checkExistByStdID(studentRepo.getStdIDFromUserID(user.getIdUser()))) {
-                    currUserInfo.setTeamLead(stdTopicSemRepo.getTeamLeadFromStudentID(studentRepo.getStdIDFromUserID(user.getIdUser())));
+                if (this.getStdTopicSem(this.findStudentByUserId(user.getIdUser()).getIdStudent(), semRepo.getCurrentApplySemester().get(0)) != null) {
+                    currUserInfo.setTeamLead(this.getStdTopicSem(this.findStudentByUserId(user.getIdUser()).getIdStudent(), semRepo.getCurrentApplySemester().get(0)).getTeamLead());
+                    currUserInfo.setTopicID(this.getStdTopicSem(this.findStudentByUserId(user.getIdUser()).getIdStudent(), semRepo.getCurrentApplySemester().get(0)).getIdTopicSem());
                 }
-                currUserInfo.setTopicID(stdTopicSemRepo.getTopicIDFromStudentID(studentRepo.getStdIDFromUserID(user.getIdUser())));
             }
 
             String isStd = (isStudent) ? "true" : "false";
@@ -110,7 +118,6 @@ public class UserDAO implements IUserDAO {
             currUserInfo.setEmail(user.getEmail());
             currUserInfo.setGender(user.getGender());
             currUserInfo.setPhoto(user.getPhoto());
-            
 
             currUserInfo.setToken(token);
             currUserInfo.setIsStudent(isStudent);
@@ -199,6 +206,17 @@ public class UserDAO implements IUserDAO {
             }
         }
         return false;
+    }
+
+    @Override
+    public StudentTopicSem getStdTopicSem(int stdid, int semid) {
+        List<Integer> listTopicID = topicRepo.findTopIDBySemesterNo(semid);
+        for (int i = 0; i < listTopicID.size(); i++) {
+            if (stdTopicSemRepo.getStdTopicSemFromTopicID(listTopicID.get(i), stdid) != null) {
+                return stdTopicSemRepo.getStdTopicSemFromTopicID(listTopicID.get(i), stdid);
+            }
+        }
+        return null;
     }
 
 }

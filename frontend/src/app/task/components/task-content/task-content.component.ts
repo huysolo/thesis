@@ -32,10 +32,17 @@ export class TaskContentComponent implements OnInit {
   public page: number;
   pagecount: Array<number>;
 
-  topicID: any;
   listTaskComment: Array<any>;
 
-  disconnection : any;
+  disconnection: any;
+
+  type: String;
+  isrecent: boolean;
+  ishistory: boolean;
+  listTopic: Array<any>;
+  listSem: Array<any>;
+
+  topicID: any;
 
 
 
@@ -46,14 +53,8 @@ export class TaskContentComponent implements OnInit {
       deadline: ['2017-11-16T20:00', Validators.required]
     });
 
-    this.taskService.getAllStudentDoTopic().subscribe(
-      res => {
-        this.listAllStudent = res;
-      }
-    );
 
-    this.isCreate = 'create';
-    this.isSubmit = 'submit';
+
 
   }
 
@@ -61,13 +62,55 @@ export class TaskContentComponent implements OnInit {
     this.page = 0;
 
     this.route.params.subscribe(params => {
-      this.topicID = params['typ'];
-      if (this.topicID === undefined) {
-        this.topicID = -1;
+
+      this.type = params['typ'];
+
+      if (this.type === 'recent') {
+        this.isCreate = 'create';
+        this.isSubmit = 'submit';
+
+        this.listTask = null;
+        this.page = 0;
+
+        this.isrecent = true;
+        this.ishistory = false;
+
+        if (this.isrecent == true) {
+
+          if (this.authService.isStudent() == true) {
+
+            this.getAllStudentDoTopic();
+
+            this.getPage(-1, this.page);
+
+          } else {
+            this.getTopicFromSemID(-1);
+          }
+        }
+      } else {
+        this.listTask = null;
+        this.page = 0;
+
+        this.isrecent = false;
+        this.ishistory = true;
+
+        if (this.authService.isProfessor() == true) {
+          this.getSem();
+
+        } else {
+
+          this.stdGetListTopic();
+        }
       }
-      console.log(this.topicID);
-      this.getPage(this.topicID, this.page);
+
     });
+  }
+
+  getAllStudentDoTopic() {
+    this.taskService.getAllStudentDoTopic().subscribe(
+      res => {
+        this.listAllStudent = res;
+      });
   }
 
   saveTempTaskID(taskID: number) {
@@ -107,6 +150,7 @@ export class TaskContentComponent implements OnInit {
     this.taskService.createtask(temp).subscribe(
       res => {
         this.listTask.push(res);
+        console.log(res);
       }
     );
   }
@@ -157,17 +201,23 @@ export class TaskContentComponent implements OnInit {
   }
 
   getPage(topicID: number, page: number) {
+    if(topicID != 0){
     this.taskService.getPage(topicID, page).subscribe(
       res => {
         this.pagecount = new Array(res.pageCount);
         this.listTask = res.taskList;
+        this.topicID = topicID;
+        console.log(this.listTask);
       }
     );
   }
+  }
 
   setPage(i: number) {
-    this.page = i;
-    this.getPage(1, this.page);
+    if (i >= 0 && i < this.pagecount.length) {
+      this.page = i;
+      this.getPage(this.topicID, this.page);
+    }
   }
 
   getTaskComment(task) {
@@ -175,13 +225,13 @@ export class TaskContentComponent implements OnInit {
       task.showCmt = true;
       this.taskService.getTaskComment(task.taskID).subscribe(
         res => {
-              task.comment = res;
+          task.comment = res;
         }
       );
 
       const stompClient = this.taskService.receiveMessage();
       stompClient.connect({}, frame => {
-        task.disconnection =  stompClient.subscribe<any>('/topic/comment' + task.taskID, res => {
+        task.disconnection = stompClient.subscribe<any>('/topic/comment' + task.taskID, res => {
           task.comment.push(JSON.parse(res.body));
         });
       });
@@ -207,6 +257,39 @@ export class TaskContentComponent implements OnInit {
     } else {
       task.showCmt = undefined;
     }
+  }
+
+  getTopicFromSemID(semid) {
+    this.taskService.getTopicFromSemID(semid).subscribe(
+      res => {
+        this.listTopic = res;
+        console.log(this.listTopic);
+      }
+    );
+  }
+
+  getSem() {
+    this.taskService.getSemCount().subscribe(
+      res => {
+        this.listSem = res;
+      }
+    );
+  }
+
+  isActive(i) {
+    if (i == this.page) {
+      return 'active';
+    } else {
+      return null;
+    }
+  }
+
+  stdGetListTopic() {
+    this.taskService.getTopicFromStd().subscribe(
+      res => {
+        this.listTopic = res;
+      }
+    );
   }
 
 }

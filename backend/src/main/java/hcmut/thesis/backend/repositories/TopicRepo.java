@@ -14,6 +14,9 @@ public interface TopicRepo extends JpaRepository<Topic, Integer> {
 
     @Query("SELECT t FROM Topic t WHERE t.semesterNo =:semesterNo")
     List<Topic> findTopBySemesterNo(@Param("semesterNo") Integer semesterNo);
+    
+    @Query("SELECT t.idTop FROM Topic t WHERE t.semesterNo =:semesterNo")
+    List<Integer> findTopIDBySemesterNo(@Param("semesterNo") Integer semesterNo);
 
     @Query("SELECT t FROM Topic t WHERE t.semesterNo < :semesterNo")
     List<Topic> findAllPublish(@Param("semesterNo") Integer semesterNo);
@@ -24,5 +27,13 @@ public interface TopicRepo extends JpaRepository<Topic, Integer> {
     @Query("SELECT t FROM Topic t WHERE t.idProf = :idProf")
     List<Topic> findTopicFromProfID(@Param("idProf") Integer idProf);
     
+    @Query("SELECT DISTINCT t.semesterNo FROM Topic t WHERE t.idProf = :idProf")
+    List<Integer> findListSemFromProfID(@Param("idProf") Integer idProf);
+    
+    @Query("SELECT t FROM Topic t WHERE t.idProf = :idProf AND t.semesterNo = :semid")
+    List<Topic> findListSemFromSemID(@Param("idProf") Integer idProf, @Param("semid") Integer semid);
+    
+    @Query("SELECT t FROM Topic t WHERE t.idTop = :topicid ")
+    Topic getListTopicFromTopicID(@Param("topicid") Integer topicid);
 }
 

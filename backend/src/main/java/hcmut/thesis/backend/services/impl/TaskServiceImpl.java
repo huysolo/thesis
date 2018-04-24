@@ -9,17 +9,21 @@ import hcmut.thesis.backend.models.CommentTask;
 import hcmut.thesis.backend.models.StudentTask;
 import hcmut.thesis.backend.models.StudentTopicSem;
 import hcmut.thesis.backend.models.Task;
+import hcmut.thesis.backend.models.Topic;
 import hcmut.thesis.backend.models.User;
 import hcmut.thesis.backend.modelview.PageInfo;
 import hcmut.thesis.backend.modelview.StudentDoTask;
 import hcmut.thesis.backend.modelview.TaskComment;
 import hcmut.thesis.backend.modelview.TaskInfo;
+import hcmut.thesis.backend.repositories.SemesterRepo;
 import hcmut.thesis.backend.repositories.StudentTaskRepo;
 import hcmut.thesis.backend.repositories.StudentTopicSemRepo;
 import hcmut.thesis.backend.repositories.TaskCommentRepo;
 import hcmut.thesis.backend.repositories.TaskRepo;
+import hcmut.thesis.backend.repositories.TopicRepo;
 import hcmut.thesis.backend.repositories.UserRepo;
 import hcmut.thesis.backend.services.TaskService;
+import hcmut.thesis.backend.services.TopicService;
 import static java.lang.Integer.min;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +52,15 @@ public class TaskServiceImpl implements TaskService {
     
     @Autowired
     TaskCommentRepo taskCommentRepo;
+    
+    @Autowired
+    TopicService topicService;
+    
+    @Autowired
+    TopicRepo topicRepo;
+    
+    @Autowired
+    SemesterRepo semRepo;
     
     @Override
     public List<StudentDoTask> getStudentDoTaskFromTaskID(int taskID){
@@ -134,7 +147,7 @@ public class TaskServiceImpl implements TaskService {
         PageInfo page = new PageInfo();
         List<TaskInfo> listTask = new ArrayList<>();       
         List<Task> t = (isStd == true)? taskRepo.getTaskFromIDTopic(topicID): taskRepo.getTaskSubmitFromProf(topicID);
-        for(int i = 4*pageNumber; i< min(4*(pageNumber + 1),t.size()); i++){
+        for(int i = 8*pageNumber; i< min(8*(pageNumber + 1),t.size()); i++){
             
             TaskInfo temp = new TaskInfo();
             temp.setTaskID(t.get(i).getIdTask());
@@ -146,7 +159,13 @@ public class TaskServiceImpl implements TaskService {
             temp.setStudent(getStudentDoTaskFromTaskID(t.get(i).getIdTask()));
             listTask.add(temp);
         }
-        page.setPageCount((t.size() / 4) + 1);
+        int count;
+        if(t.size() % 8 == 0){
+            count = t.size()/8;
+        } else {
+            count = t.size()/8 + 1;
+        }
+        page.setPageCount(count);
         page.setTaskList(listTask);
         return page;
     }
@@ -166,5 +185,22 @@ public class TaskServiceImpl implements TaskService {
             listComment.add(temp);
         }
         return listComment;
+    }
+    
+    @Override
+    public List<Topic> getListTopicFromStdID(int stdid){
+        List<Topic> listTopic = new ArrayList<>();
+        List<StudentTopicSem> t = stdTopicSemRepo.getStudentTopicSemByIdStudent(stdid);
+        for(int i = 0; i< t.size(); i++){
+            Topic temp = topicRepo.getListTopicFromTopicID(t.get(i).getIdTopicSem());
+            listTopic.add(temp);
+        }
+        return listTopic;
+    }
+    
+    @Override
+    public Topic getCurrTopicFromStdID(int stdid){
+        int currSem = semRepo.getCurrentApplySemester().get(0);
+        return topicService.getAppliedTopic(currSem, stdid);
     }
 }

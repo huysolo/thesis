@@ -14,7 +14,7 @@ import java.util.List;
  * @author MinBui
  */
 public interface ITaskDAO {
-    void createTask(TaskInfo taskInfo);
+    TaskInfo createTask(TaskInfo taskInfo, int topicid);
     void createStudentTask(int taskID, List<StudentDoTask> std);
     List<StudentDoTask> getStudentDoTask (int topicID);
 }

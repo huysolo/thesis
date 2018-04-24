@@ -7,9 +7,34 @@
         <div class="w3-col m12">
           <div class="w3-card w3-round w3-white">
             <div class="w3-container w3-padding">
-              <h6 class="w3-opacity">Social Media template by w3.css</h6>
-              <button type="button" *ngIf="this.authService.isTeamLead()" (click)="isRenderPopup(this.isCreate)" class="w3-button w3-white w3-border">
+
+              <div *ngIf="(this.authService.isProfessor() == true && ishistory == true)" class="btn-group">
+                <select class="custom-select" (change)="getTopicFromSemID($event.target.value)">
+                  <option selected>Choose Semester</option>
+                  <option *ngFor="let sem of listSem" [value]="sem">
+                    HK {{sem}}
+                  </option>
+                </select>
+                <p class="w3-padding">
+                  <span class="fa fa-chevron-right"></span>
+                </p>
+                <select class="custom-select" (change)="getPage($event.target.value, 0)">
+                  <option selected [value] = "0">Choose Topic</option>
+                  <option *ngFor="let topic of listTopic" [value]="topic.idTop">{{topic.title}}</option>
+                </select>
+              </div>
+
+              <div *ngIf="(this.authService.isProfessor() == true && isrecent == true) || (this.authService.isStudent() == true && ishistory == true)"
+                class="btn-group">
+                <select class="custom-select" (change)="getPage($event.target.value, 0)">
+                  <option selected [value] = "0">Choose Topic</option>
+                  <option *ngFor="let topic of listTopic" [value]="topic.idTop">{{topic.title}}</option>
+                </select>
+              </div>
+
+              <button type="button" *ngIf="this.authService.isTeamLead() && isrecent == true" (click)="isRenderPopup(this.isCreate)" class="w3-button w3-white w3-border">
                 <i class="fa fa-pencil"></i>Create Task</button>
+
               <input [(ngModel)]="searchText" style="width: 160px" class="w3-input w3-right" type="text" placeholder="Enter Task title....">
             </div>
           </div>
@@ -73,7 +98,7 @@
             <br>
             <span class="w3-opacity">1 min</span>
             <hr>
-            <button type="button" *ngIf="this.authService.isTeamLead() && !task.submit && !this.authService.isProfessor()" (click)="isRenderPopup(this.isSubmit, task.taskID)"
+            <button type="button" *ngIf="this.authService.isTeamLead() && !task.submit && !this.authService.isProfessor() && isrecent" (click)="isRenderPopup(this.isSubmit, task.taskID)"
               class="w3-button w3-white w3-border">
               <i class="fa fa-pencil"></i>Submit</button>
             <button type="button " *ngIf="task.submit && !this.authService.isProfessor()" (click)="isRenderPopup(this.isSubmit, task.taskID)"
@@ -214,11 +239,18 @@
 
       </div>
 
-      <div class="w3-center">
-        <div class="w3-bar w3-border">
-
-          <a (click)="setPage(i)" [ngClass]="(i == this.page)?' w3-bar-item w3-button w3-green':'w3-bar-item w3-button '" *ngFor="let page of pagecount; let i= index">{{i}}</a>
-        </div>
+      <div *ngIf="listTask?.length > 0" aria-label="...">
+        <ul class="pagination justify-content-center">
+          <li class="page-item">
+            <a class="page-link" (click)="setPage(page - 1)">Previous </a>
+          </li>
+          <li *ngFor="let page of pagecount; let i= index" class="page-item {{isActive(i)}}">
+            <a class="page-link" (click)="setPage(i)">{{i}}</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" (click)="setPage(page + 1)">Next</a>
+          </li>
+        </ul>
       </div>
 
     </div>
