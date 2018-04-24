@@ -192,7 +192,7 @@ public class TaskServiceImpl implements TaskService {
         List<Topic> listTopic = new ArrayList<>();
         List<StudentTopicSem> t = stdTopicSemRepo.getStudentTopicSemByIdStudent(stdid);
         for(int i = 0; i< t.size(); i++){
-            Topic temp = topicRepo.getListTopicFromTopicID(t.get(i).getIdTopicSem());
+            Topic temp = topicRepo.getTopicFromTopicID(t.get(i).getIdTopicSem());
             listTopic.add(temp);
         }
         return listTopic;

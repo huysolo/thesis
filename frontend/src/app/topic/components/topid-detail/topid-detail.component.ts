@@ -12,7 +12,6 @@ import { TopicService } from '../../topic.service';
   styleUrls: ['./topid-detail.component.css']
 })
 export class TopidDetailComponent implements OnInit {
-  // @Input('topid') topid: number;
   topicDetail: TopicDetail;
   constructor(public dialogRef: MatDialogRef<TopicContentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, public topicSv: TopicService) {
@@ -21,6 +20,7 @@ export class TopidDetailComponent implements OnInit {
     }
 
   ngOnInit() {
+
   }
 
 }

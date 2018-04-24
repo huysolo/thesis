@@ -63,9 +63,6 @@ export class TopicListComponent implements OnInit {
       if (this.selectedSem != 0) {
         params = params.set('semno', this.selectedSem.toString());
       }
-      
-      //Bux
-     // this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
 
       if (this.selectedProfId != 0) {
         params = params.set('profId', this.selectedProfId.toString());
@@ -88,7 +85,6 @@ export class TopicListComponent implements OnInit {
   onChangeProf(prof) {
     this.selectedProfId = prof;
     this.getWithRarams();
-    // this.topicSv.topicLst = this.topicSv.getListTopicBySemesterAndProf(this.selectedSem, this.selectedProfId);
   }
 
   onChangeSpec(spec) {
@@ -98,7 +94,7 @@ export class TopicListComponent implements OnInit {
 
   getAppliedTopic(selectedSem: Number) {
     let params = new HttpParams();
-    if (this.selectedSem != 0) {
+    if (this  .selectedSem != 0) {
       params = params.set('semno', selectedSem.toString());
     }
 

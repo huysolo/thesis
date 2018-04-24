@@ -31,9 +31,9 @@ public interface TopicRepo extends JpaRepository<Topic, Integer> {
     List<Integer> findListSemFromProfID(@Param("idProf") Integer idProf);
     
     @Query("SELECT t FROM Topic t WHERE t.idProf = :idProf AND t.semesterNo = :semid")
-    List<Topic> findListSemFromSemID(@Param("idProf") Integer idProf, @Param("semid") Integer semid);
+    List<Topic> findListTopicFromSemID(@Param("idProf") Integer idProf, @Param("semid") Integer semid);
     
     @Query("SELECT t FROM Topic t WHERE t.idTop = :topicid ")
-    Topic getListTopicFromTopicID(@Param("topicid") Integer topicid);
+    Topic getTopicFromTopicID(@Param("topicid") Integer topicid);
 }
 

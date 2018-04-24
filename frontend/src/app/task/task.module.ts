@@ -6,6 +6,10 @@ import {TaskRoutingModule} from './task-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {TaskService} from './task.service';
 import {FilterPipe} from './components/task-content/filter.pipe';
+import { DetailUploadComponent } from './components/upload/detail-upload/detail-upload.component';
+import { FormUploadComponent } from './components/upload/form-upload/form-upload.component';
+import { ListUploadComponent } from './components/upload/list-upload/list-upload.component';
+import { UploadFileService } from './upload-file.service';
 import { TaskChatgroupComponent } from './components/task-chatgroup/task-chatgroup.component';
 
 @NgModule({
@@ -15,7 +19,15 @@ import { TaskChatgroupComponent } from './components/task-chatgroup/task-chatgro
     FormsModule,
     ReactiveFormsModule
   ],
-  declarations: [TaskContentComponent, TaskListComponent, FilterPipe, TaskChatgroupComponent],
-  providers: [TaskService]
+  declarations: [
+    TaskContentComponent,
+    TaskListComponent,
+    FilterPipe,
+    DetailUploadComponent,
+    FormUploadComponent,
+    ListUploadComponent,
+    TaskChatgroupComponent
+  ],
+  providers: [TaskService, UploadFileService]
 })
 export class TaskModule { }
