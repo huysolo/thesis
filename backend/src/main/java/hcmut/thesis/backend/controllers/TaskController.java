@@ -66,6 +66,8 @@ public class TaskController {
 
     @Autowired
     StorageService storageService;
+
+    @Autowired
     TopicRepo topicRepo;
 
     @Autowired
@@ -91,7 +93,7 @@ public class TaskController {
         if (topicID == -1) {
             topicID = stdTopicSemRepo.getTopicIDFromStudentID(stdRepo.getStdIDFromUserID(userSession.getUserID()));
         }
-        if (userSession.isStudent() == true) {
+        if (userSession.isStudent()) {
             return taskService.getPage(pageNumber,topicID, true);
         } else {
             return taskService.getPage(pageNumber,topicID, false);
@@ -142,15 +144,17 @@ public class TaskController {
         return taskService.getTaskComment(taskID);
     }
 
-<<<<<<< HEAD
-
     private List<String> files = new ArrayList<String>();
 
     @PostMapping("/post")
-    public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
-        String message = "";
+    public ResponseEntity<String> handleFileUpload(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("id") Integer taskId
+    ) {
+        String message;
         try {
-            storageService.store(file);
+            System.out.println(taskId);
+            storageService.storeTask(file, taskId);
             files.add(file.getOriginalFilename());
 
             message = "You successfully uploaded " + file.getOriginalFilename() + "!";
@@ -179,7 +183,5 @@ public class TaskController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);
     }
-    
-=======
->>>>>>> 5b4540ee60784e910298224c384b821c4b6936ea
+
 }

@@ -27,6 +27,7 @@
         <mapping class="hcmut.thesis.backend.models.Notification"/>
         <mapping class="hcmut.thesis.backend.models.File"/>
         <mapping class="hcmut.thesis.backend.models.Specialize"/>
+        <mapping class="hcmut.thesis.backend.models.Review"/>
         <!-- <property name="connection.username"/> -->
         <!-- <property name="connection.password"/> -->
 

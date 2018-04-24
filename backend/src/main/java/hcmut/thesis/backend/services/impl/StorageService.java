@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,11 +17,23 @@ import java.nio.file.Paths;
 public class StorageService {
 
     Logger log = LoggerFactory.getLogger(this.getClass().getName());
-    private final Path rootLocation = Paths.get("upload-dir");
+    private final Path taskLocation = Paths.get("upload", "task", "1");
 
-    public void store(MultipartFile file) {
+    public void storeTask(MultipartFile file, Integer taskId) {
         try {
-            Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
+            String fileName = "upload/task/" + taskId;
+            Path path = Paths.get("upload","task", taskId.toString());
+            if (!Files.exists(path)) {
+
+                Files.createDirectories(path);
+
+                System.out.println("Directory created");
+            } else {
+
+                System.out.println("Directory already exists");
+            }
+
+            Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
         } catch (Exception e) {
             throw new RuntimeException("FAIL!");
         }
@@ -30,7 +41,7 @@ public class StorageService {
 
     public Resource loadFile(String filename) {
         try {
-            Path file = rootLocation.resolve(filename);
+            Path file = taskLocation.resolve(filename);
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
                 return resource;
@@ -43,14 +54,17 @@ public class StorageService {
     }
 
     public void deleteAll() {
-        FileSystemUtils.deleteRecursively(rootLocation.toFile());
+        FileSystemUtils.deleteRecursively(taskLocation.toFile());
     }
 
     public void init() {
-        try {
-            Files.createDirectory(rootLocation);
-        } catch (IOException e) {
-            throw new RuntimeException("Could not initialize storage!");
-        }
+//        try {
+//            if (!Files.isDirectory(taskLocation)){
+//                System.out.println("Du me may");
+//                Files.createDirectories(taskLocation);
+//            }
+//        } catch (IOException e) {
+//            throw new RuntimeException("Could not initialize storage!");
+//        }
     }
 }

@@ -11,6 +11,7 @@ export class UploadFileService {
     const formdata: FormData = new FormData();
 
     formdata.append('file', file);
+    formdata.append('id', '1');
 
     const req = new HttpRequest('POST', 'http://localhost:8080/post', formdata, {
       reportProgress: true,

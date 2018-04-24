@@ -111,6 +111,14 @@ create table professor
 )
   engine = InnoDB;
 
+create table review
+(
+  id_prof  int not null,
+  id_topic int not null,
+  primary key (id_prof, id_topic)
+)
+  engine = InnoDB;
+
 create table semester
 (
   semester_no      int                                     not null
