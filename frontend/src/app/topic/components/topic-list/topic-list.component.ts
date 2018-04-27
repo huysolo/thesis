@@ -49,7 +49,7 @@ export class TopicListComponent implements OnInit {
       this.topicSv.requestType = params['typ'];
       this.topicSv.appliedTopic = null;
 
-      if (this.topicSv.requestType === 'recent') {
+      if (params['typ'] === 'recent') {
         this.getAppliedTopic(0);
       }
 
@@ -107,10 +107,19 @@ export class TopicListComponent implements OnInit {
     return this.topicSv.appliedTopic == null || topicId !== this.topicSv.appliedTopic.idTop;
   }
 
+
   onEdit(event) {
     this.topicSv.getTopicDetail(event).subscribe(data => {
       this.topicDetail = data;
       $('#createTopic').modal('show');
+    });
+  }
+
+  onDelete(event) {
+    this.topicSv.deleteTopic(event).subscribe(data => {
+      this.topicSv.topicLst = this.topicSv.topicLst.map(topics => {
+        return topics.filter(top => top.idTop != event);
+      });
     });
   }
 

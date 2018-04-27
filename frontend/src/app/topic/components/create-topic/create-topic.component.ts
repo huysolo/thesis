@@ -7,6 +7,7 @@ import { AuthService } from '../../../core/auth.service';
 import { TopicService } from '../../topic.service';
 import { Observable } from 'rxjs/Observable';
 import { Specialize } from '../../../models/Specialize';
+import { CommonService } from '../../../core/common.service';
 
 @Component({
   selector: 'app-create-topic',
@@ -14,19 +15,18 @@ import { Specialize } from '../../../models/Specialize';
   styleUrls: ['./create-topic.component.css']
 })
 export class CreateTopicComponent implements OnInit {
-  constructor(public authoSv: AuthService, public topicSv: TopicService) { }
-  @Input('createTopic') createTopic: TopicDetail;
-  @Input('specLst') specLst: Observable<Specialize>;
+  constructor(public authoSv: AuthService, public topicSv: TopicService, private commonSv: CommonService) { }
+  @Input('createTopic') createTopic: TopicDetail = new TopicDetail();
+  specLst: Observable<Specialize[]>;
   @Output('created') created = new EventEmitter<Boolean>();
   ngOnInit() {
+    this.specLst = this.commonSv.getListSpec();
   }
 
   submitTopic(draft: boolean) {
     this.createTopic.draft = draft;
     this.topicSv.createTopic(this.createTopic).subscribe(data => {
-      if (data === 'CREATED') {
         this.created.emit(true);
-      }
     }, (err) => {
       console.log(err);
     }, );

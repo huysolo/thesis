@@ -25,13 +25,13 @@
           <span class="nav-link-text">Task</span>
         </a>
       </li> -->
-      <li  class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
         <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#ListTopic">
           <i class="fa fa-fw fa-table"></i>
           <span class="nav-link-text">Task</span>
         </a>
         <ul class="sidenav-second-level collapse" id="ListTopic">
-          <li >
+          <li>
             <a [routerLink]="['/task', 'recent']">Recent</a>
           </li>
           <li>
@@ -52,9 +52,17 @@
           <li>
             <a [routerLink]="['/topic', 'history']">History</a>
           </li>
-          <li>
-            <a [routerLink]="['/topic', 'draft']" *ngIf="authService.isProfessor()">Draft</a>
-          </li>
+          <ng-container *ngIf="authService.isProfessor()">
+            <li>
+              <a [routerLink]="['/topic', 'draft']">Draft</a>
+            </li>
+            <li>
+              <a [routerLink]="['/topic', 'review']">Review</a>
+            </li>
+            <li>
+              <a [routerLink]="['/topic/create']">Create</a>
+            </li>
+          </ng-container>
         </ul>
       </li>
       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">

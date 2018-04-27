@@ -15,6 +15,7 @@ export class TopicContentComponent implements OnInit {
   @Input('topic') topic: Topic;
   @Input('semno') semno;
   @Output('editTopic') editTopic = new EventEmitter<Number>();
+  @Output('delTopic') delTopic = new EventEmitter<Number>();
   @Output('applyTopic') applyTopic = new EventEmitter<Topic>();
 
   constructor(public dialog: MatDialog, public topicSv: TopicService, public authoSv: AuthService) { }
@@ -24,18 +25,9 @@ export class TopicContentComponent implements OnInit {
 
   apply() {
     this.topicSv.applyToTopic(this.topic.idTop).subscribe(data => {
-      if (data === 'CREATED') {
-        this.applyTopic.emit(this.topic);
-        // this.topicSv.topicLst = this.topicSv.topicLst.map(topicLst => {
-        //   this.topicSv.appliedTopic = this.topic;
-        //   return topicLst.filter(top => {
-        //     return top.idTop !== this.topicSv.idTop;
-        //   });
-        // });
-        // this.topicSv.getAppliedTopic(this.semno).subscribe(topic => {
-        //   this.topicSv.appliedTopic = topic;
-        // });
-      }
+      this.applyTopic.emit(data);
+    }, err => {
+      console.log(err);
     });
   }
   reject() {
@@ -63,15 +55,21 @@ export class TopicContentComponent implements OnInit {
 
   publish() {
     this.topicSv.publishTopic(this.topic.idTop).subscribe(data => {
-      this.topicSv.topicLst = this.topicSv.topicLst.map(res => {
-        return res.filter(top => {
-          return top.idTop !== this.topic.idTop;
-        });
-      });
+      console.log(data);
+
+      // this.topicSv.topicLst = this.topicSv.topicLst.map(res => {
+      //   return res.filter(top => {
+      //     return top.idTop !== this.topic.idTop;
+      //   });
+      // });
     });
   }
 
   edit() {
     this.editTopic.emit(this.topic.idTop);
+  }
+
+  delete() {
+    this.delTopic.emit(this.topic.idTop);
   }
 }

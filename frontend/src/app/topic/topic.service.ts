@@ -18,17 +18,18 @@ export class TopicService {
   }
   appliedTopic: Topic;
   topicLst: Observable<Topic[]>;
-  private topicListUrl = 'http://localhost:8080/topic/listTopic';
-  private topicRecentListUrl = 'http://localhost:8080/topic/recentTopics';
-  private topicDetailUrl = 'http://localhost:8080/topic/topicDetail';
-  private topicCreatelUrl = 'http://localhost:8080/topic/create';
-  private topicListSizeUrl = 'http://localhost:8080/topic/listTopicSize';
-  private topicApplyUrl = 'http://localhost:8080/topic/apply';
-  private topicAppliedUrl = 'http://localhost:8080/topic/appliedTopic';
-  private topicRejectUrl = 'http://localhost:8080/topic/reject';
-  private topicListDraftUrl = 'http://localhost:8080/topic/listDraft';
-  private topicPublishtUrl = 'http://localhost:8080/topic/publish';
-
+  private topicUrl = 'http://localhost:8080/topic/';
+  private topicListUrl = this.topicUrl + 'listTopic';
+  private topicRecentListUrl = this.topicUrl + 'recentTopics';
+  private topicDetailUrl = this.topicUrl + 'topicDetail';
+  private topicCreatelUrl = this.topicUrl +  'create';
+  private topicListSizeUrl = this.topicUrl +  'listTopicSize';
+  private topicApplyUrl = this.topicUrl +  'apply';
+  private topicAppliedUrl = this.topicUrl +  'appliedTopic';
+  private topicRejectUrl = this.topicUrl +  'reject';
+  private topicListDraftUrl = this.topicUrl +  'listDraft';
+  private topicPublishtUrl = this.topicUrl +  'publish';
+  private topicListReviewUrl = this.topicUrl +  'listReview';
 
   /**
    * reject
@@ -64,22 +65,13 @@ export class TopicService {
   */
   public getListTopicBySemesterAndProf(params: HttpParams): Observable<Topic[]>  {
     if (this.requestType === 'recent') {
-      return this.getListTopic(params).map(data => {
-        this.setPage(data.length);
-        return data;
-      });
+      return this.getListTopic(params);
     } else if (this.requestType === 'history') {
-      return this.http.get<Topic[]>(this.topicListUrl, {params: params}
-        //  + '?semno=' + sem + '&profId=' + profId + '', {params: this.params}
-        ).map(data => {
-        this.setPage(data.length);
-        return data;
-      });
+      return this.http.get<Topic[]>(this.topicListUrl, {params: params});
+    } else if (this.requestType === 'draft') {
+      return this.http.get<Topic[]>(this.topicListDraftUrl);
     } else {
-      return this.http.get<Topic[]>(this.topicListDraftUrl).map(data => {
-        this.setPage(data.length);
-        return data;
-      });
+      return this.getListReview(params);
     }
   }
 
@@ -116,4 +108,15 @@ export class TopicService {
       this.pageList.push(i);
     }
   }
+
+  public getListReview(params) {
+    return this.http.get<Topic[]>(this.topicListReviewUrl, {params: params});
+  }
+
+  public deleteTopic(id) {
+    const params = new HttpParams().append('topid', id);
+    return this.http.delete<any>(this.topicUrl, {params: params});
+  }
+
+
 }

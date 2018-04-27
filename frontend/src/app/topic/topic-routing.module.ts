@@ -5,12 +5,17 @@ import { ManageTopicComponent } from './pages/manage-topic/manage-topic.componen
 import { TopicListComponent } from './components/topic-list/topic-list.component';
 import { TopicDetail } from '../models/TopicDetail';
 import { AuthTopicGuardService } from './auth-topic-guard.service';
+import { CreateTopicComponent } from './components/create-topic/create-topic.component';
 
 const topicRoutes: Routes = [
   {
     path: '',
     component: ManageTopicComponent,
     children: [
+      {
+        path: 'create',
+        component: CreateTopicComponent
+      },
       {
         path: ':typ',
         component: TopicListComponent,

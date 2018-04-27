@@ -7,4 +7,6 @@ export class Topic {
   idSpecialize: number;
   score: Number;
   semesterNo: Number;
+  publishDate: Number;
+  studentCount: Number;
 }

@@ -10,10 +10,10 @@ import hcmut.thesis.backend.repositories.*;
 import hcmut.thesis.backend.services.ITopicDAO;
 import hcmut.thesis.backend.services.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,21 +50,6 @@ public class TopicServiceImpl implements TopicService {
     public List<Topic> getListTopicBySemester(Integer idFal, Integer semesterNo, Integer profId, Boolean aval, Integer specialize) {
         aval = aval == null ? true : aval;
         return topicDAO.getFilteredTopicList(idFal, profId, specialize, semesterNo);
-//        List<Topic>  topicList;
-//        if (semesterNo != null && semesterNo != -1){
-//            topicList = topicRepo.findTopBySemesterNo(semesterNo);
-//        } else {
-//            List<Integer> semesters = semesterRepo.getCurrentApplySemester();
-//            if (semesters.size() == 0){
-//                return null;
-//            }
-//            topicList = topicRepo.findAllPublish(semesters.get(0));
-//        }
-//        if (profId != null && profId != -1) topicList.removeIf(topic -> topic.getIdProf() != profId);
-//        if (aval) {
-//            topicList.removeIf(topic -> !availableTopic(topic));
-//        }
-//        return topicList;
     }
 
     @Override
@@ -74,9 +59,6 @@ public class TopicServiceImpl implements TopicService {
             return null;
         }
         Integer idFal = null;
-        if (specialize == null && userSession.isProf()){
-            profId = userSession.getProf().getIdProfessor();
-        }
         if (userSession.isUser()) {
             idFal = userSession.getCurrentUserFalcuty();
         }
@@ -97,51 +79,59 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public HttpStatus setTopicDetail(TopicDetail topicDetail, Boolean publish) {
-        List<Integer> semesters = semesterRepo.getCurrentApplySemester();
-        if (semesters.size() == 0){
-            return HttpStatus.EXPECTATION_FAILED;
-        }
+    public Topic setTopicDetail(TopicDetail topicDetail, Boolean publish) {
+
         Topic topic = topicDetail.getTopic();
-//        topic.setIdFaculty(userSession.getCurrentUserFalcuty());
+        topic.setStudentCount(0);
+
         if (publish){
-            topic.setSemesterNo(semesters.get(0));
+            topic = setPublish(topic);
+        }
+        if (topic == null) {
+            return null;
         }
         topicRepo.saveAndFlush(topic);
-        System.out.println(topic.getIdTop());
-
-
-        topicDetail.getTopicMission().forEach(topicMissionDetail -> topicMissionDetail.setIdTopic(topic.getIdTop()));
+        for (TopicMission topicMis :
+                topicDetail.getTopicMission()) {
+            topicMis.setIdTopic(topic.getIdTop());
+        }
         topicMissionRepo.saveAll(topicDetail.getTopicMission());
-        topicDetail.getTopicRequirement().forEach(topicReqDetail -> topicReqDetail.setIdTopic(topic.getIdTop()));
+
+        for (TopicRequirement topicRequirement :
+                topicDetail.getTopicRequirement()) {
+            topicRequirement.setIdTopic(topic.getIdTop());
+        }
         topicReqRepo.saveAll(topicDetail.getTopicRequirement());
-        return HttpStatus.CREATED;
+
+        return topic;
     }
 
 
 
     @Override
-    public HttpStatus applyToTopic(Integer topId, Integer studentId) {
+    public Topic applyToTopic(Integer topId, Integer studentId) {
         List<Integer> semesters = semesterRepo.getCurrentApplySemester();
         Optional<Topic> topicOp = topicRepo.findById(topId);
         if (semesters.size() == 0 || !topicOp.isPresent() || !semesters.get(0).equals(topicOp.get().getSemesterNo())) {
-            return HttpStatus.EXPECTATION_FAILED;
+            return null;
         }
         List<Topic> topicList = topicRepo.findTopBySemesterNo(semesters.get(0));
         for (Topic topic :
                 topicList) {
             if(studentTopicSemRepo.getStudentTopicSemByAll(studentId, topic.getIdTop()).size() > 0){
-                return HttpStatus.MULTIPLE_CHOICES;
+                return null;
             }
             if (!availableTopic(topic)){
-                return HttpStatus.EXPECTATION_FAILED;
+                return null;
             }
         }
+        topicOp.get().setStudentCount(topicOp.get().getStudentCount() + 1);
+        topicRepo.save(topicOp.get());
         StudentTopicSem studentTopicSem = new StudentTopicSem();
         studentTopicSem.setIdStudent(studentId);
         studentTopicSem.setIdTopicSem(topicOp.get().getIdTop());
         studentTopicSemRepo.save(studentTopicSem);
-        return HttpStatus.CREATED;
+        return topicOp.get();
     }
 
     @Override
@@ -179,53 +169,88 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public HttpStatus rejectTopic(Integer topId, Integer studentId) {
+    public Topic rejectTopic(Integer topId, Integer studentId) {
         List<Integer> semNo = semesterRepo.getCurrentApplySemester();
         if(semNo.size() == 0) {
-            return HttpStatus.EXPECTATION_FAILED;
+            return null;
         }
-        StudentTopicSem studentTopicSem = new StudentTopicSem();
-        studentTopicSem.setIdTopicSem(topId);
-        studentTopicSem.setIdStudent(studentId);
-        studentTopicSemRepo.delete(studentTopicSem);
-        return HttpStatus.CREATED;
+        Optional<Topic> topic = topicRepo.findById(topId);
+        if (topic.isPresent()) {
+            topic.get().setStudentCount(topic.get().getStudentCount() - 1);
+            topicRepo.save(topic.get());
+            StudentTopicSem studentTopicSem = new StudentTopicSem();
+            studentTopicSem.setIdTopicSem(topId);
+            studentTopicSem.setIdStudent(studentId);
+            studentTopicSemRepo.delete(studentTopicSem);
+            return topic.get();
+        } else {
+            return null;
+        }
+
     }
 
     @Override
-    public HttpStatus publish(Integer topicId) {
-        TopicDetail topicDetail  = getTopicDetailById(topicId);
-        if (topicDetail == null){
-            return HttpStatus.NO_CONTENT;
+    public Topic publish(Integer topicId) {
+        try{
+            Topic topic = topicRepo.findById(topicId).get();
+            topicRepo.save(topic);
+            System.out.println(topic.getSemesterNo());
+            return topic;
+        } catch (Exception e){
+            return null;
         }
-        setTopicDetail(topicDetail, true);
-        return HttpStatus.CREATED;
+    }
+
+    private Topic setPublish(Topic topic) {
+        List<Integer> semesters = semesterRepo.getCurrentApplySemester();
+        if (semesters.size() == 0){
+            return null;
+        }
+        System.out.println(semesters.get(0));
+        topic.setSemesterNo(semesters.get(0));
+        topic.setPublishDate(new Timestamp(System.currentTimeMillis()));
+        return topic;
     }
 
     @Override
-    public HttpStatus edit(TopicDetail topicDetail) {
+    public List<Topic> getListTopicReview(Integer semNo, Integer profId) {
+        if (semNo == null) {
+            return topicDAO.getListReviewTopicByProfId(profId);
+        }
+        return topicDAO.getListReviewTopicByProfIdAndSemesterNo(profId, semNo);
+    }
+
+    @Override
+    public Topic edit(TopicDetail topicDetail) {
         try {
-            deleteTopicMissionAndRequirement(topicDetail.getTopic().getIdTop());
+            Topic topic = deleteTopicMissionAndRequirement(topicDetail.getTopic().getIdTop());
+            if (topic == null) {
+                return null;
+            }
             setTopicDetail(topicDetail, false);
-            return  HttpStatus.CREATED;
+            return topic;
         } catch (NullPointerException e) {
-            return HttpStatus.NO_CONTENT;
+            return null;
         }
     }
 
     @Override
-    public HttpStatus delete(Integer topicId) {
+    public Integer delete(Integer topicId) {
         try {
             Topic topic = deleteTopicMissionAndRequirement(topicId);
             assert topic != null;
             topicRepo.delete(topic);
-            return HttpStatus.CREATED;
+            return topicId;
         } catch (NullPointerException e) {
-            return HttpStatus.FORBIDDEN;
+            return null;
         }
     }
 
     private Topic deleteTopicMissionAndRequirement(Integer topicId) throws NullPointerException {
         TopicDetail topicDetail = getTopicDetailById(topicId);
+        if (userSession.getProf().getIdProfessor() != topicDetail.getTopic().getIdProf()){
+            return null;
+        }
         if (topicDetail.getTopic().getSemesterNo() != null) {
             return null;
         }
@@ -237,4 +262,5 @@ public class TopicServiceImpl implements TopicService {
         });
         return topicDetail.getTopic();
     }
+
 }
