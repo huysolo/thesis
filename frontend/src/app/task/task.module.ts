@@ -11,6 +11,10 @@ import { FormUploadComponent } from './components/upload/form-upload/form-upload
 import { ListUploadComponent } from './components/upload/list-upload/list-upload.component';
 import { UploadFileService } from './upload-file.service';
 import { TaskChatgroupComponent } from './components/task-chatgroup/task-chatgroup.component';
+import { TaskDetailComponent } from './components/task-detail/task-detail.component';
+import { TaskCreateComponent } from './components/task-create/task-create.component';
+import { TaskCommentComponent } from './components/task-comment/task-comment.component';
+import { TaskPaginationComponent } from './components/task-pagination/task-pagination.component';
 
 @NgModule({
   imports: [
@@ -26,7 +30,11 @@ import { TaskChatgroupComponent } from './components/task-chatgroup/task-chatgro
     DetailUploadComponent,
     FormUploadComponent,
     ListUploadComponent,
-    TaskChatgroupComponent
+    TaskChatgroupComponent,
+    TaskDetailComponent,
+    TaskCreateComponent,
+    TaskCommentComponent,
+    TaskPaginationComponent
   ],
   providers: [TaskService, UploadFileService]
 })
