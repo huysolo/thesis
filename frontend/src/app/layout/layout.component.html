@@ -47,17 +47,17 @@
         </a>
         <ul class="sidenav-second-level collapse" id="collapseComponents">
           <li>
-            <a [routerLink]="['/topic', 'recent']">Recent</a>
+            <a [routerLink]="['/topic/list', 'recent']">Recent</a>
           </li>
           <li>
-            <a [routerLink]="['/topic', 'history']">History</a>
+            <a [routerLink]="['/topic/list', 'history']">History</a>
           </li>
           <ng-container *ngIf="authService.isProfessor()">
             <li>
-              <a [routerLink]="['/topic', 'draft']">Draft</a>
+              <a [routerLink]="['/topic/list', 'draft']">Draft</a>
             </li>
             <li>
-              <a [routerLink]="['/topic', 'review']">Review</a>
+              <a [routerLink]="['/topic/list', 'review']">Review</a>
             </li>
             <li>
               <a [routerLink]="['/topic/create']">Create</a>

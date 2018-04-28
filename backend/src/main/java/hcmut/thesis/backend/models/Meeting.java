@@ -4,19 +4,17 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 public class Meeting {
     private int idMeeting;
-    private String note;
+    private Integer status;
     private String content;
     private Integer studentCount;
-    private Timestamp meetingTime;
-    private int approve;
-    private String location;
     private Integer idTopicSem;
+    private String reason;
+    private String title;
 
     @Id
     @Column(name = "id_meeting")
@@ -29,13 +27,13 @@ public class Meeting {
     }
 
     @Basic
-    @Column(name = "note")
-    public String getNote() {
-        return note;
+    @Column(name = "status")
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     @Basic
@@ -59,36 +57,6 @@ public class Meeting {
     }
 
     @Basic
-    @Column(name = "meeting_time")
-    public Timestamp getMeetingTime() {
-        return meetingTime;
-    }
-
-    public void setMeetingTime(Timestamp meetingTime) {
-        this.meetingTime = meetingTime;
-    }
-
-    @Basic
-    @Column(name = "approve")
-    public int getApprove() {
-        return approve;
-    }
-
-    public void setApprove(int approve) {
-        this.approve = approve;
-    }
-
-    @Basic
-    @Column(name = "location")
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    @Basic
     @Column(name = "id_topic_sem")
     public Integer getIdTopicSem() {
         return idTopicSem;
@@ -98,24 +66,43 @@ public class Meeting {
         this.idTopicSem = idTopicSem;
     }
 
+    @Basic
+    @Column(name = "reason")
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    @Basic
+    @Column(name = "title")
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Meeting meeting = (Meeting) o;
         return idMeeting == meeting.idMeeting &&
-                approve == meeting.approve &&
-                Objects.equals(note, meeting.note) &&
+                Objects.equals(status, meeting.status) &&
                 Objects.equals(content, meeting.content) &&
                 Objects.equals(studentCount, meeting.studentCount) &&
-                Objects.equals(meetingTime, meeting.meetingTime) &&
-                Objects.equals(location, meeting.location) &&
-                Objects.equals(idTopicSem, meeting.idTopicSem);
+                Objects.equals(idTopicSem, meeting.idTopicSem) &&
+                Objects.equals(reason, meeting.reason) &&
+                Objects.equals(title, meeting.title);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(idMeeting, note, content, studentCount, meetingTime, approve, location, idTopicSem);
+        return Objects.hash(idMeeting, status, content, studentCount, idTopicSem, reason, title);
     }
 }

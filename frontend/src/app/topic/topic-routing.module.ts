@@ -9,19 +9,18 @@ import { CreateTopicComponent } from './components/create-topic/create-topic.com
 
 const topicRoutes: Routes = [
   {
-    path: '',
+    path: 'list',
     component: ManageTopicComponent,
     children: [
-      {
-        path: 'create',
-        component: CreateTopicComponent
-      },
       {
         path: ':typ',
         component: TopicListComponent,
         // canActivate: [AuthTopicGuardService]
       }
     ]
+  }, {
+    path: 'create',
+    component: CreateTopicComponent
   }
 ];
 @NgModule({

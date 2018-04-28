@@ -29,6 +29,8 @@ export class TopicListComponent implements OnInit {
   public selectedProfId = 0;
   public selectedSpecId = 0;
 
+  modalLabel = 'New';
+
   public topicDetail = new TopicDetail();
   title: String = 'New';
   p = 1;
@@ -39,6 +41,8 @@ export class TopicListComponent implements OnInit {
   ngOnInit() {
     this.selectedProfId = this.authoSv.isProfessor() ? this.authoSv.getProfID() : null;
     this.route.params.subscribe(params => {
+      this.modalLabel = 'New';
+
       this.selectedSem = 0;
       this.selectedProfId = 0;
       this.selectedSpecId = 0;
@@ -109,6 +113,7 @@ export class TopicListComponent implements OnInit {
 
 
   onEdit(event) {
+    this.modalLabel = 'Edit';
     this.topicSv.getTopicDetail(event).subscribe(data => {
       this.topicDetail = data;
       $('#createTopic').modal('show');
@@ -133,6 +138,7 @@ export class TopicListComponent implements OnInit {
   }
 
   newTopic() {
+    this.modalLabel = 'New';
     this.topicDetail = new TopicDetail();
     this.topicDetail.topic.idProf = this.authoSv.getProfID();
     this.topicDetail.topicMission.push(new TopicMission());
