@@ -9,6 +9,7 @@ import { MaterialModule } from './material.module';
 import { CommonService } from './common.service';
 import { AuthGuardUserService } from './auth-guard-user.service';
 import {TaskService} from '../task/task.service';
+import {MeetingService} from '../meeting/meeting.service';
 
 import { AuthTopicGuardService } from '../topic/auth-topic-guard.service';
 
@@ -34,6 +35,7 @@ import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
     CommonService,
     AuthGuardUserService,
     TaskService,
+    MeetingService,
     AuthTopicGuardService
   ]
 })

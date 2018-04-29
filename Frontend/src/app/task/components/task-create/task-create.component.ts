@@ -23,7 +23,7 @@ export class TaskCreateComponent implements OnInit {
     this.crttaskForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      deadline: ['2017-11-16T20:00', Validators.required]
+      deadline: ['2018-1-1T07:00', Validators.required]
     });
   }
 
