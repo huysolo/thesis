@@ -36,7 +36,7 @@ public class CommonController {
 
     @RequestMapping(value = "currentSem", method = RequestMethod.GET)
     Integer getCurrentTopicSemester(){
-        return commonService.getCurrentSem();
+        return commonService.getCurrentApplySem();
     }
 
     @RequestMapping(value = "listSpec", method = RequestMethod.GET)

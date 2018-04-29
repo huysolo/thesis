@@ -7,30 +7,9 @@ package hcmut.thesis.backend.controllers;
 
 import hcmut.thesis.backend.models.Task;
 import hcmut.thesis.backend.models.Topic;
-import hcmut.thesis.backend.modelview.ChatGroupInfo;
-import hcmut.thesis.backend.modelview.PageInfo;
-import hcmut.thesis.backend.modelview.StudentDoTask;
-import hcmut.thesis.backend.modelview.TaskComment;
-import hcmut.thesis.backend.modelview.TaskInfo;
-import hcmut.thesis.backend.modelview.UserSession;
-import hcmut.thesis.backend.repositories.ProfessorRepo;
-import hcmut.thesis.backend.repositories.SemesterRepo;
-import hcmut.thesis.backend.repositories.StudentRepo;
-import hcmut.thesis.backend.repositories.StudentTaskRepo;
-import hcmut.thesis.backend.repositories.StudentTopicSemRepo;
-import hcmut.thesis.backend.repositories.TaskRepo;
-import hcmut.thesis.backend.repositories.TopicRepo;
-import hcmut.thesis.backend.services.ChatGroupService;
-import hcmut.thesis.backend.services.ITaskDAO;
-import hcmut.thesis.backend.services.IUserDAO;
-import hcmut.thesis.backend.services.TaskService;
-
-import hcmut.thesis.backend.services.TopicService;
-import hcmut.thesis.backend.services.impl.StorageService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import java.util.List;
+import hcmut.thesis.backend.modelview.*;
+import hcmut.thesis.backend.repositories.*;
+import hcmut.thesis.backend.services.*;
 import hcmut.thesis.backend.services.impl.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -207,10 +186,12 @@ public class TaskController {
     }
 
     @GetMapping("/getallfiles")
-    public ResponseEntity<List<String>> getListFiles(Model model) {
+    public ResponseEntity<List<String>> getListFiles(Model model,
+        @RequestParam("id") Integer taskId
+    ) {
         List<String> fileNames = files
                 .stream().map(fileName -> MvcUriComponentsBuilder
-                        .fromMethodName(TaskController.class, "getFile", fileName).build().toString())
+                        .fromMethodName(TaskController.class, "getFile", fileName, taskId).build().toString())
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok().body(fileNames);
@@ -218,8 +199,8 @@ public class TaskController {
 
     @GetMapping("/files/{filename:.+}")
     @ResponseBody
-    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
-        Resource file = storageService.loadFile(filename);
+    public ResponseEntity<Resource> getFile(@PathVariable String filename, Integer taskId) {
+        Resource file = storageService.loadFile(filename, taskId);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);

@@ -10,6 +10,7 @@ public interface CommonService {
     List<Semester> getListSemester();
     List<ProfInfo> getListProf();
     String getFullName(String fName, java.lang.String lName);
+    Integer getCurrentApplySem();
     Integer getCurrentSem();
     List<Specialize> getAllByIdFalcuty(Integer idFal);
     String getSpecByID(Integer idSpec);

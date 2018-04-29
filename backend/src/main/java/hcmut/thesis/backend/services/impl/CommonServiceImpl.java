@@ -63,10 +63,19 @@ public class CommonServiceImpl implements CommonService {
     }
 
     @Override
-    public Integer getCurrentSem() {
+    public Integer getCurrentApplySem() {
         List<Integer> semesters = semesterRepo.getCurrentApplySemester();
         if (semesters.size() == 0){
-            return null;
+            throw new NullPointerException();
+        }
+        return semesters.get(0);
+    }
+
+    @Override
+    public Integer getCurrentSem() {
+        List<Integer> semesters = semesterRepo.getCurrentSemester();
+        if (semesters.size() == 0){
+            throw new NullPointerException();
         }
         return semesters.get(0);
     }

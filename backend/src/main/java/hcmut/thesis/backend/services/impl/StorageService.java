@@ -39,9 +39,9 @@ public class StorageService {
         }
     }
 
-    public Resource loadFile(String filename) {
+    public Resource loadFile(String filename, Integer taskId) {
         try {
-            Path file = taskLocation.resolve(filename);
+            Path file =  Paths.get("upload","task", taskId.toString()).resolve(filename);
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
                 return resource;

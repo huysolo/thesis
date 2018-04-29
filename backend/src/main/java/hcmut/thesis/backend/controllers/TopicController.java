@@ -92,6 +92,8 @@ public class TopicController {
             return ResponseEntity.ok(topicService.setTopicDetail(topicDetailJS, !topicDetailJS.getDraft()));
         } catch (EntityExistsException e){
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("INVALID REQUEST");
+        } catch (NullPointerException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("INVALID REQUEST");
         }
     }
 
@@ -105,6 +107,8 @@ public class TopicController {
             return ResponseEntity.ok(topicService.publish(topicId));
         } catch (EntityExistsException e){
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("INVALID REQUEST");
+        }catch (NullPointerException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("INVALID REQUEST");
         }
 
     }
@@ -112,14 +116,19 @@ public class TopicController {
     @PostMapping(value = "apply")
     @ResponseBody
     ResponseEntity<Object> applyToTopic(@RequestBody Integer topicId){
-        if(!userSession.isStudent()){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("YOU DO NOT HAVE PERMISSION TO APPLY");
+        try {
+            if(!userSession.isStudent()){
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("YOU DO NOT HAVE PERMISSION TO APPLY");
+            }
+            Topic topic =topicService.applyToTopic(topicId, userSession.getStudent().getIdUser());
+            if (topic == null){
+                return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("INVALID REQUEST");
+            }
+            return ResponseEntity.ok(topic);
+        } catch (NullPointerException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("INVALID REQUEST");
         }
-        Topic topic =topicService.applyToTopic(topicId, userSession.getStudent().getIdUser());
-        if (topic == null){
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("INVALID REQUEST");
-        }
-        return ResponseEntity.ok(topic);
+
     }
 
     @GetMapping(value = "appliedTopic")
