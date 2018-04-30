@@ -12,8 +12,19 @@ public class File {
     private int idFile;
     private String name;
     private Timestamp uploadDate;
-    private String idUser;
+    private int idUser;
     private Integer idTask;
+
+
+    public File(String name, int idUser, Integer idTask) {
+        this.name = name;
+        this.idUser = idUser;
+        this.idTask = idTask;
+    }
+
+    public File() {
+    }
+
 
     @Id
     @Column(name = "id_file")
@@ -47,11 +58,11 @@ public class File {
 
     @Basic
     @Column(name = "id_user")
-    public String getIdUser() {
+    public int getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(String idUser) {
+    public void setIdUser(int idUser) {
         this.idUser = idUser;
     }
 

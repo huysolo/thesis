@@ -32,6 +32,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.List;
+import hcmut.thesis.backend.modelview.*;
+import hcmut.thesis.backend.repositories.*;
+import hcmut.thesis.backend.services.*;
+
 import hcmut.thesis.backend.services.impl.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -219,19 +223,21 @@ public class TaskController {
     }
 
     @GetMapping("/getallfiles")
-    public ResponseEntity<List<String>> getListFiles(Model model) {
-        List<String> fileNames = files
-                .stream().map(fileName -> MvcUriComponentsBuilder
-                        .fromMethodName(TaskController.class, "getFile", fileName).build().toString())
+    public ResponseEntity<List<String>> getListFiles(Model model,
+        @RequestParam("id") Integer taskId
+    ) {
+        List<String> fileNames = taskService.getFileByTaskId(taskId)
+                .stream().map(f -> MvcUriComponentsBuilder
+                        .fromMethodName(TaskController.class, "getFile", f.getName(), f.getIdTask()).build().toString())
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok().body(fileNames);
     }
 
-    @GetMapping("/files/{filename:.+}")
+    @GetMapping("/files/{fileName:.+}")
     @ResponseBody
-    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
-        Resource file = storageService.loadFile(filename);
+    public ResponseEntity<Resource> getFile(@PathVariable String fileName, Integer taskId) {
+        Resource file = storageService.loadFile(fileName, taskId);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);

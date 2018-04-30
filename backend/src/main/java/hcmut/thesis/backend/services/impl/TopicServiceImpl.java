@@ -7,6 +7,7 @@ import hcmut.thesis.backend.models.TopicRequirement;
 import hcmut.thesis.backend.modelview.TopicDetail;
 import hcmut.thesis.backend.modelview.UserSession;
 import hcmut.thesis.backend.repositories.*;
+import hcmut.thesis.backend.services.CommonService;
 import hcmut.thesis.backend.services.ITopicDAO;
 import hcmut.thesis.backend.services.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class TopicServiceImpl implements TopicService {
     UserSession userSession;
 
     @Autowired
-    SemesterRepo semesterRepo;
+    CommonService commonService;
 
     @Autowired
     StudentTopicSemRepo studentTopicSemRepo;
@@ -54,15 +55,13 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public List<Topic> getListRecentTopicBySemester(Integer profId, Boolean aval, Integer specialize) {
-        List<Integer> semNo = semesterRepo.getCurrentApplySemester();
-        if(semNo.size() == 0) {
-            return null;
-        }
+        Integer semNo = commonService.getCurrentApplySem();
+
         Integer idFal = null;
         if (userSession.isUser()) {
             idFal = userSession.getCurrentUserFalcuty();
         }
-        return getListTopicBySemester(idFal, semNo.get(0), profId, aval, specialize);
+        return getListTopicBySemester(idFal, semNo, profId, aval, specialize);
 
     }
 
@@ -110,12 +109,12 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Topic applyToTopic(Integer topId, Integer studentId) {
-        List<Integer> semesters = semesterRepo.getCurrentApplySemester();
+        Integer semester = commonService.getCurrentApplySem();
         Optional<Topic> topicOp = topicRepo.findById(topId);
-        if (semesters.size() == 0 || !topicOp.isPresent() || !semesters.get(0).equals(topicOp.get().getSemesterNo())) {
+        if (!topicOp.isPresent() || !semester.equals(topicOp.get().getSemesterNo())) {
             return null;
         }
-        List<Topic> topicList = topicRepo.findTopBySemesterNo(semesters.get(0));
+        List<Topic> topicList = topicRepo.findTopBySemesterNo(semester);
         for (Topic topic :
                 topicList) {
             if(studentTopicSemRepo.getStudentTopicSemByAll(studentId, topic.getIdTop()).size() > 0){
@@ -137,11 +136,7 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public Topic getAppliedTopic(Integer semesterNo, Integer studendId) {
         if (semesterNo == null){
-            List<Integer> semesters = semesterRepo.getCurrentApplySemester();
-            if (semesters.size() == 0) {
-                return null ;
-            }
-            semesterNo = semesters.get(0);
+            semesterNo = commonService.getCurrentApplySem();
         }
         List<Topic> topicList = topicRepo.findTopBySemesterNo(semesterNo);
         for (Topic topic :
@@ -170,10 +165,8 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Topic rejectTopic(Integer topId, Integer studentId) {
-        List<Integer> semNo = semesterRepo.getCurrentApplySemester();
-        if(semNo.size() == 0) {
-            return null;
-        }
+        commonService.getCurrentApplySem();
+
         Optional<Topic> topic = topicRepo.findById(topId);
         if (topic.isPresent()) {
             topic.get().setStudentCount(topic.get().getStudentCount() - 1);
@@ -202,12 +195,8 @@ public class TopicServiceImpl implements TopicService {
     }
 
     private Topic setPublish(Topic topic) {
-        List<Integer> semesters = semesterRepo.getCurrentApplySemester();
-        if (semesters.size() == 0){
-            return null;
-        }
-        System.out.println(semesters.get(0));
-        topic.setSemesterNo(semesters.get(0));
+        Integer semNo = commonService.getCurrentApplySem();
+        topic.setSemesterNo(semNo);
         topic.setPublishDate(new Timestamp(System.currentTimeMillis()));
         return topic;
     }

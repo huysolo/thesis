@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpRequest, HttpEvent} from '@angular/common/http';
+import {HttpClient, HttpRequest, HttpEvent, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 
 @Injectable()
@@ -22,6 +22,7 @@ export class UploadFileService {
   }
 
   getFiles(): Observable<string[]> {
-    return this.http.get<string[]>('/getallfiles');
+    const params = new HttpParams().append('id', '1');
+    return this.http.get<string[]>('http://localhost:8080/getallfiles', {params: params});
   }
 }

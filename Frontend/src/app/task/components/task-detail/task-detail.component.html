@@ -7,10 +7,10 @@
       <br>
       <span class="w3-opacity">1 min</span>
       <hr>
-      <button type="button" *ngIf="this.authService.isTeamLead() && !task.submit && !this.authService.isProfessor() && isrecent" 
+      <button type="button" *ngIf="this.authService.isTeamLead() && !task.submit && !this.authService.isProfessor() && isrecent"
       (click)="isRenderPopup(task.taskID)" class="w3-button w3-white w3-border">
         <i class="fa fa-pencil"></i>Submit</button>
-      <button type="button " *ngIf="task.submit && !this.authService.isProfessor()" 
+      <button type="button " *ngIf="task.submit && !this.authService.isProfessor()"
       (click)="isSubmitTask()"  class="w3-button w3-white w3-border">
         <i class="fa fa-pencil"></i>Submited</button>
     </div>
@@ -108,7 +108,7 @@
     </div>
   </div>
 
-</div> 
+</div>
 
 <div class="w3-modal {{issubmit}}" *ngIf="this.authService.isTeamLead()">
     <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="padding:32px;max-width:600px">

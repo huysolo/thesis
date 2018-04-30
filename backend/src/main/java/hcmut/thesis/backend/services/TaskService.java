@@ -5,6 +5,7 @@
  */
 package hcmut.thesis.backend.services;
 
+import hcmut.thesis.backend.models.File;
 import hcmut.thesis.backend.models.Task;
 import hcmut.thesis.backend.models.Topic;
 import hcmut.thesis.backend.modelview.PageInfo;
@@ -28,4 +29,7 @@ public interface TaskService {
     List<TaskComment> getTaskComment(int taskID);
     List<Topic> getListTopicFromStdID(int stdid);
     Topic getCurrTopicFromStdID(int stdid);
+    List<File> getFileNameOfFile(int taskId);
+    Boolean saveFileToTask(File file);
+    List<File> getFileByTaskId(Integer taskId);
 }
