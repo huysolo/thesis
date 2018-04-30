@@ -68,21 +68,31 @@ create index join_per_meeting_meeting_id_meeting_fk
 
 create table meeting
 (
-  id_meeting    int                                 not null
+  id_meeting    int             not null
     primary key,
-  note          varchar(150)                        null,
-  content       varchar(150)                        not null,
-  student_count int                                 null,
-  meeting_time  timestamp default CURRENT_TIMESTAMP not null
-  on update CURRENT_TIMESTAMP,
-  approve       int default '0'                     not null,
-  location      varchar(50)                         null,
-  id_topic_sem  int                                 null
+  status        int default '1' null,
+  content       varchar(150)    not null,
+  student_count int default '0' null,
+  id_topic_sem  int             null,
+  reason        varchar(45)     null,
+  title         varchar(45)     null
 )
   engine = InnoDB;
 
 create index meeting_topic_per_semester_id_topic_semester_fk
   on meeting (id_topic_sem);
+
+create table meeting_schelule
+(
+  id_meeting_schelule int             not null
+    primary key,
+  status              int default '0' null,
+  note                varchar(45)     null,
+  meeting_time        timestamp       null,
+  id_meeting          int             null,
+  location            varchar(45)     null
+)
+  engine = InnoDB;
 
 create table notification
 (
@@ -128,7 +138,9 @@ create table semester
   apply_close_date timestamp default CURRENT_TIMESTAMP     null
   on update CURRENT_TIMESTAMP,
   end_date         timestamp default '0000-00-00 00:00:00' not null,
-  start_date       timestamp default '0000-00-00 00:00:00' not null
+  start_date       timestamp default '0000-00-00 00:00:00' not null,
+  review_date      timestamp                               null,
+  close_date       timestamp                               null
 )
   engine = InnoDB;
 
@@ -146,7 +158,8 @@ create table standard
   id_standard int not null
     primary key,
   st_name     int null,
-  id_prof     int null
+  id_prof     int null,
+  semester_no int null
 )
   comment 'Standard for Professors'
   engine = InnoDB;
@@ -223,6 +236,7 @@ create table topic
   id_specialize int                                 null,
   upload_date   timestamp default CURRENT_TIMESTAMP null,
   publish_date  timestamp                           null,
+  student_count int default '0'                     null,
   constraint topic_id_top_uindex
   unique (id_top)
 )

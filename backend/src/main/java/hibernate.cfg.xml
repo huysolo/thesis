@@ -28,6 +28,7 @@
         <mapping class="hcmut.thesis.backend.models.File"/>
         <mapping class="hcmut.thesis.backend.models.Specialize"/>
         <mapping class="hcmut.thesis.backend.models.Review"/>
+        <mapping class="hcmut.thesis.backend.models.MeetingSchelule"/>
         <!-- <property name="connection.username"/> -->
         <!-- <property name="connection.password"/> -->
 

@@ -6,17 +6,6 @@ import java.util.Objects;
 
 @Entity
 public class Topic {
-    public Topic(int idTop, String title, int stNumLimit, String sumary, int idProf, Integer score, Integer semesterNo, Integer idSpecialize) {
-        this.idTop = idTop;
-        this.title = title;
-        this.stNumLimit = stNumLimit;
-        this.sumary = sumary;
-        this.idProf = idProf;
-        this.score = score;
-        this.semesterNo = semesterNo;
-        this.idSpecialize = idSpecialize;
-    }
-
     private int idTop;
     private String title;
     private int stNumLimit;
@@ -27,12 +16,25 @@ public class Topic {
     private Integer idSpecialize;
     private Timestamp uploadDate;
     private Timestamp publishDate;
+    private Integer studentCount;
+
+    public Topic(int idTop, String title, int stNumLimit, String sumary, int idProf, Integer score, Integer semesterNo, Integer idSpecialize, Integer studentCount) {
+        this.idTop = idTop;
+        this.title = title;
+        this.stNumLimit = stNumLimit;
+        this.sumary = sumary;
+        this.idProf = idProf;
+        this.score = score;
+        this.semesterNo = semesterNo;
+        this.idSpecialize = idSpecialize;
+        this.studentCount = studentCount;
+    }
 
     public Topic() {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_top")
     public int getIdTop() {
         return idTop;
@@ -153,5 +155,15 @@ public class Topic {
     public int hashCode() {
 
         return Objects.hash(idTop, title, stNumLimit, sumary, idProf, score, semesterNo, idSpecialize, uploadDate, publishDate);
+    }
+
+    @Basic
+    @Column(name = "student_count")
+    public Integer getStudentCount() {
+        return studentCount;
+    }
+
+    public void setStudentCount(Integer studentCount) {
+        this.studentCount = studentCount;
     }
 }

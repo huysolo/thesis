@@ -50,30 +50,10 @@ export class TaskDetailComponent implements OnInit {
   getTaskComment() {
     if (this.task.showCmt === undefined) {
       this.task.showCmt = true;
-      // this.taskService.getTaskComment(this.task.taskID).subscribe(
-      //   res => {
-      //     this.task.comment = res;
-      //   }
-      // );
-
-      // const stompClient = this.taskService.receiveMessage();
-      // stompClient.connect({}, frame => {
-      //   this.task.disconnection = stompClient.subscribe<any>('/topic/comment' + this.task.taskID, res => {
-      //     this.task.comment.push(JSON.parse(res.body));
-      //   });
-      // });
     } else {
       this.task.showCmt = undefined;
-      // this.task.disconnection.unsubscribe();
     }
 
-  }
-
-  sendComment(comment: String) {
-    this.taskService.sendComment(comment, this.task.taskID).subscribe(
-      res => {
-      }
-    );
   }
 
   reviewTask(pass: number) {

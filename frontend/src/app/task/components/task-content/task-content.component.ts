@@ -5,7 +5,7 @@ import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms'
 import { StudentDoTask } from '../student-do-task';
 import { AuthService } from '../../../core/auth.service';
 import { ActivatedRoute } from '@angular/router';
-import {TaskDetailComponent} from '../task-detail/task-detail.component';
+import { TaskDetailComponent } from '../task-detail/task-detail.component';
 
 
 @Component({
@@ -67,30 +67,34 @@ export class TaskContentComponent implements OnInit {
   }
 
   getPage(topicID: number, page: number) {
-    if(topicID != 0){
-    this.taskService.getPage(topicID, page).subscribe(
-      res => {
-        this.pagecount = new Array(res.pageCount);
-        this.listTask = res.taskList;
-        this.topicID = topicID;
-        console.log(this.listTask);
-      }
-    );
-  }
+    if (topicID != 0) {
+      this.taskService.getPage(topicID, page).subscribe(
+        res => {
+          if (res == null) {
+            console.log('We dont have Semester now');
+          } else {
+            this.pagecount = new Array(res.pageCount);
+            this.listTask = res.taskList;
+            this.topicID = topicID;
+          }
+        }
+      );
+    }
   }
 
   setPage(event: number) {
-    if (event >= 0 && event < this.pagecount.length) {
-      this.page = event;
-      this.getPage(this.topicID, this.page);
-    }
+    this.page = event;
+    this.getPage(this.topicID, this.page);
   }
 
   getTopicFromSemID(semid) {
     this.taskService.getTopicFromSemID(semid).subscribe(
       res => {
-        this.listTopic = res;
-        console.log(this.listTopic);
+        if (res == null) {
+          console.log('We dont have Semester now');
+        } else {
+          this.listTopic = res;
+        }
       }
     );
   }
@@ -103,13 +107,6 @@ export class TaskContentComponent implements OnInit {
     );
   }
 
-  isActive(i) {
-    if (i == this.page) {
-      return 'active';
-    } else {
-      return null;
-    }
-  }
 
   stdGetListTopic() {
     this.taskService.getTopicFromStd().subscribe(
@@ -119,15 +116,15 @@ export class TaskContentComponent implements OnInit {
     );
   }
 
-  createTask(){
+  createTask() {
     this.isCreateTask = true;
   }
 
-  switchIsCreate(event: Boolean){
+  switchIsCreate(event: Boolean) {
     this.isCreateTask = event;
   }
 
-  addNewTask(event: any){
+  addNewTask(event: any) {
     this.listTask.push(event);
     this.isCreateTask = false;
   }

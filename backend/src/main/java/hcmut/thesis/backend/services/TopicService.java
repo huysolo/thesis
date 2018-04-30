@@ -2,22 +2,22 @@ package hcmut.thesis.backend.services;
 
 import hcmut.thesis.backend.models.Topic;
 import hcmut.thesis.backend.modelview.TopicDetail;
-import org.springframework.http.HttpStatus;
 
 import java.util.List;
 public interface TopicService {
     List<Topic> getListTopicBySemester(Integer idFal, Integer semesterNo, Integer profId, Boolean available, Integer specialize);
     List<Topic> getListRecentTopicBySemester(Integer profId, Boolean aval, Integer specialize);
     TopicDetail getTopicDetailById(Integer topId);
-    HttpStatus setTopicDetail(TopicDetail topicDetail, Boolean publish);
-    HttpStatus applyToTopic(Integer topId, Integer studentId);
+    Topic setTopicDetail(TopicDetail topicDetail, Boolean publish);
+    Topic applyToTopic(Integer topId, Integer studentId);
     Topic getAppliedTopic(Integer semesterNo, Integer studendId);
     Integer numberOfApply(Integer topicId);
     List<Topic> getDraftTopics(Integer profId);
     Boolean availableTopic(Topic topic);
-    HttpStatus rejectTopic(Integer topId, Integer studentId);
-    HttpStatus publish(Integer topicId);
-    HttpStatus edit(TopicDetail topicDetail);
-    HttpStatus delete(Integer topicId);
+    Topic rejectTopic(Integer topId, Integer studentId);
+    Topic publish(Integer topicId);
+    List<Topic> getListTopicReview(Integer semNo, Integer profId);
+    Topic edit(TopicDetail topicDetail);
+    Integer delete(Integer topicId);
 
 }

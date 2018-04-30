@@ -114,7 +114,7 @@ export class TopicListComponent implements OnInit {
     });
   }
 
-  onApply(event: Topic) {
+  onApply(event: Topic){
     this.topicSv.topicLst = this.topicSv.topicLst.map(topicLst => {
       this.topicSv.appliedTopic = event;
       return topicLst.filter(top => {

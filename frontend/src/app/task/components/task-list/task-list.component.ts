@@ -13,26 +13,13 @@ export class TaskListComponent implements OnInit {
   // topicID: any;
 
   constructor(public taskService: TaskService) {
-    // this.taskService.getSemCount().subscribe(
-    //   res => {
-    //     this.listSem = res;
-    //     console.log(this.listSem);
-    //   }
-    // );
+    
   }
 
   ngOnInit() {
   }
 
-  // getTopicFromSemID(){
 
-  //   this.taskService.getTopicFromSemID(this.semID).subscribe(
-  //     res => {
-  //       this.listTopic = res;
-  //       console.log(this.listTopic);
-  //     }
-  //   );
-  // }
 
   // getPage() {
   //   console.log(this.topicID);

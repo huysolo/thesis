@@ -15,14 +15,6 @@ export class TaskChatgroupComponent implements OnInit, OnDestroy {
   disconnection: any;
 
   constructor(private taskService: TaskService, public authService: AuthService) {
-
-    // const stompClient = this.taskService.receiveMessage();
-    //     stompClient.connect({}, frame => {
-    //         stompClient.subscribe<any>('/topic/notification'+this.authService.getTopicID() , res => {
-    //           this.listMessage.push(JSON.parse(res.body));
-    //         });
-    //     });
-
      this.getAllMessage();
   }
 

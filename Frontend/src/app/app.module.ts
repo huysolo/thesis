@@ -15,7 +15,8 @@ import { CoreModule } from './core/core.module';
   declarations: [
     AppComponent,
     LayoutComponent,
-    MainPageComponent,
+    MainPageComponent
+
   ],
   imports: [
     CoreModule,

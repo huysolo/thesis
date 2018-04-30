@@ -5,10 +5,11 @@ import { ManageTopicComponent } from './pages/manage-topic/manage-topic.componen
 import { TopicListComponent } from './components/topic-list/topic-list.component';
 import { TopicDetail } from '../models/TopicDetail';
 import { AuthTopicGuardService } from './auth-topic-guard.service';
+import { CreateTopicComponent } from './components/create-topic/create-topic.component';
 
 const topicRoutes: Routes = [
   {
-    path: '',
+    path: 'list',
     component: ManageTopicComponent,
     children: [
       {
@@ -17,6 +18,9 @@ const topicRoutes: Routes = [
         // canActivate: [AuthTopicGuardService]
       }
     ]
+  }, {
+    path: 'create',
+    component: CreateTopicComponent
   }
 ];
 @NgModule({

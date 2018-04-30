@@ -4,10 +4,10 @@ import com.google.gson.Gson;
 import hcmut.thesis.backend.models.Topic;
 import hcmut.thesis.backend.modelview.TopicDetail;
 import hcmut.thesis.backend.modelview.UserSession;
-import hcmut.thesis.backend.services.ITopicDAO;
 import hcmut.thesis.backend.services.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityExistsException;
@@ -23,9 +23,6 @@ public class TopicController {
     @Autowired
     UserSession userSession;
 
-    @Autowired
-    ITopicDAO topicDAO;
-
     @RequestMapping(value = "listTopic", method = RequestMethod.GET)
     List<Topic> getListTopic(
             @RequestParam(value = "semno", required = false) Integer semno,
@@ -39,11 +36,6 @@ public class TopicController {
         } else {
             return null;
         }
-//        try {
-//
-//        } catch (NullPointerException e){
-//            return null;
-//        }
     }
 
     @RequestMapping(value = "listDraft", method = RequestMethod.GET)
@@ -67,6 +59,9 @@ public class TopicController {
     ){
         try {
             if (userSession.isUser()) {
+                if (profId == null && userSession.isProf()){
+                    profId = userSession.getProf().getIdProfessor();
+                }
                 return topicService.getListRecentTopicBySemester(profId, available, specialize);
             } else {
                 return null;
@@ -87,39 +82,44 @@ public class TopicController {
 
     @RequestMapping(value = "create", method = RequestMethod.POST)
     @ResponseBody
-    HttpStatus setTopicDetail(@RequestBody String topicDetail) {
+    ResponseEntity<Object> setTopicDetail(@RequestBody String topicDetail) {
         if (!userSession.isProf()){
-            return HttpStatus.FORBIDDEN;
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("YOU DO NOT HAVE PERMISSION TO SET TOPIC");
         }
         try {
             Gson obj = new Gson();
             TopicDetail topicDetailJS = obj.fromJson(topicDetail, TopicDetail.class);
-            return topicService.setTopicDetail(topicDetailJS, !topicDetailJS.getDraft());
+            return ResponseEntity.ok(topicService.setTopicDetail(topicDetailJS, !topicDetailJS.getDraft()));
         } catch (EntityExistsException e){
-            return HttpStatus.EXPECTATION_FAILED;
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("INVALID REQUEST");
         }
     }
 
     @RequestMapping(value = "publish", method = RequestMethod.POST)
     @ResponseBody
-    HttpStatus setTopicDetail(@RequestBody Integer topicId) {
-        if (!userSession.isProf()){
-            return HttpStatus.FORBIDDEN;
+    ResponseEntity<Object> setTopicDetail(@RequestBody Integer topicId) {
+        if (!userSession.isProf()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("YOU DO NOT HAVE PERMISSION TO PUBLISH TOPIC");
         }
         try {
-            return topicService.publish(topicId);
+            return ResponseEntity.ok(topicService.publish(topicId));
         } catch (EntityExistsException e){
-            return HttpStatus.EXPECTATION_FAILED;
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("INVALID REQUEST");
         }
 
     }
 
     @PostMapping(value = "apply")
-    HttpStatus applyToTopic(@RequestBody Integer topicId){
+    @ResponseBody
+    ResponseEntity<Object> applyToTopic(@RequestBody Integer topicId){
         if(!userSession.isStudent()){
-            return HttpStatus.FORBIDDEN;
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("YOU DO NOT HAVE PERMISSION TO APPLY");
         }
-        return topicService.applyToTopic(topicId, userSession.getStudent().getIdUser());
+        Topic topic =topicService.applyToTopic(topicId, userSession.getStudent().getIdUser());
+        if (topic == null){
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("INVALID REQUEST");
+        }
+        return ResponseEntity.ok(topic);
     }
 
     @GetMapping(value = "appliedTopic")
@@ -130,11 +130,37 @@ public class TopicController {
         return topicService.getAppliedTopic(semno,  userSession.getStudent().getIdUser());
     }
     @PostMapping(value = "reject")
-    HttpStatus rejectToTopic(@RequestBody Integer topicId){
+    @ResponseBody
+    ResponseEntity<Object> rejectToTopic(@RequestBody Integer topicId){
         if(!userSession.isStudent()){
-            return HttpStatus.FORBIDDEN;
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("YOU DO NOT HAVE PERMISSION TO REJECT");
         }
-        return topicService.rejectTopic(topicId, userSession.getStudent().getIdUser());
+        Topic topic =topicService.rejectTopic(topicId, userSession.getStudent().getIdUser());
+        if (topic == null){
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("INVALID REQUEST");
+        }
+        return ResponseEntity.ok(topic);
+    }
+
+    @GetMapping(value = "listReview")
+    List<Topic> getListReviewTopic(@RequestParam(value = "semno", required = false) Integer semNo) {
+        if (!userSession.isProf()) {
+            return null;
+        }
+        return topicService.getListTopicReview(semNo, userSession.getProf().getIdProfessor());
+    }
+
+    @DeleteMapping
+    @ResponseBody
+    ResponseEntity<Object> delete(@RequestParam(value = "topid", required = true) Integer topId){
+        if (!userSession.isProf()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("YOU DO NOT HAVE PERMISSION TO DELETE");
+        }
+        topId = topicService.delete(topId);
+        if (topId == null){
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("INVALID REQUEST");
+        }
+        return ResponseEntity.noContent().build();
     }
 
 }

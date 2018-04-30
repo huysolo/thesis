@@ -17,3 +17,8 @@ header.w3-container {
   top: 0;
   right: 0;
 }
+
+
+.active-card {
+  color: #4CAF50;
+}

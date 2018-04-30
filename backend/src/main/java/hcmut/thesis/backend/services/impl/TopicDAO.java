@@ -25,7 +25,7 @@ public class TopicDAO implements ITopicDAO {
 
     @Override
     public List<Topic> getListReviewTopicByProfId(Integer profId) {
-        String sql = "SELECT * FROM topic WHERE topic.id_prof IN (SELECT r.id_prof FROM review r WHERE r.id_prof = ?)";
+        String sql = "SELECT * FROM topic WHERE topic.id_top IN (SELECT r.id_topic FROM review r WHERE r.id_prof = ?)";
         List<Map<String, Object>> rs = jdbcTemplate.queryForList(sql, profId);
         List<Topic> lstTopic = new LinkedList<>();
         rs.forEach(row -> {
@@ -37,7 +37,7 @@ public class TopicDAO implements ITopicDAO {
 
     @Override
     public List<Topic> getListReviewTopicByProfIdAndSemesterNo(Integer profId, Integer semNo) {
-        String sql = "SELECT * FROM topic WHERE topic.id_prof AND semester_no = ? IN (SELECT r.id_prof FROM review r WHERE r.id_prof = ?)";
+        String sql = "SELECT * FROM topic WHERE topic.id_top AND semester_no = ? IN (SELECT r.id_topic FROM review r WHERE r.id_prof = ?)";
         List<Map<String, Object>> rs = jdbcTemplate.queryForList(sql, profId, semNo);
         return getListTopicMapper(rs);
     }
@@ -59,7 +59,8 @@ public class TopicDAO implements ITopicDAO {
                 (Integer) row.get("id_prof"),
                 row.get("score") != null ? (Integer) row.get("score") : 0,
                 (Integer) row.get("semesterNo"),
-                (Integer) row.get("idSpecialize")
+                (Integer) row.get("id_specialize"),
+                (Integer) row.get("student_count")
         );
     }
 

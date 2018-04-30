@@ -16,12 +16,14 @@ import hcmut.thesis.backend.modelview.StudentDoTask;
 import hcmut.thesis.backend.modelview.TaskComment;
 import hcmut.thesis.backend.modelview.TaskInfo;
 import hcmut.thesis.backend.repositories.SemesterRepo;
+import hcmut.thesis.backend.repositories.StudentRepo;
 import hcmut.thesis.backend.repositories.StudentTaskRepo;
 import hcmut.thesis.backend.repositories.StudentTopicSemRepo;
 import hcmut.thesis.backend.repositories.TaskCommentRepo;
 import hcmut.thesis.backend.repositories.TaskRepo;
 import hcmut.thesis.backend.repositories.TopicRepo;
 import hcmut.thesis.backend.repositories.UserRepo;
+import hcmut.thesis.backend.services.CommonService;
 import hcmut.thesis.backend.services.TaskService;
 import hcmut.thesis.backend.services.TopicService;
 import static java.lang.Integer.min;
@@ -34,54 +36,59 @@ import org.springframework.stereotype.Service;
  *
  * @author MinBui
  */
-
-
 @Service
 public class TaskServiceImpl implements TaskService {
+
     @Autowired
     StudentTaskRepo stdTaskRepo;
-    
+
     @Autowired
     TaskRepo taskRepo;
-    
+
     @Autowired
     UserRepo userRepo;
-    
+
     @Autowired
     StudentTopicSemRepo stdTopicSemRepo;
-    
+
     @Autowired
     TaskCommentRepo taskCommentRepo;
-    
+
     @Autowired
     TopicService topicService;
-    
+
     @Autowired
     TopicRepo topicRepo;
-    
+
     @Autowired
     SemesterRepo semRepo;
+
+    @Autowired
+    CommonService commonService;
     
+    @Autowired
+    StudentRepo stdRepo;
+
     @Override
-    public List<StudentDoTask> getStudentDoTaskFromTaskID(int taskID){
+    public List<StudentDoTask> getStudentDoTaskFromTaskID(int taskID) {
         List<StudentDoTask> listStd = new ArrayList<>();
         List<StudentTask> t = stdTaskRepo.getStudentDoTaskFromIDTask(taskID);
-        for(int i = 0; i< t.size(); i++){
+        for (int i = 0; i < t.size(); i++) {
             StudentDoTask temp = new StudentDoTask();
             temp.setStdName(userRepo.getUserNameFromID(t.get(i).getIdStudent()));
             temp.setArchive(t.get(i).getArchive());
             temp.setUploadDate(t.get(i).getUploadDate());
             listStd.add(temp);
         }
-       return listStd;
+        return listStd;
     }
-    
+
     @Override
-    public List<TaskInfo> getListTaskFromIDTopic(int topicID){
+    public List<TaskInfo> getListTaskFromIDTopic(int topicID) {
         List<TaskInfo> listTask = new ArrayList<>();
         List<Task> t = taskRepo.getTaskFromIDTopic(topicID);
-        for(int i = 0; i< t.size(); i++){
-            
+        for (int i = 0; i < t.size(); i++) {
+
             TaskInfo temp = new TaskInfo();
             temp.setTaskID(t.get(i).getIdTask());
             temp.setTitle(t.get(i).getTitle());
@@ -94,28 +101,29 @@ public class TaskServiceImpl implements TaskService {
         }
         return listTask;
     }
-    
+
     @Override
-    public List<StudentDoTask> getAllStudentDoTaskFromTopicID(int topicID){
+    public List<StudentDoTask> getAllStudentDoTaskFromTopicID(int topicID) {
         List<StudentDoTask> listStd = new ArrayList<>();
         List<StudentTopicSem> t = stdTopicSemRepo.getAllStudentByIdTopicSem(topicID);
-        for(int i = 0; i< t.size(); i++){
+        for (int i = 0; i < t.size(); i++) {
             StudentDoTask temp = new StudentDoTask();
-            temp.setStdName(userRepo.getUserNameFromID(t.get(i).getIdStudent()));
+            int userID = stdRepo.getUserIDFromStdID(t.get(i).getIdStudent());
+            temp.setStdName(userRepo.getUserNameFromID(userID));
             listStd.add(temp);
         }
-       return listStd;
+        return listStd;
     }
-    
+
     @Override
-    public List<TaskInfo> getListTaskFromProf(int topicID){
+    public List<TaskInfo> getListTaskFromProf(int topicID) {
         List<TaskInfo> listTask = new ArrayList<>();
         List<Task> t = taskRepo.getTaskSubmitFromProf(topicID);
-        for(int i = 0; i< t.size(); i++){
+        for (int i = 0; i < t.size(); i++) {
             TaskInfo temp = new TaskInfo();
-            
+
             temp.setTitle(t.get(i).getTitle());
-             temp.setTaskID(t.get(i).getIdTask());
+            temp.setTaskID(t.get(i).getIdTask());
             temp.setDescription(t.get(i).getDescription());
             temp.setDeadline(t.get(i).getDeadline());
             temp.setSubmit(t.get(i).getSubmit());
@@ -125,7 +133,7 @@ public class TaskServiceImpl implements TaskService {
         }
         return listTask;
     }
-    
+
     @Override
     public Task updateTaskSubmit(int taskID, int submit) {
         Task temp = taskRepo.getTaskFromTaskID(taskID);
@@ -133,7 +141,7 @@ public class TaskServiceImpl implements TaskService {
         taskRepo.save(temp);
         return temp;
     }
-    
+
     @Override
     public Task updateTaskPass(int taskID, int pass) {
         Task temp = taskRepo.getTaskFromTaskID(taskID);
@@ -141,14 +149,14 @@ public class TaskServiceImpl implements TaskService {
         taskRepo.save(temp);
         return temp;
     }
-    
+
     @Override
-    public PageInfo getPage(int pageNumber, int topicID, Boolean isStd){
+    public PageInfo getPage(int pageNumber, int topicID, Boolean isStd) {
         PageInfo page = new PageInfo();
-        List<TaskInfo> listTask = new ArrayList<>();       
-        List<Task> t = (isStd == true)? taskRepo.getTaskFromIDTopic(topicID): taskRepo.getTaskSubmitFromProf(topicID);
-        for(int i = 8*pageNumber; i< min(8*(pageNumber + 1),t.size()); i++){
-            
+        List<TaskInfo> listTask = new ArrayList<>();
+        List<Task> t = (isStd == true) ? taskRepo.getTaskFromIDTopic(topicID) : taskRepo.getTaskSubmitFromProf(topicID);
+        for (int i = 8 * pageNumber; i < min(8 * (pageNumber + 1), t.size()); i++) {
+
             TaskInfo temp = new TaskInfo();
             temp.setTaskID(t.get(i).getIdTask());
             temp.setTitle(t.get(i).getTitle());
@@ -160,21 +168,21 @@ public class TaskServiceImpl implements TaskService {
             listTask.add(temp);
         }
         int count;
-        if(t.size() % 8 == 0){
-            count = t.size()/8;
+        if (t.size() % 8 == 0) {
+            count = t.size() / 8;
         } else {
-            count = t.size()/8 + 1;
+            count = t.size() / 8 + 1;
         }
         page.setPageCount(count);
         page.setTaskList(listTask);
         return page;
     }
-    
+
     @Override
-    public List<TaskComment> getTaskComment(int taskID){
+    public List<TaskComment> getTaskComment(int taskID) {
         List<TaskComment> listComment = new ArrayList<>();
         List<CommentTask> t = taskCommentRepo.getCommentFromTaskID(taskID);
-        for(int i = 0; i< t.size(); i++){
+        for (int i = 0; i < t.size(); i++) {
             TaskComment temp = new TaskComment();
             User user = userRepo.getUserFromID(t.get(i).getIdUser());
             temp.setUsername(user.getUserName());
@@ -186,21 +194,25 @@ public class TaskServiceImpl implements TaskService {
         }
         return listComment;
     }
-    
+
     @Override
-    public List<Topic> getListTopicFromStdID(int stdid){
+    public List<Topic> getListTopicFromStdID(int stdid) {
         List<Topic> listTopic = new ArrayList<>();
         List<StudentTopicSem> t = stdTopicSemRepo.getStudentTopicSemByIdStudent(stdid);
-        for(int i = 0; i< t.size(); i++){
+        for (int i = 0; i < t.size(); i++) {
             Topic temp = topicRepo.getTopicFromTopicID(t.get(i).getIdTopicSem());
             listTopic.add(temp);
         }
         return listTopic;
     }
-    
+
     @Override
-    public Topic getCurrTopicFromStdID(int stdid){
-        int currSem = semRepo.getCurrentApplySemester().get(0);
-        return topicService.getAppliedTopic(currSem, stdid);
+    public Topic getCurrTopicFromStdID(int stdid) {
+        Integer currSem = commonService.getCurrentSem();
+        if (currSem != null) {
+            return topicService.getAppliedTopic(currSem, stdid);
+        } else {
+            return null;
+        }
     }
 }

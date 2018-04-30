@@ -21,6 +21,7 @@ import hcmut.thesis.backend.repositories.StudentTopicSemRepo;
 import hcmut.thesis.backend.repositories.TaskRepo;
 import hcmut.thesis.backend.repositories.TopicRepo;
 import hcmut.thesis.backend.services.ChatGroupService;
+import hcmut.thesis.backend.services.CommonService;
 import hcmut.thesis.backend.services.ITaskDAO;
 import hcmut.thesis.backend.services.IUserDAO;
 import hcmut.thesis.backend.services.TaskService;
@@ -97,6 +98,9 @@ public class TaskController {
     
     @Autowired
     TopicService topicService;
+    
+    @Autowired
+    CommonService commonService;
 
     @RequestMapping(value = "/crttask", method = RequestMethod.POST)
     @ResponseBody
@@ -110,7 +114,11 @@ public class TaskController {
     public PageInfo getListTask(@RequestParam("topicID") Integer topicID,
             @RequestParam("page") Integer pageNumber) {
         if (topicID == -1) {
-            topicID = topicService.getAppliedTopic(semRepo.getCurrentApplySemester().get(0),userSession.getStudent().getIdStudent()).getIdTop();
+            Integer currSem = commonService.getCurrentSem();
+            if(currSem == null){
+                return null;
+            }
+            topicID = topicService.getAppliedTopic(currSem,userSession.getStudent().getIdStudent()).getIdTop();
         }
         if (userSession.isStudent()) {
             return taskService.getPage(pageNumber,topicID, true);
@@ -129,7 +137,11 @@ public class TaskController {
     @ResponseBody
     public List<Topic> getTopicFromSemID(@RequestParam(value="semid") Integer semid) {
         if(semid == -1){
-            semid = semRepo.getCurrentApplySemester().get(0);
+            Integer currSem = commonService.getCurrentSem();
+            if(currSem == null){
+                return null;
+            }
+            semid = currSem;
         }
         return topicRepo.findListTopicFromSemID(userSession.getProf().getIdProfessor(), semid);
     }
