@@ -7,6 +7,7 @@ import { TaskListComponent } from './components/task-list/task-list.component';
 import {TaskChatgroupComponent} from './components/task-chatgroup/task-chatgroup.component';
 import {TaskDetailComponent} from './components/task-detail/task-detail.component';
 import {TaskCreateComponent} from './components/task-create/task-create.component';
+import { ListUploadComponent } from './components/upload/list-upload/list-upload.component';
 
 const taskRoutes: Routes = [
   {
@@ -26,7 +27,12 @@ const taskRoutes: Routes = [
     path: 'upload',
     component: FormUploadComponent,
     pathMatch: 'full'
-  },{
+  },
+  {
+    path: 'listupload',
+    component: ListUploadComponent,
+  },
+  {
     path: 'chatgroup',
     component: TaskChatgroupComponent,
     pathMatch: 'full'

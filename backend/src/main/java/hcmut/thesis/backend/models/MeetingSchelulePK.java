@@ -1,30 +1,18 @@
 package hcmut.thesis.backend.models;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-@Entity
-@Table(name = "meeting_schelule", schema = "thesis", catalog = "")
-@IdClass(MeetingSchelulePK.class)
-public class MeetingSchelule {
-    private Integer status;
+public class MeetingSchelulePK implements Serializable {
     private Timestamp meetingTime;
     private int idMeeting;
     private String location;
 
-    @Basic
-    @Column(name = "status")
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    @Id
     @Column(name = "meeting_time")
+    @Id
     public Timestamp getMeetingTime() {
         return meetingTime;
     }
@@ -33,8 +21,8 @@ public class MeetingSchelule {
         this.meetingTime = meetingTime;
     }
 
-    @Id
     @Column(name = "id_meeting")
+    @Id
     public int getIdMeeting() {
         return idMeeting;
     }
@@ -43,8 +31,8 @@ public class MeetingSchelule {
         this.idMeeting = idMeeting;
     }
 
-    @Id
     @Column(name = "location")
+    @Id
     public String getLocation() {
         return location;
     }
@@ -57,9 +45,8 @@ public class MeetingSchelule {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MeetingSchelule that = (MeetingSchelule) o;
+        MeetingSchelulePK that = (MeetingSchelulePK) o;
         return idMeeting == that.idMeeting &&
-                Objects.equals(status, that.status) &&
                 Objects.equals(meetingTime, that.meetingTime) &&
                 Objects.equals(location, that.location);
     }
@@ -67,6 +54,6 @@ public class MeetingSchelule {
     @Override
     public int hashCode() {
 
-        return Objects.hash(status, meetingTime, idMeeting, location);
+        return Objects.hash(meetingTime, idMeeting, location);
     }
 }

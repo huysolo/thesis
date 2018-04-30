@@ -189,18 +189,18 @@ public class TaskController {
     public ResponseEntity<List<String>> getListFiles(Model model,
         @RequestParam("id") Integer taskId
     ) {
-        List<String> fileNames = files
-                .stream().map(fileName -> MvcUriComponentsBuilder
-                        .fromMethodName(TaskController.class, "getFile", fileName, taskId).build().toString())
+        List<String> fileNames = taskService.getFileByTaskId(taskId)
+                .stream().map(f -> MvcUriComponentsBuilder
+                        .fromMethodName(TaskController.class, "getFile", f.getName(), f.getIdTask()).build().toString())
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok().body(fileNames);
     }
 
-    @GetMapping("/files/{filename:.+}")
+    @GetMapping("/files/{fileName:.+}")
     @ResponseBody
-    public ResponseEntity<Resource> getFile(@PathVariable String filename, Integer taskId) {
-        Resource file = storageService.loadFile(filename, taskId);
+    public ResponseEntity<Resource> getFile(@PathVariable String fileName, Integer taskId) {
+        Resource file = storageService.loadFile(fileName, taskId);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);
